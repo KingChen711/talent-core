@@ -14,6 +14,7 @@ module.exports = {
   parserOptions: { ecmaVersion: 'latest', sourceType: 'module' },
   ignorePatterns: ['vite.config.ts'],
   rules: {
+    '@typescript-eslint/no-unused-vars': 'warn',
     'react/prop-types': 'off',
     'react/react-in-jsx-scope': 0,
     '@typescript-eslint/no-empty-interface': 0,
