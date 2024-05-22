@@ -6,11 +6,8 @@ export const Route = createFileRoute('/_auth-layout')({
 
 function AuthLayout() {
   return (
-    <div>
-      <div>AuthLayout</div>
-      <div>
-        <Outlet />
-      </div>
+    <div className='flex min-h-screen items-center justify-center py-8'>
+      <Outlet />
     </div>
   )
 }

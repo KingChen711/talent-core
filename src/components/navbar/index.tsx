@@ -8,7 +8,7 @@ function NavBar() {
       <ClerkLoading>Loading clerk...</ClerkLoading>
       <ClerkLoaded>
         <SignedOut>
-          <Button asChild className='bg-gradient'>
+          <Button asChild>
             <Link to='/sign-in'>Login</Link>
           </Button>
         </SignedOut>

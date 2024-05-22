@@ -12,6 +12,9 @@ module.exports = {
       }
     },
     extend: {
+      fontFamily: {
+        urbanist: ['Urbanist']
+      },
       colors: {
         'gradient-foreground': '#fff',
         success: '#00b85e',

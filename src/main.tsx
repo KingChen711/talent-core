@@ -4,6 +4,7 @@ import { ClerkProvider } from '@clerk/clerk-react'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
 import { routeTree } from './routeTree.gen'
 import { dark } from '@clerk/themes'
+import { ThemeProvider } from './contexts/theme-provider'
 
 // Import your publishable key
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
@@ -23,15 +24,17 @@ declare module '@tanstack/react-router' {
 }
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <ClerkProvider
-    publishableKey={PUBLISHABLE_KEY}
-    appearance={{
-      baseTheme: dark,
-      elements: {
-        formButtonPrimary: 'bg-gradient text-gradient-foreground'
-      }
-    }}
-  >
-    <RouterProvider router={router} />
-  </ClerkProvider>
+  <ThemeProvider defaultTheme='dark'>
+    <ClerkProvider
+      publishableKey={PUBLISHABLE_KEY}
+      appearance={{
+        baseTheme: dark,
+        elements: {
+          formButtonPrimary: 'bg-gradient text-gradient-foreground !shadow-none'
+        }
+      }}
+    >
+      <RouterProvider router={router} />
+    </ClerkProvider>
+  </ThemeProvider>
 )
