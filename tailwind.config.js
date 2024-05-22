@@ -13,6 +13,10 @@ module.exports = {
     },
     extend: {
       colors: {
+        'gradient-foreground': '#fff',
+        success: '#00b85e',
+        warning: '#ffd928',
+        danger: '#cf1a2c',
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',

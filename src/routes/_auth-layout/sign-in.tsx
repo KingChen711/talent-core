@@ -1,3 +1,4 @@
+import { SignIn } from '@clerk/clerk-react'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_auth-layout/sign-in')({
@@ -5,7 +6,7 @@ export const Route = createFileRoute('/_auth-layout/sign-in')({
 })
 
 function SingIn() {
-  return <div>SingIn</div>
+  return <SignIn forceRedirectUrl='/' signUpUrl='/sign-up' />
 }
 
 export default SingIn
