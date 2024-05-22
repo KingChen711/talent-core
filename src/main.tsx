@@ -1,28 +1,19 @@
 import ReactDOM from 'react-dom/client'
-
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './index.css'
-import HomePage from '@/pages/(root)/(home)/page'
-import RootLayout from './pages/layout'
-import ErrorPage from './pages/error'
-import DashboardPage from './pages/(root)/dashboard/page'
 
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <RootLayout />,
-    errorElement: <ErrorPage />,
-    children: [
-      {
-        path: '',
-        element: <HomePage />
-      },
-      {
-        path: 'dashboard',
-        element: <DashboardPage />
-      }
-    ]
+import { RouterProvider, createRouter } from '@tanstack/react-router'
+
+// Import the generated route tree
+import { routeTree } from './routeTree.gen'
+
+// Create a new router instance
+const router = createRouter({ routeTree })
+
+// Register the router instance for type safety
+declare module '@tanstack/react-router' {
+  interface Register {
+    router: typeof router
   }
-])
+}
 
 ReactDOM.createRoot(document.getElementById('root')!).render(<RouterProvider router={router} />)
