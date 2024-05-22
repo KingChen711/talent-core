@@ -7,7 +7,7 @@ export const Route = createLazyFileRoute('/_root-layout/')({
 function Index() {
   return (
     <div className='p-2'>
-      <h3>Welcome Home!</h3>
+      <h3 className='text-gradient font-bold'>Welcome Home!</h3>
     </div>
   )
 }

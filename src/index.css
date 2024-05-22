@@ -78,3 +78,9 @@
 .bg-gradient {
   background: linear-gradient(129deg, #6e38e0 0%, #ff5f36 100%);
 }
+
+.text-gradient {
+  background: -webkit-linear-gradient(129deg, #6e38e0 0%, #ff5f36 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
