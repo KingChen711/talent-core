@@ -1,22 +1,13 @@
-import { ClerkLoaded, ClerkLoading, SignedIn, SignedOut, UserButton } from '@clerk/clerk-react'
-import { Link } from '@tanstack/react-router'
-import { Button } from '../ui/button'
+import Logo from './logo'
+import Actions from './actions'
 
 function NavBar() {
   return (
-    <div>
-      <ClerkLoading>Loading clerk...</ClerkLoading>
-      <ClerkLoaded>
-        <SignedOut>
-          <Button asChild>
-            <Link to='/sign-in'>Login</Link>
-          </Button>
-        </SignedOut>
-        <SignedIn>
-          <UserButton />
-        </SignedIn>
-      </ClerkLoaded>
-    </div>
+    <nav className='fixed left-0 top-0 z-[49] flex h-20 w-full items-center justify-between border-b bg-background px-2 lg:px-4'>
+      <Logo />
+
+      <Actions />
+    </nav>
   )
 }
 

@@ -5,6 +5,10 @@ import { RouterProvider, createRouter } from '@tanstack/react-router'
 import { routeTree } from './routeTree.gen'
 import { dark } from '@clerk/themes'
 import { ThemeProvider } from './contexts/theme-provider'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import AuthProvider from './contexts/auth-provider'
+
+const queryClient = new QueryClient()
 
 // Import your publishable key
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
@@ -24,17 +28,21 @@ declare module '@tanstack/react-router' {
 }
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <ThemeProvider defaultTheme='dark'>
-    <ClerkProvider
-      publishableKey={PUBLISHABLE_KEY}
-      appearance={{
-        baseTheme: dark,
-        elements: {
-          formButtonPrimary: 'bg-gradient text-gradient-foreground !shadow-none'
-        }
-      }}
-    >
-      <RouterProvider router={router} />
-    </ClerkProvider>
-  </ThemeProvider>
+  <ClerkProvider
+    publishableKey={PUBLISHABLE_KEY}
+    appearance={{
+      baseTheme: dark,
+      elements: {
+        formButtonPrimary: 'bg-gradient text-gradient-foreground !shadow-none'
+      }
+    }}
+  >
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider defaultTheme='dark'>
+        <AuthProvider>
+          <RouterProvider router={router} />
+        </AuthProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
+  </ClerkProvider>
 )
