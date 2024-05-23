@@ -1,5 +1,5 @@
 import { User } from '@prisma/client'
-import React, { createContext, useContext, useMemo } from 'react'
+import React, { createContext, useContext, useEffect, useMemo } from 'react'
 import { type Role } from '@/types'
 import { useQuery } from '@tanstack/react-query'
 import { useAuth } from '@clerk/clerk-react'
@@ -9,9 +9,10 @@ type AuthProviderProps = {
   children: React.ReactNode
 }
 
-type AuthContextType = {
+export type AuthContextType = {
   user: User | null
   role: Role
+  isLoadingAuth: boolean
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null)
@@ -19,7 +20,7 @@ export const AuthContext = createContext<AuthContextType | null>(null)
 const AuthProvider = ({ children }: AuthProviderProps) => {
   const { getToken, userId: clerkId } = useAuth()
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['users', 'who-am-i', { clerkId }],
     queryFn: () => whoAmI(getToken)
   })
@@ -31,7 +32,15 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     return role ? (role as Role) : 'Guest'
   }, [user])
 
-  return <AuthContext.Provider value={{ user, role }}>{children}</AuthContext.Provider>
+  useEffect(() => {
+    console.log({ role })
+  }, [role])
+
+  useEffect(() => {
+    console.log({ user })
+  }, [user])
+
+  return <AuthContext.Provider value={{ user, role, isLoadingAuth: isLoading }}>{children}</AuthContext.Provider>
 }
 
 export default AuthProvider

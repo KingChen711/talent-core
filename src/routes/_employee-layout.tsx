@@ -1,23 +1,31 @@
 import LeftSideBar from '@/components/left-side-bar'
 import NavBar from '@/components/navbar'
 import { useAuthContext } from '@/contexts/auth-provider'
-import { Outlet, createFileRoute, redirect } from '@tanstack/react-router'
+import { Outlet, createFileRoute, redirect, useNavigate } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_employee-layout')({
   component: EmployeeLayout
 })
 
 function EmployeeLayout() {
-  const { role } = useAuthContext()
+  const navigate = useNavigate()
+  const { role, isLoadingAuth } = useAuthContext()
+
+  if (isLoadingAuth) return null
 
   if (role !== 'Employee') {
     if (role === 'Guest') {
-      throw redirect({ to: '/sign-in' })
+      return navigate({
+        to: '/sign-in',
+        search: {
+          redirect: location.href
+        }
+      })
+    } else {
+      // Singed with Candidate Role
+      // TODO: need to redirect to jobs page
+      return navigate({ to: '/' })
     }
-
-    // Singed with Candidate Role
-    // TODO: need to redirect to jobs page
-    throw redirect({ to: '/' })
   }
 
   return (

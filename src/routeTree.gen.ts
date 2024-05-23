@@ -11,7 +11,6 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as AboutImport } from './routes/about'
 import { Route as MainLayoutImport } from './routes/_main-layout'
 import { Route as EmployeeLayoutImport } from './routes/_employee-layout'
 import { Route as AuthLayoutImport } from './routes/_auth-layout'
@@ -24,11 +23,6 @@ import { Route as ProductsProductIdIndexImport } from './routes/products/$produc
 import { Route as ProductsProductIdEditImport } from './routes/products_/$productId/edit'
 
 // Create/Update Routes
-
-const AboutRoute = AboutImport.update({
-  path: '/about',
-  getParentRoute: () => rootRoute,
-} as any)
 
 const MainLayoutRoute = MainLayoutImport.update({
   id: '/_main-layout',
@@ -105,13 +99,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainLayoutImport
       parentRoute: typeof rootRoute
     }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutImport
-      parentRoute: typeof rootRoute
-    }
     '/_auth-layout/sign-in': {
       id: '/_auth-layout/sign-in'
       path: '/sign-in'
@@ -175,7 +162,6 @@ export const routeTree = rootRoute.addChildren({
     EmployeeLayoutDashboardRoute,
   }),
   MainLayoutRoute: MainLayoutRoute.addChildren({ MainLayoutIndexRoute }),
-  AboutRoute,
   ProductsIndexRoute,
   ProductsProductIdEditRoute,
   ProductsProductIdIndexRoute,

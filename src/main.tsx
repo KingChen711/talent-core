@@ -6,7 +6,7 @@ import { routeTree } from './routeTree.gen'
 import { dark } from '@clerk/themes'
 import { ThemeProvider } from './contexts/theme-provider'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import AuthProvider from './contexts/auth-provider'
+import AuthProvider, { useAuthContext } from './contexts/auth-provider'
 
 const queryClient = new QueryClient()
 
@@ -18,7 +18,13 @@ if (!PUBLISHABLE_KEY) {
 }
 
 // Create a new router instance
-const router = createRouter({ routeTree })
+const router = createRouter({
+  routeTree,
+
+  context: {
+    authData: undefined!
+  }
+})
 
 // Register the router instance for type safety
 declare module '@tanstack/react-router' {
@@ -40,9 +46,16 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme='dark'>
         <AuthProvider>
-          <RouterProvider router={router} />
+          <App />
         </AuthProvider>
       </ThemeProvider>
     </QueryClientProvider>
   </ClerkProvider>
 )
+
+function App() {
+  const authData = useAuthContext()
+  return <RouterProvider router={router} context={{ authData }} />
+}
+
+export default App
