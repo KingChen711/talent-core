@@ -1,9 +1,9 @@
-import { User } from '@prisma/client'
+import { Role, User } from '@prisma/client'
 import React, { createContext, useContext, useEffect, useMemo } from 'react'
-import { type Role } from '@/types'
+import { type Role as TRole } from '@/types'
 import { useQuery } from '@tanstack/react-query'
 import { useAuth } from '@clerk/clerk-react'
-import { whoAmI } from '@/apis/users.api'
+import { talentCoreApi } from '@/services/talent-core-api'
 
 type AuthProviderProps = {
   children: React.ReactNode
@@ -11,33 +11,32 @@ type AuthProviderProps = {
 
 export type AuthContextType = {
   user: User | null
-  role: Role
+  role: TRole
   isLoadingAuth: boolean
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null)
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
-  const { getToken, userId: clerkId } = useAuth()
+  const { getToken } = useAuth()
 
   const { data, isLoading } = useQuery({
-    queryKey: ['users', 'who-am-i', { clerkId }],
-    queryFn: () => whoAmI(getToken)
+    queryKey: ['users', 'who-am-i'],
+    queryFn: async () =>
+      talentCoreApi
+        .get<User & { role: Role }>('/api/users/who-am-i', {
+          headers: {
+            Authorization: `Bearer ${await getToken()}`
+          }
+        })
+        .then((res) => res.data)
   })
 
   const user = useMemo(() => data || null, [data])
 
   const role = useMemo(() => {
     const role = user?.role.roleName
-    return role ? (role as Role) : 'Guest'
-  }, [user])
-
-  useEffect(() => {
-    console.log({ role })
-  }, [role])
-
-  useEffect(() => {
-    console.log({ user })
+    return role ? (role as TRole) : 'Guest'
   }, [user])
 
   return <AuthContext.Provider value={{ user, role, isLoadingAuth: isLoading }}>{children}</AuthContext.Provider>

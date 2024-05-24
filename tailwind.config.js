@@ -18,6 +18,7 @@ module.exports = {
       colors: {
         'gradient-foreground': '#fff',
         success: '#00b85e',
+        info: '#29c5ee',
         warning: '#ffd928',
         danger: '#cf1a2c',
         border: 'hsl(var(--border))',
