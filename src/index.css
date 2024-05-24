@@ -67,6 +67,28 @@
 }
 
 @layer base {
+  /* Scroll bar stylings */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: var(--lightestgrey);
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #898989;
+    border-radius: 5px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
   * {
     @apply border-border font-urbanist;
   }
@@ -75,32 +97,15 @@
   }
 }
 
-.bg-gradient {
-  background: linear-gradient(129deg, #6e38e0 0%, #ff5f36 100%);
-}
+@layer components {
+  .bg-gradient {
+    background: linear-gradient(129deg, #6e38e0 0%, #ff5f36 100%);
+  }
 
-.text-gradient {
-  background: linear-gradient(129deg, #6e38e0 0%, #ff5f36 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.custom-scrollbar::-webkit-scrollbar {
-  width: 3px;
-  height: 3px;
-  border-radius: 2px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: #ffffff;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 50px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  .text-gradient {
+    background: linear-gradient(129deg, #6e38e0 0%, #ff5f36 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 }
