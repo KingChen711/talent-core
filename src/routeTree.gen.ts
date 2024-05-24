@@ -14,13 +14,10 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as MainLayoutImport } from './routes/_main-layout'
 import { Route as EmployeeLayoutImport } from './routes/_employee-layout'
 import { Route as AuthLayoutImport } from './routes/_auth-layout'
-import { Route as ProductsIndexImport } from './routes/products/index'
 import { Route as MainLayoutIndexImport } from './routes/_main-layout/index'
 import { Route as EmployeeLayoutDashboardImport } from './routes/_employee-layout/dashboard'
 import { Route as AuthLayoutSignUpImport } from './routes/_auth-layout/sign-up'
 import { Route as AuthLayoutSignInImport } from './routes/_auth-layout/sign-in'
-import { Route as ProductsProductIdIndexImport } from './routes/products/$productId/index'
-import { Route as ProductsProductIdEditImport } from './routes/products_/$productId/edit'
 
 // Create/Update Routes
 
@@ -36,11 +33,6 @@ const EmployeeLayoutRoute = EmployeeLayoutImport.update({
 
 const AuthLayoutRoute = AuthLayoutImport.update({
   id: '/_auth-layout',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const ProductsIndexRoute = ProductsIndexImport.update({
-  path: '/products/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -62,16 +54,6 @@ const AuthLayoutSignUpRoute = AuthLayoutSignUpImport.update({
 const AuthLayoutSignInRoute = AuthLayoutSignInImport.update({
   path: '/sign-in',
   getParentRoute: () => AuthLayoutRoute,
-} as any)
-
-const ProductsProductIdIndexRoute = ProductsProductIdIndexImport.update({
-  path: '/products/$productId/',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const ProductsProductIdEditRoute = ProductsProductIdEditImport.update({
-  path: '/products/$productId/edit',
-  getParentRoute: () => rootRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -127,27 +109,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainLayoutIndexImport
       parentRoute: typeof MainLayoutImport
     }
-    '/products/': {
-      id: '/products/'
-      path: '/products'
-      fullPath: '/products'
-      preLoaderRoute: typeof ProductsIndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/products/$productId/edit': {
-      id: '/products/$productId/edit'
-      path: '/products/$productId/edit'
-      fullPath: '/products/$productId/edit'
-      preLoaderRoute: typeof ProductsProductIdEditImport
-      parentRoute: typeof rootRoute
-    }
-    '/products/$productId/': {
-      id: '/products/$productId/'
-      path: '/products/$productId'
-      fullPath: '/products/$productId'
-      preLoaderRoute: typeof ProductsProductIdIndexImport
-      parentRoute: typeof rootRoute
-    }
   }
 }
 
@@ -162,9 +123,6 @@ export const routeTree = rootRoute.addChildren({
     EmployeeLayoutDashboardRoute,
   }),
   MainLayoutRoute: MainLayoutRoute.addChildren({ MainLayoutIndexRoute }),
-  ProductsIndexRoute,
-  ProductsProductIdEditRoute,
-  ProductsProductIdIndexRoute,
 })
 
 /* prettier-ignore-end */

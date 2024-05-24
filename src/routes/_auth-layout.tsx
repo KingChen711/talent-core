@@ -1,3 +1,5 @@
+import LogoLoading from '@/components/logo-loading'
+import { ClerkLoaded, ClerkLoading } from '@clerk/clerk-react'
 import { Outlet, createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_auth-layout')({
@@ -7,7 +9,15 @@ export const Route = createFileRoute('/_auth-layout')({
 function AuthLayout() {
   return (
     <div className='flex min-h-screen items-center justify-center py-8'>
-      <Outlet />
+      <ClerkLoading>
+        <LogoLoading />
+      </ClerkLoading>
+      <ClerkLoaded>
+        <div className='flex flex-col items-center gap-y-6'>
+          <LogoLoading loading={false} />
+          <Outlet />
+        </div>
+      </ClerkLoaded>
     </div>
   )
 }

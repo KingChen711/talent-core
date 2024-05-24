@@ -1,7 +1,8 @@
 import LeftSideBar from '@/components/left-side-bar'
+import LogoLoading from '@/components/logo-loading'
 import NavBar from '@/components/navbar'
 import { useAuthContext } from '@/contexts/auth-provider'
-import { Outlet, createFileRoute, redirect, useNavigate } from '@tanstack/react-router'
+import { Outlet, createFileRoute, useNavigate } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_employee-layout')({
   component: EmployeeLayout
@@ -11,7 +12,12 @@ function EmployeeLayout() {
   const navigate = useNavigate()
   const { role, isLoadingAuth } = useAuthContext()
 
-  if (isLoadingAuth) return null
+  if (isLoadingAuth)
+    return (
+      <div className='flex h-screen items-center justify-center'>
+        <LogoLoading />
+      </div>
+    )
 
   if (role !== 'Employee') {
     if (role === 'Guest') {
