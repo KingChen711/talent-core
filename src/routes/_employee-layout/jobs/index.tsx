@@ -1,17 +1,16 @@
-import { jobTabs } from '@/constants'
-import { z } from 'zod'
-import { cn } from '@/lib/utils'
-import useJobs from '@/hooks/job/user-jobs'
-
+import Paginator from '@/components/shared/paginator'
 import { Badge } from '@/components/ui/badge'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Skeleton } from '@/components/ui/skeleton'
-import { Link, createFileRoute, useNavigate } from '@tanstack/react-router'
-import { useMemo, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import Paginator from '@/components/shared/paginator'
+import { Skeleton } from '@/components/ui/skeleton'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { jobTabs } from '@/constants'
+import useJobs from '@/hooks/job/use-jobs'
+import { cn } from '@/lib/utils'
+import { Link, createFileRoute, useNavigate } from '@tanstack/react-router'
 import { ChevronsDown, ChevronsUp, ChevronsUpDown, Plus, Search } from 'lucide-react'
+import { useMemo, useState } from 'react'
+import { z } from 'zod'
 
 const jobSearchSchema = z.object({
   pageNumber: z.number().catch(1),
@@ -23,7 +22,7 @@ const jobSearchSchema = z.object({
 
 export type JobSearch = z.infer<typeof jobSearchSchema>
 
-export const Route = createFileRoute('/_employee-layout/jobs')({
+export const Route = createFileRoute('/_employee-layout/jobs/')({
   component: JobsPage,
   validateSearch: (search) => jobSearchSchema.parse(search)
 })
@@ -119,9 +118,11 @@ function JobsPage() {
             placeholder='Search jobs...'
           />
         </form>
-        <Button>
-          <Plus className='mr-1 size-5' />
-          Create Job
+        <Button asChild>
+          <Link to='/jobs/create'>
+            <Plus className='mr-1 size-5' />
+            Create Job
+          </Link>
         </Button>
       </div>
 
