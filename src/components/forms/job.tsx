@@ -8,12 +8,12 @@ import { Input } from '../ui/input'
 import { Textarea } from '../ui/textarea'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion'
 import { Checkbox } from '../ui/checkbox'
-import { HexAlphaColorPicker } from 'react-colorful'
+import { HexColorPicker } from 'react-colorful'
 import { Button } from '../ui/button'
 import { talentCoreApi } from '@/services/talent-core-api'
 import { useAuth } from '@clerk/clerk-react'
-import { z } from 'zod'
 import { defaultJobIcon } from '@/constants'
+import useJob from '@/hooks/job/use-job'
 
 type Props = {
   type: 'create' | 'update'
@@ -29,8 +29,10 @@ type Props = {
 )
 
 function JobForm({ type, jobId }: Props) {
-  console.log({ type, jobId })
   const { getToken } = useAuth()
+  const job = type === 'update' ? useJob(jobId) : null
+
+  console.log(job)
 
   const [file, setFile] = useState<File | null>(null)
 
@@ -52,17 +54,13 @@ function JobForm({ type, jobId }: Props) {
     try {
       const formData = new FormData()
 
-      if (!z.string().base64().safeParse(values.icon).success) {
-        formData.append('icon', JSON.stringify(values.icon))
-      }
-
       formData.append('code', values.code)
       formData.append('name', values.name)
       formData.append('description', values.description || '')
       formData.append('color', values.color)
+      formData.append('testExamIds', JSON.stringify(values.testExamIds))
       formData.append('openInCurrentRecruitment', JSON.stringify(values.openInCurrentRecruitment))
       formData.append('quantityInCurrentRecruitment', JSON.stringify(values.quantityInCurrentRecruitment))
-      formData.append('testExamIds', JSON.stringify(values.testExamIds))
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       formData.append('image', file as any)
 
@@ -224,7 +222,7 @@ function JobForm({ type, jobId }: Props) {
                       {...field}
                       className='w-[200px] font-semibold'
                     />
-                    <HexAlphaColorPicker color={field.value} onChange={(value) => field.onChange(value)} />
+                    <HexColorPicker color={field.value} onChange={(value) => field.onChange(value)} />
                   </div>
                 </FormControl>
                 <FormMessage />

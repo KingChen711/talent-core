@@ -26,4 +26,4 @@ export const jobTabs = [
   }
 ] as const
 
-export const defaultJobIcon = 'https://chen-talent-core.s3.ap-southeast-2.amazonaws.com/suitcase.png'
+export const defaultJobIcon = '/icons/jobs/suitcase.png'

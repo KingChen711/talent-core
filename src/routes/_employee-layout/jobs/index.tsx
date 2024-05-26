@@ -1,16 +1,27 @@
+import { cn } from '@/lib/utils'
+import { z } from 'zod'
+import { jobTabs } from '@/constants'
+import useJobs from '@/hooks/job/use-jobs'
+import { useEffect, useMemo, useState } from 'react'
+import { Link, createFileRoute, useNavigate } from '@tanstack/react-router'
+import { ChevronsDown, ChevronsUp, ChevronsUpDown, Plus, Search } from 'lucide-react'
+
+import OpenJobForm from '@/components/forms/open-job'
 import Paginator from '@/components/shared/paginator'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger
+} from '@/components/ui/dialog'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Input } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { jobTabs } from '@/constants'
-import useJobs from '@/hooks/job/use-jobs'
-import { cn } from '@/lib/utils'
-import { Link, createFileRoute, useNavigate } from '@tanstack/react-router'
-import { ChevronsDown, ChevronsUp, ChevronsUpDown, Plus, Search } from 'lucide-react'
-import { useMemo, useState } from 'react'
-import { z } from 'zod'
 
 const jobSearchSchema = z.object({
   pageNumber: z.number().catch(1),
@@ -29,9 +40,13 @@ export const Route = createFileRoute('/_employee-layout/jobs/')({
 
 function JobsPage() {
   const navigate = useNavigate()
-  const [searchTerm, setSearchTerm] = useState('')
   const { pageNumber, pageSize, search, status, sort } = Route.useSearch()
+  const [searchTerm, setSearchTerm] = useState(search)
   const { data, isPending } = useJobs({ pageNumber, pageSize, search, status, sort })
+
+  useEffect(() => {
+    setSearchTerm(search)
+  }, [search])
 
   const codeSortIcon = useMemo(() => {
     return sort === 'code' ? (
@@ -187,7 +202,7 @@ function JobsPage() {
                   <TableRow key={job.id}>
                     <TableCell className='font-extrabold'>{job.code}</TableCell>
                     <TableCell className='flex items-center gap-x-3 font-semibold'>
-                      <img alt='job' src={job.icon} className='size-8 object-cover' />
+                      <img alt='job' src={job.icon} className='size-8 rounded-md object-cover' />
                       <p>{job.name}</p>
                     </TableCell>
                     <TableCell className='text-center'>
@@ -202,9 +217,46 @@ function JobsPage() {
                       )}
                     </TableCell>
                     <TableCell className='flex justify-end'>
-                      <Button variant='ghost' size='icon'>
-                        <img alt='settings' src='/icons/actions/settings.svg' className='size-6 object-cover' />
-                      </Button>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant='ghost' size='icon'>
+                            <img alt='settings' src='/icons/actions/settings.svg' className='size-6 object-cover' />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className='border-2'>
+                          <DropdownMenuItem className='cursor-pointer' asChild>
+                            <Link to={`/jobs/${job.id}/edit`} className='flex items-center gap-x-2'>
+                              <img alt='edit' src='/icons/actions/edit.svg' className='size-4' />
+                              Update
+                            </Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className='cursor-pointer' asChild>
+                            <Link to={`/jobs/${job.id}/add-test-exams`} className='flex items-center gap-x-2'>
+                              <img alt='edit' src='/icons/side-bar/exam-active.svg' className='size-4' />
+                              Add Test Exam
+                            </Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className='cursor-pointer' asChild>
+                            <Dialog>
+                              <DialogTrigger asChild>
+                                <div className='flex cursor-pointer items-center gap-x-2 rounded-sm px-2 py-[6px] text-sm leading-5 hover:bg-muted'>
+                                  <img alt='edit' src='/icons/recruitment.svg' className='size-4' />
+                                  Open This Job
+                                </div>
+                              </DialogTrigger>
+                              <DialogContent>
+                                <DialogHeader>
+                                  <DialogTitle>Open Job In Current Recruitment Round</DialogTitle>
+                                  <DialogDescription>
+                                    <OpenJobForm jobId={job.id} />
+                                  </DialogDescription>
+                                </DialogHeader>
+                              </DialogContent>
+                            </Dialog>
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+
                       <Button variant='ghost' size='icon'>
                         <img alt='delete' src='/icons/actions/delete.svg' className='size-6 object-cover' />
                       </Button>

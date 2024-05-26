@@ -27,3 +27,9 @@ export const createJobSchema = z
   )
 
 export type TCreateJobSchema = z.infer<typeof createJobSchema>
+
+export const openJobSchema = z.object({
+  quantityInCurrentRecruitment: z.coerce.number().int().min(1)
+})
+
+export type TOpenJobSchema = z.infer<typeof openJobSchema>

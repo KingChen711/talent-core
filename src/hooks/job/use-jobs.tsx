@@ -5,7 +5,7 @@ import { useAuth } from '@clerk/clerk-react'
 import { Job } from '@prisma/client'
 import { useQuery } from '@tanstack/react-query'
 
-type Jobs = (Job & { isOpening: true })[]
+type Jobs = (Job & { isOpening: boolean })[]
 
 function useJobs(searchParams: JobSearch) {
   const { getToken } = useAuth()
