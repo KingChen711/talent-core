@@ -6,22 +6,14 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link, createFileRoute, useNavigate } from '@tanstack/react-router'
 import { ChevronsDown, ChevronsUp, ChevronsUpDown, Plus, Search } from 'lucide-react'
 
-import OpenJobForm from '@/components/forms/open-job'
-import Paginator from '@/components/shared/paginator'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger
-} from '@/components/ui/dialog'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Input } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import DialogDeleteJob from '@/components/jobs/dialog-delete-job'
+import DropdownSettingJob from '@/components/jobs/dropdown-setting-job'
+import { Badge } from '@/components/ui/badge'
+import Paginator from '@/components/shared/paginator'
+import { Button } from '@/components/ui/button'
 
 const jobSearchSchema = z.object({
   pageNumber: z.number().catch(1),
@@ -40,8 +32,10 @@ export const Route = createFileRoute('/_employee-layout/jobs/')({
 
 function JobsPage() {
   const navigate = useNavigate()
+
   const { pageNumber, pageSize, search, status, sort } = Route.useSearch()
   const [searchTerm, setSearchTerm] = useState(search)
+
   const { data, isPending } = useJobs({ pageNumber, pageSize, search, status, sort })
 
   useEffect(() => {
@@ -217,49 +211,8 @@ function JobsPage() {
                       )}
                     </TableCell>
                     <TableCell className='flex justify-end'>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant='ghost' size='icon'>
-                            <img alt='settings' src='/icons/actions/settings.svg' className='size-6 object-cover' />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent className='border-2'>
-                          <DropdownMenuItem className='cursor-pointer' asChild>
-                            <Link to={`/jobs/${job.id}/edit`} className='flex items-center gap-x-2'>
-                              <img alt='edit' src='/icons/actions/edit.svg' className='size-4' />
-                              Update
-                            </Link>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem className='cursor-pointer' asChild>
-                            <Link to={`/jobs/${job.id}/add-test-exams`} className='flex items-center gap-x-2'>
-                              <img alt='edit' src='/icons/side-bar/exam-active.svg' className='size-4' />
-                              Add Test Exam
-                            </Link>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem className='cursor-pointer' asChild>
-                            <Dialog>
-                              <DialogTrigger asChild>
-                                <div className='flex cursor-pointer items-center gap-x-2 rounded-sm px-2 py-[6px] text-sm leading-5 hover:bg-muted'>
-                                  <img alt='edit' src='/icons/recruitment.svg' className='size-4' />
-                                  Open This Job
-                                </div>
-                              </DialogTrigger>
-                              <DialogContent>
-                                <DialogHeader>
-                                  <DialogTitle>Open Job In Current Recruitment Round</DialogTitle>
-                                  <DialogDescription>
-                                    <OpenJobForm jobId={job.id} />
-                                  </DialogDescription>
-                                </DialogHeader>
-                              </DialogContent>
-                            </Dialog>
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-
-                      <Button variant='ghost' size='icon'>
-                        <img alt='delete' src='/icons/actions/delete.svg' className='size-6 object-cover' />
-                      </Button>
+                      <DropdownSettingJob jobId={job.id} />
+                      <DialogDeleteJob jobId={job.id} />
                     </TableCell>
                   </TableRow>
                 ))}

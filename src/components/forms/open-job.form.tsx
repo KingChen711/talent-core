@@ -5,6 +5,7 @@ import { TOpenJobSchema, openJobSchema } from '@/lib/validation/job'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '../ui/button'
+import { DialogClose } from '../ui/dialog'
 
 type Props = {
   jobId: string
@@ -51,9 +52,17 @@ function OpenJobForm({ jobId }: Props) {
           )}
         />
 
-        <Button type='submit' className='float-right mt-4'>
-          Submit
-        </Button>
+        <div className='flex justify-end gap-x-4'>
+          <DialogClose>
+            <Button variant='secondary' type='submit' className='float-right mt-4'>
+              Cancel
+            </Button>
+          </DialogClose>
+
+          <Button type='submit' className='float-right mt-4'>
+            Submit
+          </Button>
+        </div>
       </form>
     </Form>
   )

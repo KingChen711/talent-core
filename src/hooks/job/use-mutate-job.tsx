@@ -1,0 +1,31 @@
+import { useMutation } from '@tanstack/react-query'
+import { talentCoreApi } from '../../services/talent-core-api'
+import { useAuth } from '@clerk/clerk-react'
+
+function useMutateJob(type: 'create' | 'update') {
+  const { getToken } = useAuth()
+
+  if (type === 'create') {
+    return useMutation({
+      mutationFn: async (job: FormData) =>
+        talentCoreApi.post('/api/jobs', job, {
+          headers: {
+            Authorization: `Bearer ${await getToken()}`
+          }
+        })
+    })
+  }
+
+  return useMutation({
+    mutationFn: async (job: FormData) => {
+      const jobId = job.get('id')
+      return talentCoreApi.put(`/api/jobs/${jobId}`, job, {
+        headers: {
+          Authorization: `Bearer ${await getToken()}`
+        }
+      })
+    }
+  })
+}
+
+export default useMutateJob

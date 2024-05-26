@@ -6,7 +6,7 @@ function LeftSideBar() {
   const { pathname } = useLocation()
 
   return (
-    <section className='custom-scrollbar sticky left-0 top-0 flex h-screen w-fit shrink-0 flex-col justify-between overflow-y-auto border-r pr-9 pt-24 dark:shadow-none max-lg:px-6 max-sm:hidden lg:w-[300px]'>
+    <section className='sticky left-0 top-0 flex h-screen w-fit shrink-0 flex-col justify-between overflow-y-auto border-r pr-9 pt-24 dark:shadow-none max-lg:px-6 max-sm:hidden lg:w-[300px]'>
       <div className='flex flex-col'>
         {employeeRoutes.map((item) => {
           const isActive = (pathname.includes(item.route) && item.route.length > 1) || pathname === item.route

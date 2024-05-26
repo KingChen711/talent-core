@@ -1,4 +1,4 @@
-import JobForm from '@/components/forms/job'
+import JobForm from '@/components/forms/job.form'
 import { Button } from '@/components/ui/button'
 import { Link, createFileRoute } from '@tanstack/react-router'
 

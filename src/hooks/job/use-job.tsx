@@ -5,11 +5,13 @@ import { useQuery } from '@tanstack/react-query'
 
 type JobDetail = Job & { isOpening: boolean } & { testExams: TestExam[] }
 
-function useJob(jobId: string) {
+function useJob(jobId: string | undefined, callback: (data: JobDetail) => void) {
   const { getToken } = useAuth()
 
   return useQuery({
     queryKey: ['jobs', jobId],
+    enabled: jobId !== undefined,
+    refetchOnWindowFocus: false,
     queryFn: async () =>
       talentCoreApi
         .get<JobDetail>(`/api/jobs/${jobId}`, {
@@ -18,6 +20,7 @@ function useJob(jobId: string) {
           }
         })
         .then((res) => res.data)
+        .then(callback)
   })
 }
 

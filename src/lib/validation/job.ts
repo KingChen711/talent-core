@@ -28,6 +28,10 @@ export const createJobSchema = z
 
 export type TCreateJobSchema = z.infer<typeof createJobSchema>
 
+export type TCreateJobErrors = {
+  [key in keyof TCreateJobSchema]: string
+}
+
 export const openJobSchema = z.object({
   quantityInCurrentRecruitment: z.coerce.number().int().min(1)
 })

@@ -1,4 +1,4 @@
-import { AxiosError } from 'axios'
+import axios, { AxiosError } from 'axios'
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
@@ -7,7 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function isAxiosError<T>(error: unknown): error is AxiosError<T> {
-  return isAxiosError(error)
+  return axios.isAxiosError(error)
 }
 
 export function getRandomHexColor(): string {

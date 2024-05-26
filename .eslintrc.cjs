@@ -18,6 +18,7 @@ module.exports = {
     'react/prop-types': 'off',
     'react/react-in-jsx-scope': 0,
     '@typescript-eslint/no-empty-interface': 0,
+    '@typescript-eslint/no-explicit-any': 'off',
     'prettier/prettier': [
       'warn',
       {
