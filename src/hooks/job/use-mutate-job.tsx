@@ -10,6 +10,7 @@ function useMutateJob(type: 'create' | 'update') {
       mutationFn: async (job: FormData) =>
         talentCoreApi.post('/api/jobs', job, {
           headers: {
+            'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${await getToken()}`
           }
         })
@@ -21,6 +22,7 @@ function useMutateJob(type: 'create' | 'update') {
       const jobId = job.get('id')
       return talentCoreApi.put(`/api/jobs/${jobId}`, job, {
         headers: {
+          'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${await getToken()}`
         }
       })

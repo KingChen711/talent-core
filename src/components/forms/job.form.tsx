@@ -1,7 +1,7 @@
-import { getContrastYIQ, getRandomHexColor, isAxiosError } from '@/lib/utils'
+import { cn, getContrastYIQ, getRandomHexColor, isAxiosError } from '@/lib/utils'
 import { TCreateJobErrors, TCreateJobSchema, createJobSchema } from '@/lib/validation/job'
 import { zodResolver } from '@hookform/resolvers/zod'
-import React, { useEffect, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { Input } from '../ui/input'
@@ -16,6 +16,9 @@ import { TestExam } from '@prisma/client'
 import useMutateJob from '@/hooks/job/use-mutate-job'
 import { toast } from '../ui/use-toast'
 import { StatusCodes } from 'http-status-codes'
+import { Loader2 } from 'lucide-react'
+import { useQueryClient } from '@tanstack/react-query'
+import { useNavigate } from '@tanstack/react-router'
 
 type Props = {
   type: 'create' | 'update'
@@ -31,6 +34,9 @@ type Props = {
 )
 
 function JobForm({ type, jobId }: Props) {
+  const queryClient = useQueryClient()
+  const navigate = useNavigate()
+
   const [file, setFile] = useState<File | null>(null)
   const [testExams, setTestExams] = useState<TestExam[]>([])
 
@@ -40,8 +46,8 @@ function JobForm({ type, jobId }: Props) {
       code: '',
       name: '',
       description: '',
-      color: getRandomHexColor(),
-      icon: defaultJobIcon,
+      color: type === 'create' ? getRandomHexColor() : undefined,
+      icon: type === 'create' ? defaultJobIcon : undefined,
       testExamIds: [],
       openInCurrentRecruitment: false,
       quantityInCurrentRecruitment: 1
@@ -51,7 +57,7 @@ function JobForm({ type, jobId }: Props) {
   const { mutate, isPending } = useMutateJob(type)
 
   // Get updated job
-  useJob(jobId, (job) => {
+  const { isLoading } = useJob(jobId, (job) => {
     form.setValue('code', job.code)
     form.setValue('name', job.name)
     form.setValue('description', job.description || '')
@@ -65,6 +71,8 @@ function JobForm({ type, jobId }: Props) {
     setTestExams(job.testExams)
   })
 
+  const disabling = useMemo(() => isPending || isLoading, [isPending, isLoading])
+
   const onSubmit = async (values: TCreateJobSchema) => {
     const formData = new FormData()
 
@@ -72,8 +80,6 @@ function JobForm({ type, jobId }: Props) {
     formData.append('name', values.name)
     formData.append('description', values.description || '')
     formData.append('color', values.color)
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     formData.append('image', file as any)
 
     if (type === 'create') {
@@ -89,6 +95,17 @@ function JobForm({ type, jobId }: Props) {
         toast({
           title: `Job has been ${type === 'create' ? 'created' : 'updated'} successfully`,
           variant: 'success'
+        })
+        queryClient.invalidateQueries({ queryKey: ['jobs'] })
+        return navigate({
+          to: '/jobs',
+          search: {
+            pageNumber: 1,
+            pageSize: 5,
+            search: '',
+            status: 'all',
+            sort: '-createdAt'
+          }
         })
       },
       onError: (error) => {
@@ -143,10 +160,6 @@ function JobForm({ type, jobId }: Props) {
     }
   }
 
-  useEffect(() => {
-    console.log({ errors: form.formState.errors })
-  }, [form.formState.errors])
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
@@ -159,7 +172,7 @@ function JobForm({ type, jobId }: Props) {
                 Code<span className='text-gradient text-3xl'>*</span>
               </FormLabel>
               <FormControl>
-                <Input placeholder='Code...' {...field} />
+                <Input disabled={disabling} placeholder='Code...' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -175,7 +188,7 @@ function JobForm({ type, jobId }: Props) {
                 Job Name<span className='text-gradient text-3xl'>*</span>
               </FormLabel>
               <FormControl>
-                <Input placeholder='Job Name...' {...field} />
+                <Input disabled={disabling} placeholder='Job Name...' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -189,7 +202,7 @@ function JobForm({ type, jobId }: Props) {
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Textarea placeholder='Description...' {...field} />
+                <Textarea disabled={disabling} placeholder='Description...' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -209,6 +222,7 @@ function JobForm({ type, jobId }: Props) {
                         <AccordionTrigger className='cursor-default'>
                           <div className='flex items-center gap-x-4'>
                             <Checkbox
+                              disabled={disabling}
                               id='openInCurrentRecruitment'
                               checked={field.value}
                               onCheckedChange={field.onChange}
@@ -233,6 +247,7 @@ function JobForm({ type, jobId }: Props) {
                                   <div className='flex flex-col gap-y-4'>
                                     <Input
                                       {...field}
+                                      disabled={disabling}
                                       value={field.value}
                                       onChange={(e) => field.onChange(e.target.value)}
                                       type='number'
@@ -271,8 +286,13 @@ function JobForm({ type, jobId }: Props) {
                       placeholder='Color...'
                       {...field}
                       className='w-[200px] font-semibold'
+                      disabled={disabling}
                     />
-                    <HexColorPicker color={field.value} onChange={(value) => field.onChange(value)} />
+                    <HexColorPicker
+                      className={cn(disabling && 'pointer-events-none opacity-80')}
+                      color={field.value}
+                      onChange={(value) => field.onChange(value)}
+                    />
                   </div>
                 </FormControl>
                 <FormMessage />
@@ -288,7 +308,12 @@ function JobForm({ type, jobId }: Props) {
                 <FormLabel>
                   Icon
                   {field.value ? (
-                    <div className='group relative mt-2 flex size-64 items-center justify-center rounded-md border-2'>
+                    <div
+                      className={cn(
+                        'group relative mt-2 flex size-64 items-center justify-center rounded-md border-2',
+                        disabling && 'pointer-events-none opacity-80'
+                      )}
+                    >
                       <img
                         src={field.value}
                         alt='imageUrl'
@@ -308,7 +333,12 @@ function JobForm({ type, jobId }: Props) {
                       </Button>
                     </div>
                   ) : (
-                    <div className='mt-2 flex size-64 cursor-pointer flex-col items-center justify-center gap-y-2 rounded-md border-[3px] border-dashed'>
+                    <div
+                      className={cn(
+                        'mt-2 flex size-64 cursor-pointer flex-col items-center justify-center gap-y-2 rounded-md border-[3px] border-dashed',
+                        disabling && 'pointer-events-none opacity-80'
+                      )}
+                    >
                       <img alt='upload' src='/icons/actions/upload.svg' className='size-12' />
                       <p>Upload Icon</p>
                     </div>
@@ -316,6 +346,7 @@ function JobForm({ type, jobId }: Props) {
                 </FormLabel>
                 <FormControl>
                   <Input
+                    disabled={disabling}
                     type='file'
                     accept='image/*'
                     placeholder='Add profile photo'
@@ -352,6 +383,7 @@ function JobForm({ type, jobId }: Props) {
                                 field.onChange(field.value.filter((testId) => testId === test.id))
                                 setTestExams((prev) => prev.filter((t) => t.id === test.id))
                               }}
+                              disabled={disabling}
                               variant='ghost'
                               size='icon'
                             >
@@ -371,8 +403,8 @@ function JobForm({ type, jobId }: Props) {
           />
         )}
 
-        <Button type='submit' className='float-right'>
-          {type === 'create' ? 'Submit' : 'Save'}
+        <Button type='submit' className='float-right' disabled={disabling}>
+          {type === 'create' ? 'Submit' : 'Save'} {disabling && <Loader2 className='ml-1 size-4 animate-spin' />}
         </Button>
       </form>
     </Form>

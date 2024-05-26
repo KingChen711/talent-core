@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils'
+import { cn, toDate } from '@/lib/utils'
 import { z } from 'zod'
 import { jobTabs } from '@/constants'
 import useJobs from '@/hooks/job/use-jobs'
@@ -20,7 +20,7 @@ const jobSearchSchema = z.object({
   pageSize: z.number().catch(5),
   search: z.string().catch(''),
   status: z.enum(['all', 'opening', 'closed']).catch('all'),
-  sort: z.enum(['code', 'name', '-code', '-name']).optional()
+  sort: z.enum(['code', 'name', '-code', '-name', 'createdAt', '-createdAt']).catch('-createdAt')
 })
 
 export type JobSearch = z.infer<typeof jobSearchSchema>
@@ -35,6 +35,7 @@ function JobsPage() {
 
   const { Icon: CodeSortIcon, sorter: handleSortByCode } = useSort({ key: 'code', sortParams: sort })
   const { Icon: NameSortIcon, sorter: handleSortByName } = useSort({ key: 'name', sortParams: sort })
+  const { Icon: CreatedAtSortIcon, sorter: handleSortByCreatedAt } = useSort({ key: 'createdAt', sortParams: sort })
 
   const { data, isPending } = useJobs({ pageNumber, pageSize, search, status, sort })
 
@@ -58,7 +59,7 @@ function JobsPage() {
 
             return (
               <Link
-                search={(prev) => ({ ...prev, status: tab.status, pageNumber: 1 })}
+                search={(prev) => ({ ...prev, status: tab.status, pageNumber: 1, sort: '-createdAt' })}
                 key={tab.status}
                 className={cn(
                   'relative w-[70px] pb-4 text-center text-muted',
@@ -89,12 +90,18 @@ function JobsPage() {
                       <NameSortIcon />
                     </div>
                   </TableHead>
+                  <TableHead onClick={handleSortByCreatedAt} className='h-10 w-fit cursor-pointer'>
+                    <div className='flex items-center justify-center'>
+                      <p className='select-none'>Created At</p>
+                      <CreatedAtSortIcon />
+                    </div>
+                  </TableHead>
                   <TableHead className='h-10 select-none text-center'>Status</TableHead>
                   <TableHead className='h-10 select-none text-nowrap rounded-r-lg text-end'>Job Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {isPending && <TableRowsSkeleton colSpan={4} pageSize={pageSize} />}
+                {isPending && <TableRowsSkeleton colSpan={5} pageSize={pageSize} />}
 
                 {data?.items.map((job) => (
                   <TableRow key={job.id}>
@@ -103,6 +110,9 @@ function JobsPage() {
                       <img alt='job' src={job.icon} className='size-8 rounded-md object-cover' />
                       <p>{job.name}</p>
                     </TableCell>
+
+                    <TableCell className='text-center'>{toDate(job.createdAt)}</TableCell>
+
                     <TableCell className='text-center'>
                       {job.isOpening ? (
                         <Badge className='text-sm font-extrabold' variant='success'>

@@ -23,7 +23,8 @@ function SearchForm({ search }: Props) {
       search: (search) => ({
         ...search,
         search: searchTerm,
-        pageNumber: 1
+        pageNumber: 1,
+        sort: '-createdAt'
       })
     })
   }

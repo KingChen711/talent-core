@@ -17,7 +17,8 @@ function CreateJobPage() {
               pageNumber: 1,
               pageSize: 5,
               search: '',
-              status: 'all'
+              status: 'all',
+              sort: '-createdAt'
             })}
             className='flex items-center gap-x-1'
           >

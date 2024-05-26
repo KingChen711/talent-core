@@ -49,3 +49,14 @@ export function getContrastYIQ(hex: string): string {
   // Nếu độ sáng lớn hơn hoặc bằng 128, trả về màu đen, ngược lại trả về màu trắng
   return yiq >= 128 ? '#000000' : '#FFFFFF'
 }
+
+export function toDate(isoString: Date): string {
+  const date = new Date(isoString)
+
+  const day = String(date.getDate()).padStart(2, '0')
+  const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  const month = monthNames[date.getMonth()]
+  const year = date.getFullYear()
+
+  return `${day} ${month} ${year}`
+}
