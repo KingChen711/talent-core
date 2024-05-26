@@ -1,15 +1,16 @@
 import ReactPaginate from 'react-paginate'
-import { UseNavigateResult } from '@tanstack/react-router'
+import { useNavigate } from '@tanstack/react-router'
 import { PagingMetaData } from '../../types/index'
 import { buttonVariants } from '../../components/ui/button'
 import { cn } from '../../lib/utils'
 
 type Props = {
-  navigate: UseNavigateResult<string>
   metadata: PagingMetaData
 }
 
-function Paginator({ navigate, metadata }: Props) {
+function Paginator({ metadata }: Props) {
+  const navigate = useNavigate()
+
   const paginate = ({ selected }: { selected: number }) => {
     window.scrollTo(0, 0)
     return navigate({
