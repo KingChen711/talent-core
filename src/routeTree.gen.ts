@@ -20,6 +20,7 @@ import { Route as AuthLayoutSignUpImport } from './routes/_auth-layout/sign-up'
 import { Route as AuthLayoutSignInImport } from './routes/_auth-layout/sign-in'
 import { Route as EmployeeLayoutJobsIndexImport } from './routes/_employee-layout/jobs/index'
 import { Route as EmployeeLayoutJobsCreateImport } from './routes/_employee-layout/jobs/create'
+import { Route as EmployeeLayoutJobsJobIdEditImport } from './routes/_employee-layout/jobs/$jobId.edit'
 
 // Create/Update Routes
 
@@ -67,6 +68,12 @@ const EmployeeLayoutJobsCreateRoute = EmployeeLayoutJobsCreateImport.update({
   path: '/jobs/create',
   getParentRoute: () => EmployeeLayoutRoute,
 } as any)
+
+const EmployeeLayoutJobsJobIdEditRoute =
+  EmployeeLayoutJobsJobIdEditImport.update({
+    path: '/jobs/$jobId/edit',
+    getParentRoute: () => EmployeeLayoutRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -135,6 +142,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EmployeeLayoutJobsIndexImport
       parentRoute: typeof EmployeeLayoutImport
     }
+    '/_employee-layout/jobs/$jobId/edit': {
+      id: '/_employee-layout/jobs/$jobId/edit'
+      path: '/jobs/$jobId/edit'
+      fullPath: '/jobs/$jobId/edit'
+      preLoaderRoute: typeof EmployeeLayoutJobsJobIdEditImport
+      parentRoute: typeof EmployeeLayoutImport
+    }
   }
 }
 
@@ -149,6 +163,7 @@ export const routeTree = rootRoute.addChildren({
     EmployeeLayoutDashboardRoute,
     EmployeeLayoutJobsCreateRoute,
     EmployeeLayoutJobsIndexRoute,
+    EmployeeLayoutJobsJobIdEditRoute,
   }),
   MainLayoutRoute: MainLayoutRoute.addChildren({ MainLayoutIndexRoute }),
 })

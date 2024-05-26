@@ -9,7 +9,7 @@ export const createJobSchema = z
     icon: z.string().optional(),
     testExamIds: z.array(z.string()).catch([]),
     openInCurrentRecruitment: z.boolean(),
-    quantityInCurrentRecruitment: z.number().int().min(1).optional()
+    quantityInCurrentRecruitment: z.coerce.number().int().optional()
   })
   .refine(
     (data) => {
@@ -22,7 +22,7 @@ export const createJobSchema = z
     },
     {
       path: ['quantityInCurrentRecruitment'],
-      message: 'Number of candidates needed is invalid.'
+      message: 'Number of candidates needed must be a number a greater than 0'
     }
   )
 
