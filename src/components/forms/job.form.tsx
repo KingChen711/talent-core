@@ -1,5 +1,5 @@
 import { cn, getContrastYIQ, getRandomHexColor, isAxiosError } from '@/lib/utils'
-import { TCreateJobErrors, TCreateJobSchema, createJobSchema } from '@/lib/validation/job'
+import { TCreateJobErrors, TCreateJobSchema, createJobSchema } from '@/lib/validation/job.validation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import React, { useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'

@@ -1,7 +1,7 @@
 import { useAuth } from '@clerk/clerk-react'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { Input } from '../ui/input'
-import { TOpenJobSchema, openJobSchema } from '@/lib/validation/job'
+import { TOpenJobSchema, openJobSchema } from '@/lib/validation/job.validation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '../ui/button'

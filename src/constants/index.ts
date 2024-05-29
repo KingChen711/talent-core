@@ -8,6 +8,11 @@ export const employeeRoutes = [
     route: '/jobs',
     label: 'Jobs',
     icon: (active: boolean) => (active ? '/icons/side-bar/suitcase-active.svg' : '/icons/side-bar/suitcase.svg')
+  },
+  {
+    route: '/test-exams',
+    label: 'Test Exams',
+    icon: (active: boolean) => (active ? '/icons/side-bar/test-exam-active.svg' : '/icons/side-bar/test-exam.svg')
   }
 ] as const
 
