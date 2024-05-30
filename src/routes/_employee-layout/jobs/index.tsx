@@ -1,6 +1,6 @@
 import { cn, toDate } from '@/lib/utils'
 import { z } from 'zod'
-import { jobTabs } from '@/constants'
+import { jobTabs, jobsPageSize } from '@/constants'
 import useJobs from '@/hooks/job/use-jobs'
 import useSort from '@/hooks/query/use-sort'
 import { Link, createFileRoute } from '@tanstack/react-router'
@@ -17,7 +17,7 @@ import TableRowsSkeleton from '@/components/shared/table-rows-skeleton'
 
 const jobSearchSchema = z.object({
   pageNumber: z.number().catch(1),
-  pageSize: z.number().catch(5),
+  pageSize: z.number().catch(jobsPageSize),
   search: z.string().catch(''),
   status: z.enum(['all', 'opening', 'closed']).catch('all'),
   sort: z.enum(['code', 'name', '-code', '-name', 'createdAt', '-createdAt']).catch('-createdAt')

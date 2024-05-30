@@ -10,14 +10,13 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '..
 import { Checkbox } from '../ui/checkbox'
 import { HexColorPicker } from 'react-colorful'
 import { Button } from '../ui/button'
-import { defaultJobIcon } from '@/constants'
+import { defaultJobIcon, jobsPageSize } from '@/constants'
 import useJob from '@/hooks/job/use-job'
 import { TestExam } from '@prisma/client'
 import useMutateJob from '@/hooks/job/use-mutate-job'
 import { toast } from '../ui/use-toast'
 import { StatusCodes } from 'http-status-codes'
 import { Loader2 } from 'lucide-react'
-import { useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 
 type Props = {
@@ -34,7 +33,6 @@ type Props = {
 )
 
 function JobForm({ type, jobId }: Props) {
-  const queryClient = useQueryClient()
   const navigate = useNavigate()
 
   const [file, setFile] = useState<File | null>(null)
@@ -96,12 +94,12 @@ function JobForm({ type, jobId }: Props) {
           title: `Job has been ${type === 'create' ? 'created' : 'updated'} successfully`,
           variant: 'success'
         })
-        queryClient.invalidateQueries({ queryKey: ['jobs'] })
+
         return navigate({
           to: '/jobs',
           search: {
             pageNumber: 1,
-            pageSize: 5,
+            pageSize: jobsPageSize,
             search: '',
             status: 'all',
             sort: '-createdAt'

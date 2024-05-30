@@ -32,3 +32,6 @@ export const jobTabs = [
 ] as const
 
 export const defaultJobIcon = '/icons/jobs/suitcase.png'
+
+export const jobsPageSize = 5
+export const testExamsPageSize = 6

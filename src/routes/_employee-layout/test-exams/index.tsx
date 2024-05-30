@@ -6,18 +6,17 @@ import { Link, createFileRoute } from '@tanstack/react-router'
 
 import { Plus } from 'lucide-react'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-// import DialogDeleteTestExam from '@/components/test-exams/dialog-delete-test-exam'
-// import DropdownSettingTestExam from '@/components/test-exams/dropdown-setting-test-exam'
 import Paginator from '@/components/shared/paginator'
 import SearchForm from '@/components/shared/search-form'
 import { Button } from '@/components/ui/button'
 import TableRowsSkeleton from '@/components/shared/table-rows-skeleton'
 import DialogDeleteTestExam from '@/components/test-exams/dialog-delete-test-exam'
 import DropdownSettingTestExam from '@/components/test-exams/dropdown-setting-test-exam'
+import { testExamsPageSize } from '@/constants'
 
 const testExamSearchSchema = z.object({
   pageNumber: z.number().catch(1),
-  pageSize: z.number().catch(6),
+  pageSize: z.number().catch(testExamsPageSize),
   search: z.string().catch(''),
   sort: z
     .enum([

@@ -1,24 +1,27 @@
-import { getExampleQuestions, getOneExampleQuestion, isAxiosError } from '@/lib/utils'
-import { zodResolver } from '@hookform/resolvers/zod'
-import React, { useEffect, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { useForm } from 'react-hook-form'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
-import { Input } from '../ui/input'
-import { Textarea } from '../ui/textarea'
-import { Button } from '../ui/button'
-import useMutateTestExam from '@/hooks/test-exam/use-mutate-test-exam'
-import { toast } from '../ui/use-toast'
-import { StatusCodes } from 'http-status-codes'
-import { Loader2, Plus } from 'lucide-react'
-import { useQueryClient } from '@tanstack/react-query'
+import useTestExam from '@/hooks/test-exam/use-test-exam'
 import { useNavigate } from '@tanstack/react-router'
+
+import { zodResolver } from '@hookform/resolvers/zod'
+import { getExampleQuestions, getOneExampleQuestion, isAxiosError } from '@/lib/utils'
+import { StatusCodes } from 'http-status-codes'
+import { testExamsPageSize } from '@/constants'
 import {
   TMutateTestExamErrors,
   TMutationTestExamSchema,
   TQuestionSchema,
   mutationTestExamSchema
 } from '@/lib/validation/test-exam.validation'
-import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
+
+import { Loader2, Plus } from 'lucide-react'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
+import { Button } from '@/components/ui/button'
+import useMutateTestExam from '@/hooks/test-exam/use-mutate-test-exam'
+import { toast } from '@/components/ui/use-toast'
 
 type Props = {
   type: 'create' | 'update'
@@ -34,7 +37,6 @@ type Props = {
 )
 
 function TestExamForm({ type, testExamId }: Props) {
-  const queryClient = useQueryClient()
   const navigate = useNavigate()
 
   const form = useForm<TMutationTestExamSchema>({
@@ -49,66 +51,44 @@ function TestExamForm({ type, testExamId }: Props) {
     }
   })
 
-  const questionsContentError = useMemo(() => {
-    if (!form.formState.errors.questions) return []
-
-    return form.formState.errors.questions
-  }, [form.formState.errors])
-
-  useEffect(() => {
-    console.log({ errors: form.formState.errors })
-  }, [form.formState.errors])
-
-  useEffect(() => {
-    console.log({ questionsContentError })
-  }, [questionsContentError])
+  const questionsErrors = useMemo(() => form.formState.errors.questions || [], [form.formState.errors])
 
   const { mutate, isPending } = useMutateTestExam(type)
 
-  // Get updated testExam
-  //   const { isLoading } = useTestExam(testExamId, (testExam) => {
-  //     form.setValue('code', testExam.code)
-  //     form.setValue('name', testExam.name)
-  //     form.setValue('description', testExam.description || '')
-  //     form.setValue('color', testExam.color)
-  //     form.setValue('icon', testExam.icon)
-  //     form.setValue('openInCurrentRecruitment', testExam.isOpening)
-  //     form.setValue(
-  //       'testExamIds',
-  //       testExam.testExams.map((test) => test.id)
-  //     )
-  //     setTestExams(testExam.testExams)
-  //   })
+  // Get updated test exam
+  const { isLoading } = useTestExam(testExamId, (testExam) => {
+    form.setValue('code', testExam.code)
+    form.setValue('name', testExam.name)
+    form.setValue('description', testExam.description || '')
+    form.setValue('duration', testExam.duration)
+    form.setValue('conditionPoint', testExam.conditionPoint)
+    form.setValue('questions', testExam.questions)
+  })
 
-  //   const disabling = useMemo(() => isPending || isLoading, [isPending, isLoading])
-  const disabling = false
+  const disabling = useMemo(() => isPending || isLoading, [isPending, isLoading])
 
   const onSubmit = async (values: TMutationTestExamSchema) => {
-    console.log(values)
-
     values.questions.map((q) => {
       q.id = undefined
       return q
     })
 
-    if (type === 'create') {
-      // do something
-    } else {
-      // do something
+    if (type === 'update') {
+      values.id = testExamId
     }
 
     mutate(values, {
       onSuccess: () => {
         toast({
-          title: `TestExam has been ${type === 'create' ? 'created' : 'updated'} successfully`,
+          title: `Test exam has been ${type === 'create' ? 'created' : 'updated'} successfully`,
           variant: 'success'
         })
-        queryClient.invalidateQueries({ queryKey: ['testExams'] })
+
         return navigate({
           to: '/test-exams',
           search: {
             pageNumber: 1,
-            pageSize: 5,
+            pageSize: testExamsPageSize,
             search: '',
             sort: '-createdAt'
           }
@@ -120,7 +100,7 @@ function TestExamForm({ type, testExamId }: Props) {
           error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR
         ) {
           toast({
-            title: `TestExam has been ${type === 'create' ? 'created' : 'updated'} failure`,
+            title: `Test exam has been ${type === 'create' ? 'created' : 'updated'} failure`,
             description: 'Some thing went wrong.',
             variant: 'danger'
           })
@@ -134,7 +114,7 @@ function TestExamForm({ type, testExamId }: Props) {
           return
         }
         toast({
-          title: `TestExam has been ${type === 'create' ? 'created' : 'updated'} failure`,
+          title: `Test exam has been ${type === 'create' ? 'created' : 'updated'} failure`,
           description: error.message,
           variant: 'danger'
         })
@@ -156,25 +136,6 @@ function TestExamForm({ type, testExamId }: Props) {
     fieldChange(newQuestions)
   }
 
-  const handleCorrectRadioChange = (
-    oldValue: string,
-    value: string,
-    questionId: string,
-    fieldChange: (value: TQuestionSchema[]) => void
-  ) => {
-    console.log({ oldValue, value })
-
-    const newQuestions = form.getValues('questions').map((q) => {
-      if (q.id !== questionId) return q
-      q.options[+oldValue].correct = false
-      q.options[+value].correct = true
-      return q
-    })
-
-    fieldChange(newQuestions)
-    console.log({ value })
-  }
-
   const handleOptionChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     questionId: string,
@@ -184,6 +145,22 @@ function TestExamForm({ type, testExamId }: Props) {
     const newQuestions = form.getValues('questions').map((q) => {
       if (q.id !== questionId) return q
       q.options[optionIndex].content = e.target.value
+      return q
+    })
+
+    fieldChange(newQuestions)
+  }
+
+  const handleCorrectRadioChange = (
+    oldValue: string,
+    value: string,
+    questionId: string,
+    fieldChange: (value: TQuestionSchema[]) => void
+  ) => {
+    const newQuestions = form.getValues('questions').map((q) => {
+      if (q.id !== questionId) return q
+      q.options[+oldValue].correct = false
+      q.options[+value].correct = true
       return q
     })
 
@@ -288,16 +265,16 @@ function TestExamForm({ type, testExamId }: Props) {
                               <label className='font-semibold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'>
                                 Question {index + 1}
                               </label>
-                              {questionsContentError[index]?.message && (
+                              {questionsErrors[index]?.message && (
                                 <div className='text-sm font-medium leading-none text-danger'>
-                                  {questionsContentError[index]?.message}
+                                  {questionsErrors[index]?.message}
                                 </div>
                               )}
                             </div>
                             <Button
                               disabled={field.value.length <= 2}
                               onClick={() => {
-                                // ko cần check chỗ này, nhưng cứ check cho chắc
+                                // ko cần check chỗ này vì đã check disable ở trên, nhưng cứ check cho chắc
                                 if (field.value.length > 2) {
                                   form.setValue(
                                     'questions',
@@ -326,9 +303,9 @@ function TestExamForm({ type, testExamId }: Props) {
                                   />
                                 </FormControl>
 
-                                {questionsContentError[index]?.content?.message && (
+                                {questionsErrors[index]?.content?.message && (
                                   <div className='text-sm font-medium text-danger'>
-                                    {questionsContentError[index]?.content?.message}
+                                    {questionsErrors[index]?.content?.message}
                                   </div>
                                 )}
                               </FormItem>
@@ -358,9 +335,9 @@ function TestExamForm({ type, testExamId }: Props) {
                                       />
                                     </div>
                                   </FormControl>
-                                  {questionsContentError[index]?.options?.[i]?.content?.message && (
+                                  {questionsErrors[index]?.options?.[i]?.content?.message && (
                                     <div className='text-sm font-medium text-danger'>
-                                      {questionsContentError[index]?.options?.[i]?.content?.message}
+                                      {questionsErrors[index]?.options?.[i]?.content?.message}
                                     </div>
                                   )}
                                 </FormItem>

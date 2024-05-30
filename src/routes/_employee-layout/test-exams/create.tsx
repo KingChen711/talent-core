@@ -1,5 +1,6 @@
 import TestExamForm from '@/components/forms/test-exam.form'
 import { Button } from '@/components/ui/button'
+import { testExamsPageSize } from '@/constants'
 import { Link, createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_employee-layout/test-exams/create')({
@@ -16,7 +17,7 @@ function CreateTestExamPage() {
             to='/test-exams'
             search={() => ({
               pageNumber: 1,
-              pageSize: 5,
+              pageSize: testExamsPageSize,
               search: '',
               status: 'all',
               sort: '-createdAt'

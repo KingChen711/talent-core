@@ -1,7 +1,6 @@
 import { z } from 'zod'
 
 const questionOptionSchema = z.object({
-  //   id: z.string().optional(),
   content: z.string().min(1),
   correct: z.boolean()
 })
