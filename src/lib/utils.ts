@@ -1,6 +1,7 @@
 import axios, { AxiosError } from 'axios'
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
+import { v4 as uuidv4 } from 'uuid'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -59,4 +60,27 @@ export function toDate(isoString: Date): string {
   const year = date.getFullYear()
 
   return `${day} ${month} ${year}`
+}
+
+export function getExampleQuestions() {
+  const result = []
+
+  for (let i = 0; i < 2; ++i) {
+    const question = { id: uuidv4(), content: '', options: [] as { id: string; content: string; correct: boolean }[] }
+    for (let j = 0; j < 4; ++j) {
+      question.options.push({ id: uuidv4(), content: '', correct: j === 0 })
+    }
+    result.push(question)
+  }
+
+  return result
+}
+
+export function getOneExampleQuestion() {
+  const question = { id: uuidv4(), content: '', options: [] as { id: string; content: string; correct: boolean }[] }
+  for (let j = 0; j < 4; ++j) {
+    question.options.push({ id: uuidv4(), content: '', correct: j === 0 })
+  }
+
+  return question
 }

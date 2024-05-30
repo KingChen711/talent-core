@@ -1,5 +1,5 @@
 import { cn, getContrastYIQ, getRandomHexColor, isAxiosError } from '@/lib/utils'
-import { TCreateJobErrors, TCreateJobSchema, createJobSchema } from '@/lib/validation/job.validation'
+import { TMutateJobErrors, TMutationJobSchema, mutationJobSchema } from '@/lib/validation/job.validation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import React, { useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -40,8 +40,8 @@ function JobForm({ type, jobId }: Props) {
   const [file, setFile] = useState<File | null>(null)
   const [testExams, setTestExams] = useState<TestExam[]>([])
 
-  const form = useForm<TCreateJobSchema>({
-    resolver: zodResolver(createJobSchema),
+  const form = useForm<TMutationJobSchema>({
+    resolver: zodResolver(mutationJobSchema),
     defaultValues: {
       code: '',
       name: '',
@@ -73,7 +73,7 @@ function JobForm({ type, jobId }: Props) {
 
   const disabling = useMemo(() => isPending || isLoading, [isPending, isLoading])
 
-  const onSubmit = async (values: TCreateJobSchema) => {
+  const onSubmit = async (values: TMutationJobSchema) => {
     const formData = new FormData()
 
     formData.append('code', values.code)
@@ -110,7 +110,7 @@ function JobForm({ type, jobId }: Props) {
       },
       onError: (error) => {
         if (
-          !isAxiosError<{ errors: TCreateJobErrors }>(error) ||
+          !isAxiosError<{ errors: TMutateJobErrors }>(error) ||
           error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR
         ) {
           toast({
@@ -124,7 +124,7 @@ function JobForm({ type, jobId }: Props) {
 
         if (error.response?.status === StatusCodes.UNPROCESSABLE_ENTITY) {
           const fieldErrors = error.response?.data.errors
-          const keys = Object.keys(fieldErrors) as (keyof TCreateJobErrors)[]
+          const keys = Object.keys(fieldErrors) as (keyof TMutateJobErrors)[]
           keys.forEach((key) => form.setError(key, { message: fieldErrors[key] }))
           form.setFocus(keys[0])
 

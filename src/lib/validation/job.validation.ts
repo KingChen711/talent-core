@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export const createJobSchema = z
+export const mutationJobSchema = z
   .object({
     code: z.string().min(2).max(50),
     name: z.string().min(2).max(50),
@@ -26,10 +26,10 @@ export const createJobSchema = z
     }
   )
 
-export type TCreateJobSchema = z.infer<typeof createJobSchema>
+export type TMutationJobSchema = z.infer<typeof mutationJobSchema>
 
-export type TCreateJobErrors = {
-  [key in keyof TCreateJobSchema]: string
+export type TMutateJobErrors = {
+  [key in keyof TMutationJobSchema]: string
 }
 
 export const openJobSchema = z.object({
