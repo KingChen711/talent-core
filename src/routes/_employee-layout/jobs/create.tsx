@@ -10,7 +10,7 @@ function CreateJobPage() {
   return (
     <div className='flex flex-col'>
       <div className='flex items-center justify-between'>
-        <div className='mb-5 text-3xl font-semibold'>Create Job</div>
+        <div className='mb-5 text-2xl font-semibold'>Create Job</div>
         <Button>
           <Link
             to='/jobs'

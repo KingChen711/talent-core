@@ -7,9 +7,10 @@ import DialogContentOpenJob from './dialog-content-open-job'
 
 type Props = {
   jobId: string
+  jobCode: string
 }
 
-function DropdownSettingJob({ jobId }: Props) {
+function DropdownSettingJob({ jobId, jobCode }: Props) {
   return (
     <Dialog>
       <DropdownMenu>
@@ -26,7 +27,7 @@ function DropdownSettingJob({ jobId }: Props) {
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem className='cursor-pointer' asChild>
-            <Link to={`/jobs/${jobId}/test-exams`} className='flex items-center gap-x-2'>
+            <Link to={`/jobs/${jobCode}/test-exams`} className='flex items-center gap-x-2'>
               <img alt='edit' src='/icons/side-bar/exam-active.svg' className='size-4' />
               View Test Exams
             </Link>

@@ -1,9 +1,9 @@
 import { talentCoreApi } from '@/services/talent-core-api'
 import { useAuth } from '@clerk/clerk-react'
-import { Job, TestExam } from '@prisma/client'
+import { Job } from '@prisma/client'
 import { useQuery } from '@tanstack/react-query'
 
-type JobDetail = Job & { isOpening: boolean } & { testExams: TestExam[] }
+type JobDetail = Job & { isOpening: boolean }
 
 function useJob(jobId: string | undefined, callback: (data: JobDetail) => void) {
   const { getToken } = useAuth()

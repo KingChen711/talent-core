@@ -1,20 +1,18 @@
-import { JobSearch } from '@/routes/_employee-layout/jobs'
+import { TestExamSearch } from '@/lib/validation/job.validation'
 import { talentCoreApi } from '@/services/talent-core-api'
 import { PagingMetaData } from '@/types'
 import { useAuth } from '@clerk/clerk-react'
-import { Job } from '@prisma/client'
+import { TestExam } from '@prisma/client'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 
-type Jobs = (Job & { isOpening: boolean })[]
-
-function useJobs(searchParams: JobSearch) {
+function useJobAddableTestExams(jobCode: string, searchParams: TestExamSearch) {
   const { getToken } = useAuth()
 
   return useQuery({
-    queryKey: ['jobs', searchParams],
+    queryKey: ['jobs', jobCode, 'addable-test-exams', { searchParams }],
     queryFn: async () =>
       talentCoreApi
-        .get<Jobs>('/api/jobs', {
+        .get<TestExam[]>(`/api/jobs/${jobCode}/addable-test-exams`, {
           params: searchParams,
           headers: {
             Authorization: `Bearer ${await getToken()}`
@@ -28,4 +26,4 @@ function useJobs(searchParams: JobSearch) {
   })
 }
 
-export default useJobs
+export default useJobAddableTestExams

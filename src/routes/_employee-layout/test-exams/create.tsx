@@ -11,7 +11,7 @@ function CreateTestExamPage() {
   return (
     <div className='flex flex-col'>
       <div className='flex items-center justify-between'>
-        <div className='mb-5 text-3xl font-semibold'>Create Test Exam</div>
+        <div className='mb-5 text-2xl font-semibold'>Create Test Exam</div>
         <Button>
           <Link
             to='/test-exams'

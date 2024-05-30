@@ -42,7 +42,7 @@ function JobsPage() {
   return (
     <section className='flex flex-col'>
       <div className='flex items-center justify-between gap-x-5'>
-        <h3 className='text-3xl font-semibold'>Jobs</h3>
+        <h3 className='text-2xl font-semibold'>Jobs</h3>
         <SearchForm search={search} />
         <Button asChild>
           <Link to='/jobs/create'>
@@ -52,7 +52,7 @@ function JobsPage() {
         </Button>
       </div>
 
-      <div className='my-5 min-h-[492px] rounded-2xl bg-card p-4'>
+      <div className='my-5 rounded-2xl bg-card p-4'>
         <div className='mb-4 flex gap-x-8 border-b'>
           {jobTabs.map((tab) => {
             const active = status === tab.status
@@ -125,7 +125,7 @@ function JobsPage() {
                       )}
                     </TableCell>
                     <TableCell className='flex justify-end'>
-                      <DropdownSettingJob jobId={job.id} />
+                      <DropdownSettingJob jobId={job.id} jobCode={job.code} />
                       <DialogDeleteJob jobId={job.id} />
                     </TableCell>
                   </TableRow>

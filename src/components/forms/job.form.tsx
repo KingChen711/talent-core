@@ -12,7 +12,6 @@ import { HexColorPicker } from 'react-colorful'
 import { Button } from '../ui/button'
 import { defaultJobIcon, jobsPageSize } from '@/constants'
 import useJob from '@/hooks/job/use-job'
-import { TestExam } from '@prisma/client'
 import useMutateJob from '@/hooks/job/use-mutate-job'
 import { toast } from '../ui/use-toast'
 import { StatusCodes } from 'http-status-codes'
@@ -36,7 +35,6 @@ function JobForm({ type, jobId }: Props) {
   const navigate = useNavigate()
 
   const [file, setFile] = useState<File | null>(null)
-  const [testExams, setTestExams] = useState<TestExam[]>([])
 
   const form = useForm<TMutationJobSchema>({
     resolver: zodResolver(mutationJobSchema),
@@ -46,7 +44,6 @@ function JobForm({ type, jobId }: Props) {
       description: '',
       color: type === 'create' ? getRandomHexColor() : undefined,
       icon: type === 'create' ? defaultJobIcon : undefined,
-      testExamIds: [],
       openInCurrentRecruitment: false,
       quantityInCurrentRecruitment: 1
     }
@@ -62,11 +59,6 @@ function JobForm({ type, jobId }: Props) {
     form.setValue('color', job.color)
     form.setValue('icon', job.icon)
     form.setValue('openInCurrentRecruitment', job.isOpening)
-    form.setValue(
-      'testExamIds',
-      job.testExams.map((test) => test.id)
-    )
-    setTestExams(job.testExams)
   })
 
   const disabling = useMemo(() => isPending || isLoading, [isPending, isLoading])
@@ -85,7 +77,6 @@ function JobForm({ type, jobId }: Props) {
       formData.append('quantityInCurrentRecruitment', JSON.stringify(values.quantityInCurrentRecruitment))
     } else {
       formData.append('id', jobId)
-      formData.append('testExamIds', JSON.stringify(values.testExamIds))
     }
 
     mutate(formData, {
@@ -217,7 +208,7 @@ function JobForm({ type, jobId }: Props) {
                   <>
                     <Accordion value={String(field.value)} type='single' collapsible>
                       <AccordionItem value='true' className='cursor-default'>
-                        <AccordionTrigger className='cursor-default'>
+                        <AccordionTrigger showChevronDown={false} className='cursor-default'>
                           <div className='flex items-center gap-x-4'>
                             <Checkbox
                               disabled={disabling}
@@ -357,49 +348,6 @@ function JobForm({ type, jobId }: Props) {
             )}
           />
         </div>
-
-        {type === 'update' && (
-          <FormField
-            control={form.control}
-            name='testExamIds'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className='mt-4'>Test Exams</FormLabel>
-                <FormControl>
-                  <>
-                    {testExams.length > 0 ? (
-                      <div className='flex flex-col gap-y-3'>
-                        {testExams.map((test) => (
-                          <div
-                            key={test.id}
-                            className='flex items-center justify-between gap-y-3 rounded-md border px-3 py-2'
-                          >
-                            {test.name}
-                            <Button
-                              onClick={(e) => {
-                                e.preventDefault()
-                                field.onChange(field.value.filter((testId) => testId === test.id))
-                                setTestExams((prev) => prev.filter((t) => t.id === test.id))
-                              }}
-                              disabled={disabling}
-                              variant='ghost'
-                              size='icon'
-                            >
-                              <img alt='delete' src='/icons/actions/delete.svg' className='size-6 object-cover' />
-                            </Button>
-                          </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <div>Not found any test exams of this job</div>
-                    )}
-                  </>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        )}
 
         <Button type='submit' className='float-right' disabled={disabling}>
           {type === 'create' ? 'Submit' : 'Save'} {disabling && <Loader2 className='ml-1 size-4 animate-spin' />}
