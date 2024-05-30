@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/_employee-layout/jobs/$jobId/add-test-exams')({
+export const Route = createFileRoute('/_employee-layout/jobs/$jobId/test-exams')({
   component: JobAddTestExamsPage
 })
 

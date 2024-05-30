@@ -6,7 +6,7 @@ import { useNavigate } from '@tanstack/react-router'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { getExampleQuestions, getOneExampleQuestion, isAxiosError } from '@/lib/utils'
 import { StatusCodes } from 'http-status-codes'
-import { testExamsPageSize } from '@/constants'
+import { editorPlugin, testExamsPageSize } from '@/constants'
 import {
   TMutateTestExamErrors,
   TMutationTestExamSchema,
@@ -15,6 +15,7 @@ import {
 } from '@/lib/validation/test-exam.validation'
 
 import { Loader2, Plus } from 'lucide-react'
+import { Editor } from '@tinymce/tinymce-react'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
@@ -123,13 +124,13 @@ function TestExamForm({ type, testExamId }: Props) {
   }
 
   const handleQuestionContentChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
+    value: string,
     questionId: string,
     fieldChange: (value: TQuestionSchema[]) => void
   ) => {
     const newQuestions = form.getValues('questions').map((q) => {
       if (q.id !== questionId) return q
-      q.content = e.target.value
+      q.content = value
       return q
     })
 
@@ -292,14 +293,21 @@ function TestExamForm({ type, testExamId }: Props) {
                               />
                             </Button>
                           </div>
-                          <div className='grid grid-cols-12 gap-x-6 p-5'>
-                            <div className='col-span-6'>
+                          <div className='flex flex-col gap-y-4 p-4 py-2'>
+                            <div>
                               <FormItem>
                                 <FormControl>
-                                  <Input
-                                    placeholder={`Question ${index + 1}`}
+                                  <Editor
+                                    apiKey={import.meta.env.VITE_TINY_EDITOR_API_KEY}
+                                    init={{
+                                      ...editorPlugin,
+                                      skin: 'oxide-dark',
+                                      content_css: 'dark'
+                                    }}
+                                    onEditorChange={(value) =>
+                                      handleQuestionContentChange(value, question.id!, field.onChange)
+                                    }
                                     value={question.content}
-                                    onChange={(e) => handleQuestionContentChange(e, question.id!, field.onChange)}
                                   />
                                 </FormControl>
 
@@ -320,14 +328,16 @@ function TestExamForm({ type, testExamId }: Props) {
                                   field.onChange
                                 )
                               }
-                              className='col-span-6 flex flex-col gap-y-3'
+                              className='flex flex-col gap-y-3'
                             >
                               {['A', 'B', 'C', 'D'].map((option, i) => (
                                 <FormItem key={option}>
                                   <FormControl>
                                     <div className='flex items-center gap-x-2'>
-                                      <RadioGroupItem value={String(i)} />
-                                      <p className='font-bold'>{option}.</p>
+                                      <label className='flex cursor-pointer items-center gap-x-2'>
+                                        <RadioGroupItem value={String(i)} />
+                                        <p className='font-bold'>{option}.</p>
+                                      </label>
                                       <Input
                                         value={question.options[i].content}
                                         onChange={(e) => handleOptionChange(e, question.id!, i, field.onChange)}

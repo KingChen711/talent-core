@@ -22,9 +22,9 @@ function DropdownSettingTestExam({ testExamId }: Props) {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem className='cursor-pointer' asChild>
-          <Link to={`/test-exams/${testExamId}/add-jobs`} className='flex items-center gap-x-2'>
+          <Link to={`/test-exams/${testExamId}/jobs`} className='flex items-center gap-x-2'>
             <img alt='edit' src='/icons/side-bar/exam-active.svg' className='size-4' />
-            Add Jobs
+            View Jobs
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem className='cursor-pointer' asChild>

@@ -33,6 +33,7 @@
     "@tanstack/react-router": "^1.33.6",
     "@tanstack/router-devtools": "^1.33.6",
     "@tanstack/router-vite-plugin": "^1.32.17",
+    "@tinymce/tinymce-react": "^5.0.1",
     "@types/uuid": "^9.0.8",
     "axios": "^1.7.2",
     "class-variance-authority": "^0.7.0",

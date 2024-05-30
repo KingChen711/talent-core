@@ -35,3 +35,10 @@ export const defaultJobIcon = '/icons/jobs/suitcase.png'
 
 export const jobsPageSize = 5
 export const testExamsPageSize = 6
+
+export const editorPlugin = {
+  plugins:
+    'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount linkchecker markdown',
+  toolbar:
+    'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat'
+}
