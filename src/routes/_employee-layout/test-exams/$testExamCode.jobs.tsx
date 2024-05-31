@@ -91,7 +91,7 @@ function TestExamJobsPage() {
             </Link>
           </Button>
           <Button disabled={isPending} asChild>
-            <Link to={`/test-exams/${testExamCode}/add-jobs`}>Add Test Exams</Link>
+            <Link to={`/test-exams/${testExamCode}/add-jobs`}>Add Jobs</Link>
           </Button>
         </div>
       </div>
@@ -123,24 +123,31 @@ function TestExamJobsPage() {
               <TableBody>
                 {isLoading && <TableRowsSkeleton colSpan={5} pageSize={5} />}
 
-                {data?.map((job) => (
-                  <TableRow key={job.id}>
-                    <TableCell className=''>
-                      <Checkbox
-                        disabled={isLoading}
-                        onCheckedChange={(value) => handleCheckedChange(value, job.id)}
-                        checked={selectedJobIds.includes(job.id)}
-                      />
-                    </TableCell>
-                    <TableCell className='font-extrabold'>{job.code}</TableCell>
-                    <TableCell className='flex items-center gap-x-3 font-semibold'>
-                      <img alt='job' src={job.icon} className='size-8 rounded-md object-cover' />
-                      <p>{job.name}</p>
-                    </TableCell>
+                {data
+                  ?.filter((job) => {
+                    return (
+                      job.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                      job.name.toLowerCase().includes(searchTerm.toLowerCase())
+                    )
+                  })
+                  .map((job) => (
+                    <TableRow key={job.id}>
+                      <TableCell className=''>
+                        <Checkbox
+                          disabled={isLoading}
+                          onCheckedChange={(value) => handleCheckedChange(value, job.id)}
+                          checked={selectedJobIds.includes(job.id)}
+                        />
+                      </TableCell>
+                      <TableCell className='font-extrabold'>{job.code}</TableCell>
+                      <TableCell className='flex items-center gap-x-3 font-semibold'>
+                        <img alt='job' src={job.icon} className='size-8 rounded-md object-cover' />
+                        <p>{job.name}</p>
+                      </TableCell>
 
-                    <TableCell className='text-center'>{toDate(job.createdAt)}</TableCell>
-                  </TableRow>
-                ))}
+                      <TableCell className='text-center'>{toDate(job.createdAt)}</TableCell>
+                    </TableRow>
+                  ))}
               </TableBody>
             </Table>
           </div>

@@ -83,7 +83,7 @@ function TestExamAddJobsPage() {
     <section className='flex flex-col'>
       <div className='flex items-center justify-between gap-x-5'>
         <h3 className='mb-4 text-2xl font-semibold'>Add jobs to {testExamCode}</h3>
-        <div>{selectedJobIds.length} test exams have selected</div>
+        <div>{selectedJobIds.length} jobs have selected</div>
       </div>
 
       <div className='flex flex-wrap items-center justify-between gap-x-4'>
