@@ -1,4 +1,4 @@
-import { JobSearch } from '@/routes/_employee-layout/jobs'
+import { JobSearch } from '@/lib/validation/job.validation'
 import { talentCoreApi } from '@/services/talent-core-api'
 import { PagingMetaData } from '@/types'
 import { useAuth } from '@clerk/clerk-react'

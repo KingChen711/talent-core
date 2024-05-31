@@ -1,45 +1,107 @@
-import { cn, toDate } from '@/lib/utils'
-import { jobTabs } from '@/constants'
-import useJobs from '@/hooks/job/use-jobs'
-import useSort from '@/hooks/query/use-sort'
-import { Link, createFileRoute } from '@tanstack/react-router'
-import { jobSearchSchema } from '@/lib/validation/job.validation'
-
-import { Plus } from 'lucide-react'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import DialogDeleteJob from '@/components/jobs/dialog-delete-job'
-import DropdownSettingJob from '@/components/jobs/dropdown-setting-job'
-import { Badge } from '@/components/ui/badge'
 import Paginator from '@/components/shared/paginator'
 import SearchForm from '@/components/shared/search-form'
-import { Button } from '@/components/ui/button'
 import TableRowsSkeleton from '@/components/shared/table-rows-skeleton'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { toast } from '@/components/ui/use-toast'
+import { jobTabs } from '@/constants'
+import useSort from '@/hooks/query/use-sort'
+import useTestExamAddJob from '@/hooks/test-exam/use-test-exam-add-jobs'
+import useTestExamAddableJobs from '@/hooks/test-exam/use-test-exam-addable-jobs'
+import { cn, isAxiosError, toDate } from '@/lib/utils'
+import { jobSearchSchema } from '@/lib/validation/job.validation'
+import { ErrorResponse } from '@/types'
+import { CheckedState } from '@radix-ui/react-checkbox'
+import { Link, createFileRoute, useNavigate } from '@tanstack/react-router'
+import { StatusCodes } from 'http-status-codes'
+import { useState } from 'react'
 
-export const Route = createFileRoute('/_employee-layout/jobs/')({
-  component: JobsPage,
+export const Route = createFileRoute('/_employee-layout/test-exams/$testExamCode/add-jobs')({
+  component: TestExamAddJobsPage,
   validateSearch: (search) => jobSearchSchema.parse(search)
 })
 
-function JobsPage() {
-  const { pageNumber, pageSize, search, status, sort } = Route.useSearch()
+function TestExamAddJobsPage() {
+  const navigate = useNavigate()
+
+  const { testExamCode } = Route.useParams()
+  const { pageNumber, pageSize, search, sort, status } = Route.useSearch()
+
+  const [selectedJobIds, setSelectedJobIds] = useState<string[]>([])
 
   const { Icon: CodeSortIcon, sorter: handleSortByCode } = useSort({ key: 'code', sortParams: sort })
   const { Icon: NameSortIcon, sorter: handleSortByName } = useSort({ key: 'name', sortParams: sort })
   const { Icon: CreatedAtSortIcon, sorter: handleSortByCreatedAt } = useSort({ key: 'createdAt', sortParams: sort })
 
-  const { data, isPending } = useJobs({ pageNumber, pageSize, search, status, sort })
+  const { data, isLoading } = useTestExamAddableJobs(testExamCode, { pageNumber, pageSize, search, sort, status })
+
+  const { mutate, isPending } = useTestExamAddJob()
+
+  const handleCheckedChange = (value: CheckedState, testExamId: string) => {
+    const checked = value.valueOf() as boolean
+    setSelectedJobIds((prev) => (checked ? [...prev, testExamId] : prev.filter((i) => i !== testExamId)))
+  }
+
+  const handleAddTestExams = () => {
+    if (setSelectedJobIds.length === 0) return
+
+    mutate(
+      { testExamCode, jobIds: selectedJobIds },
+      {
+        onSuccess: () => {
+          toast({
+            title: `Jobs have been added successfully`,
+            variant: 'success'
+          })
+
+          return navigate({
+            to: `/test-exams/${testExamCode}/jobs`
+          })
+        },
+        onError: (error) => {
+          if (!isAxiosError<ErrorResponse>(error) || error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR) {
+            toast({
+              title: `Jobs have been added failure`,
+              description: 'Some thing went wrong.',
+              variant: 'danger'
+            })
+
+            return
+          }
+
+          toast({
+            title: `Jobs have been added failure`,
+            description: error.response?.data.message,
+            variant: 'danger'
+          })
+
+          console.log({ error })
+        }
+      }
+    )
+  }
 
   return (
     <section className='flex flex-col'>
       <div className='flex items-center justify-between gap-x-5'>
-        <h3 className='text-2xl font-semibold'>Jobs</h3>
-        <SearchForm search={search} placeholder='Search jobs...' />
-        <Button asChild>
-          <Link to='/jobs/create'>
-            <Plus className='mr-1 size-5' />
-            Create Job
-          </Link>
-        </Button>
+        <h3 className='mb-4 text-2xl font-semibold'>Add jobs to {testExamCode}</h3>
+        <div>{selectedJobIds.length} test exams have selected</div>
+      </div>
+
+      <div className='flex flex-wrap items-center justify-between gap-x-4'>
+        <SearchForm search={search} placeholder='Search test exams' />
+        <div className='flex items-center justify-end gap-x-4'>
+          <Button variant='secondary'>
+            <Link to={`/jobs/${testExamCode}/test-exams`} disabled={isPending}>
+              Cancel
+            </Link>
+          </Button>
+          <Button onClick={handleAddTestExams} disabled={selectedJobIds.length === 0 || isPending}>
+            Add Jobs
+          </Button>
+        </div>
       </div>
 
       <div className='my-5 rounded-2xl bg-card p-4'>
@@ -68,6 +130,7 @@ function JobsPage() {
             <Table className='overflow-hidden'>
               <TableHeader className='rounded-lg bg-border'>
                 <TableRow className='rounded-lg'>
+                  <TableHead className=''></TableHead>
                   <TableHead onClick={handleSortByCode} className='h-10 cursor-pointer rounded-l-lg'>
                     <div className='flex items-center'>
                       <p className='select-none'>Code</p>
@@ -87,14 +150,20 @@ function JobsPage() {
                     </div>
                   </TableHead>
                   <TableHead className='h-10 select-none text-center'>Status</TableHead>
-                  <TableHead className='h-10 select-none text-nowrap rounded-r-lg text-end'>Job Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {isPending && <TableRowsSkeleton colSpan={5} pageSize={pageSize} />}
+                {isLoading && <TableRowsSkeleton colSpan={5} pageSize={pageSize} />}
 
                 {data?.items.map((job) => (
                   <TableRow key={job.id}>
+                    <TableCell className=''>
+                      <Checkbox
+                        disabled={isLoading}
+                        onCheckedChange={(value) => handleCheckedChange(value, job.id)}
+                        checked={selectedJobIds.includes(job.id)}
+                      />
+                    </TableCell>
                     <TableCell className='font-extrabold'>{job.code}</TableCell>
                     <TableCell className='flex items-center gap-x-3 font-semibold'>
                       <img alt='job' src={job.icon} className='size-8 rounded-md object-cover' />
@@ -114,10 +183,6 @@ function JobsPage() {
                         </Badge>
                       )}
                     </TableCell>
-                    <TableCell className='flex justify-end'>
-                      <DropdownSettingJob jobId={job.id} jobCode={job.code} />
-                      <DialogDeleteJob jobId={job.id} />
-                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -125,7 +190,7 @@ function JobsPage() {
           </div>
         </div>
 
-        {!isPending && data?.items.length === 0 && (
+        {!isLoading && data?.items.length === 0 && (
           <div className='mt-36 text-center text-xl font-bold'>Not found any Jobs.</div>
         )}
       </div>
@@ -135,4 +200,4 @@ function JobsPage() {
   )
 }
 
-export default JobsPage
+export default TestExamAddJobsPage

@@ -1,4 +1,4 @@
-import { TestExamSearch } from '@/lib/validation/job.validation'
+import { TestExamSearch } from '@/lib/validation/test-exam.validation'
 import { talentCoreApi } from '@/services/talent-core-api'
 import { PagingMetaData } from '@/types'
 import { useAuth } from '@clerk/clerk-react'

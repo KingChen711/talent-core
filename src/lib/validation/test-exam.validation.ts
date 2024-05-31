@@ -1,4 +1,27 @@
+import { testExamsPageSize } from '@/constants'
 import { z } from 'zod'
+
+export const testExamSearchSchema = z.object({
+  pageNumber: z.number().catch(1),
+  pageSize: z.number().catch(testExamsPageSize),
+  search: z.string().catch(''),
+  sort: z
+    .enum([
+      'code',
+      'name',
+      '-code',
+      '-name',
+      'createdAt',
+      '-createdAt',
+      'conditionPoint',
+      '-conditionPoint',
+      'duration',
+      '-duration'
+    ])
+    .catch('-createdAt')
+})
+
+export type TestExamSearch = z.infer<typeof testExamSearchSchema>
 
 const questionOptionSchema = z.object({
   content: z.string().min(1),

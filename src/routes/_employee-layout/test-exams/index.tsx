@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button'
 import TableRowsSkeleton from '@/components/shared/table-rows-skeleton'
 import DialogDeleteTestExam from '@/components/test-exams/dialog-delete-test-exam'
 import DropdownSettingTestExam from '@/components/test-exams/dropdown-setting-test-exam'
-import { testExamSearchSchema } from '@/lib/validation/job.validation'
+import { testExamSearchSchema } from '@/lib/validation/test-exam.validation'
 
 export const Route = createFileRoute('/_employee-layout/test-exams/')({
   component: TestExamsPage,
@@ -97,7 +97,7 @@ function TestExamsPage() {
                     <TableCell className='text-center'>{testExam.duration}</TableCell>
                     <TableCell className='text-center'>{toDate(testExam.createdAt)}</TableCell>
                     <TableCell className='flex justify-end'>
-                      <DropdownSettingTestExam testExamId={testExam.id} />
+                      <DropdownSettingTestExam testExamId={testExam.id} testExamCode={testExam.code} />
                       <DialogDeleteTestExam testExamId={testExam.id} />
                     </TableCell>
                   </TableRow>

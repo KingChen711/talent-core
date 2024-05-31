@@ -25,6 +25,7 @@ import { Route as EmployeeLayoutJobsCreateImport } from './routes/_employee-layo
 import { Route as EmployeeLayoutTestExamsTestExamIdTestSessionsImport } from './routes/_employee-layout/test-exams/$testExamId.test-sessions'
 import { Route as EmployeeLayoutTestExamsTestExamIdJobsImport } from './routes/_employee-layout/test-exams/$testExamId.jobs'
 import { Route as EmployeeLayoutTestExamsTestExamIdEditImport } from './routes/_employee-layout/test-exams/$testExamId.edit'
+import { Route as EmployeeLayoutTestExamsTestExamCodeAddJobsImport } from './routes/_employee-layout/test-exams/$testExamCode.add-jobs'
 import { Route as EmployeeLayoutJobsJobIdEditImport } from './routes/_employee-layout/jobs/$jobId.edit'
 import { Route as EmployeeLayoutJobsJobCodeTestExamsImport } from './routes/_employee-layout/jobs/$jobCode.test-exams'
 import { Route as EmployeeLayoutJobsJobCodeAddTestExamsImport } from './routes/_employee-layout/jobs/$jobCode.add-test-exams'
@@ -103,6 +104,12 @@ const EmployeeLayoutTestExamsTestExamIdJobsRoute =
 const EmployeeLayoutTestExamsTestExamIdEditRoute =
   EmployeeLayoutTestExamsTestExamIdEditImport.update({
     path: '/test-exams/$testExamId/edit',
+    getParentRoute: () => EmployeeLayoutRoute,
+  } as any)
+
+const EmployeeLayoutTestExamsTestExamCodeAddJobsRoute =
+  EmployeeLayoutTestExamsTestExamCodeAddJobsImport.update({
+    path: '/test-exams/$testExamCode/add-jobs',
     getParentRoute: () => EmployeeLayoutRoute,
   } as any)
 
@@ -226,6 +233,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EmployeeLayoutJobsJobIdEditImport
       parentRoute: typeof EmployeeLayoutImport
     }
+    '/_employee-layout/test-exams/$testExamCode/add-jobs': {
+      id: '/_employee-layout/test-exams/$testExamCode/add-jobs'
+      path: '/test-exams/$testExamCode/add-jobs'
+      fullPath: '/test-exams/$testExamCode/add-jobs'
+      preLoaderRoute: typeof EmployeeLayoutTestExamsTestExamCodeAddJobsImport
+      parentRoute: typeof EmployeeLayoutImport
+    }
     '/_employee-layout/test-exams/$testExamId/edit': {
       id: '/_employee-layout/test-exams/$testExamId/edit'
       path: '/test-exams/$testExamId/edit'
@@ -266,6 +280,7 @@ export const routeTree = rootRoute.addChildren({
     EmployeeLayoutJobsJobCodeAddTestExamsRoute,
     EmployeeLayoutJobsJobCodeTestExamsRoute,
     EmployeeLayoutJobsJobIdEditRoute,
+    EmployeeLayoutTestExamsTestExamCodeAddJobsRoute,
     EmployeeLayoutTestExamsTestExamIdEditRoute,
     EmployeeLayoutTestExamsTestExamIdJobsRoute,
     EmployeeLayoutTestExamsTestExamIdTestSessionsRoute,

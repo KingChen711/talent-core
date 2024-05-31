@@ -4,9 +4,10 @@ import { Link } from '@tanstack/react-router'
 
 type Props = {
   testExamId: string
+  testExamCode: string
 }
 
-function DropdownSettingTestExam({ testExamId }: Props) {
+function DropdownSettingTestExam({ testExamId, testExamCode }: Props) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -22,9 +23,15 @@ function DropdownSettingTestExam({ testExamId }: Props) {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem className='cursor-pointer' asChild>
-          <Link to={`/test-exams/${testExamId}/jobs`} className='flex items-center gap-x-2'>
+          <Link to={`/test-exams/${testExamCode}/jobs`} className='flex items-center gap-x-2'>
             <img alt='edit' src='/icons/side-bar/exam-active.svg' className='size-4' />
             View Jobs
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem className='cursor-pointer' asChild>
+          <Link to={`/test-exams/${testExamCode}/add-jobs`} className='flex items-center gap-x-2'>
+            <img alt='edit' src='/icons/side-bar/exam-active.svg' className='size-4' />
+            Add Jobs
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem className='cursor-pointer' asChild>

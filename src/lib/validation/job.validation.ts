@@ -1,27 +1,15 @@
-import { testExamsPageSize } from '@/constants'
+import { jobsPageSize } from '@/constants'
 import { z } from 'zod'
 
-export const testExamSearchSchema = z.object({
+export const jobSearchSchema = z.object({
   pageNumber: z.number().catch(1),
-  pageSize: z.number().catch(testExamsPageSize),
+  pageSize: z.number().catch(jobsPageSize),
   search: z.string().catch(''),
-  sort: z
-    .enum([
-      'code',
-      'name',
-      '-code',
-      '-name',
-      'createdAt',
-      '-createdAt',
-      'conditionPoint',
-      '-conditionPoint',
-      'duration',
-      '-duration'
-    ])
-    .catch('-createdAt')
+  status: z.enum(['all', 'opening', 'closed']).catch('all'),
+  sort: z.enum(['code', 'name', '-code', '-name', 'createdAt', '-createdAt']).catch('-createdAt')
 })
 
-export type TestExamSearch = z.infer<typeof testExamSearchSchema>
+export type JobSearch = z.infer<typeof jobSearchSchema>
 
 export const mutationJobSchema = z
   .object({
