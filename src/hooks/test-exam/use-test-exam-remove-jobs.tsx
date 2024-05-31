@@ -2,17 +2,17 @@ import { useMutation } from '@tanstack/react-query'
 import { talentCoreApi } from '../../services/talent-core-api'
 import { useAuth } from '@clerk/clerk-react'
 
-type TTestExamAddJobs = {
+type TJobRemoveTestExams = {
   testExamCode: string
   jobIds: string[]
 }
 
-function useTestExamAddJobs() {
+function useTestExamRemoveJobs() {
   const { getToken } = useAuth()
 
   return useMutation({
-    mutationFn: async ({ testExamCode, jobIds }: TTestExamAddJobs) =>
-      talentCoreApi.post(
+    mutationFn: async ({ testExamCode, jobIds }: TJobRemoveTestExams) =>
+      talentCoreApi.patch(
         `/api/test-exams/${testExamCode}/jobs`,
         { jobIds },
         {
@@ -24,4 +24,4 @@ function useTestExamAddJobs() {
   })
 }
 
-export default useTestExamAddJobs
+export default useTestExamRemoveJobs

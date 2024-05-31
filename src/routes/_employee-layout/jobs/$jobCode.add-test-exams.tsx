@@ -81,8 +81,6 @@ function JobAddTestExamsPage() {
             description: error.response?.data.message,
             variant: 'danger'
           })
-
-          console.log({ error })
         }
       }
     )

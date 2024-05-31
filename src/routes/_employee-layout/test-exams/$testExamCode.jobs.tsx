@@ -1,67 +1,63 @@
-import Paginator from '@/components/shared/paginator'
-import SearchForm from '@/components/shared/search-form'
 import TableRowsSkeleton from '@/components/shared/table-rows-skeleton'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
+import { Input } from '@/components/ui/input'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { toast } from '@/components/ui/use-toast'
-import { jobTabs } from '@/constants'
-import useSort from '@/hooks/query/use-sort'
-import useTestExamAddJobs from '@/hooks/test-exam/use-test-exam-add-jobs'
-import useTestExamAddableJobs from '@/hooks/test-exam/use-test-exam-addable-jobs'
-import { cn, isAxiosError, toDate } from '@/lib/utils'
-import { jobSearchSchema } from '@/lib/validation/job.validation'
+import useTestExamJobs from '@/hooks/test-exam/use-test-exam-jobs'
+import useTestExamRemoveJobs from '@/hooks/test-exam/use-test-exam-remove-jobs'
+import { isAxiosError, toDate } from '@/lib/utils'
 import { ErrorResponse } from '@/types'
 import { CheckedState } from '@radix-ui/react-checkbox'
-import { Link, createFileRoute, useNavigate } from '@tanstack/react-router'
+import { useQueryClient } from '@tanstack/react-query'
+import { Link, createFileRoute } from '@tanstack/react-router'
 import { StatusCodes } from 'http-status-codes'
+import { Search } from 'lucide-react'
 import { useState } from 'react'
 
-export const Route = createFileRoute('/_employee-layout/test-exams/$testExamCode/add-jobs')({
-  component: TestExamAddJobsPage,
-  validateSearch: (search) => jobSearchSchema.parse(search)
+export const Route = createFileRoute('/_employee-layout/test-exams/$testExamCode/jobs')({
+  component: TestExamJobsPage
 })
 
-function TestExamAddJobsPage() {
-  const navigate = useNavigate()
+function TestExamJobsPage() {
+  // A test exam will not have to much jobs, not need to pagination,filter, sort at server, and just filter at client
+  const queryClient = useQueryClient()
+  const { testExamCode } = Route.useParams()
+
   const [selectedJobIds, setSelectedJobIds] = useState<string[]>([])
 
-  const { testExamCode } = Route.useParams()
-  const { pageNumber, pageSize, search, sort, status } = Route.useSearch()
+  const { data, isLoading } = useTestExamJobs(testExamCode)
+  const { mutate, isPending } = useTestExamRemoveJobs()
 
-  const { Icon: CodeSortIcon, sorter: handleSortByCode } = useSort({ key: 'code', sortParams: sort })
-  const { Icon: NameSortIcon, sorter: handleSortByName } = useSort({ key: 'name', sortParams: sort })
-  const { Icon: CreatedAtSortIcon, sorter: handleSortByCreatedAt } = useSort({ key: 'createdAt', sortParams: sort })
-
-  const { data, isLoading } = useTestExamAddableJobs(testExamCode, { pageNumber, pageSize, search, sort, status })
-
-  const { mutate, isPending } = useTestExamAddJobs()
+  const [searchTerm, setSearchTerm] = useState('')
 
   const handleCheckedChange = (value: CheckedState, testExamId: string) => {
     const checked = value.valueOf() as boolean
     setSelectedJobIds((prev) => (checked ? [...prev, testExamId] : prev.filter((i) => i !== testExamId)))
   }
 
-  const handleAddTestExams = () => {
-    if (setSelectedJobIds.length === 0) return
+  const handleRemoveJobs = () => {
+    if (selectedJobIds.length === 0) return
 
     mutate(
       { testExamCode, jobIds: selectedJobIds },
       {
         onSuccess: () => {
           toast({
-            title: `Jobs have been added successfully`,
+            title: `Jobs have been removed successfully`,
             variant: 'success'
           })
 
-          return navigate({
-            to: `/test-exams/${testExamCode}/jobs`
+          queryClient.invalidateQueries({
+            queryKey: ['test-exams', testExamCode, 'jobs']
           })
+
+          setSelectedJobIds([])
         },
         onError: (error) => {
           if (!isAxiosError<ErrorResponse>(error) || error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR) {
             toast({
-              title: `Jobs have been added failure`,
+              title: `Jobs have been removed failure`,
               description: 'Some thing went wrong.',
               variant: 'danger'
             })
@@ -70,7 +66,7 @@ function TestExamAddJobsPage() {
           }
 
           toast({
-            title: `Jobs have been added failure`,
+            title: `Jobs have been removed failure`,
             description: error.response?.data.message,
             variant: 'danger'
           })
@@ -82,75 +78,52 @@ function TestExamAddJobsPage() {
   return (
     <section className='flex flex-col'>
       <div className='flex items-center justify-between gap-x-5'>
-        <h3 className='mb-4 text-2xl font-semibold'>Add jobs to {testExamCode}</h3>
-        <div>{selectedJobIds.length} test exams have selected</div>
+        <h3 className='mb-4 text-2xl font-semibold'>Jobs of {testExamCode}</h3>
+        <div>{selectedJobIds.length} jobs have selected</div>
       </div>
 
       <div className='flex flex-wrap items-center justify-between gap-x-4'>
-        <SearchForm search={search} placeholder='Search jobs...' />
+        <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
         <div className='flex items-center justify-end gap-x-4'>
-          <Button variant='secondary'>
+          <Button onClick={handleRemoveJobs} disabled={selectedJobIds.length === 0 || isPending} variant='secondary'>
             <Link to={`/test-exams/${testExamCode}/jobs`} disabled={isPending}>
-              Cancel
+              Remove
             </Link>
           </Button>
-          <Button onClick={handleAddTestExams} disabled={selectedJobIds.length === 0 || isPending}>
-            Add Jobs
+          <Button disabled={isPending} asChild>
+            <Link to={`/test-exams/${testExamCode}/add-jobs`}>Add Test Exams</Link>
           </Button>
         </div>
       </div>
 
       <div className='my-5 rounded-2xl bg-card p-4'>
-        <div className='mb-4 flex gap-x-8 border-b'>
-          {jobTabs.map((tab) => {
-            const active = status === tab.status
-
-            return (
-              <Link
-                search={(prev) => ({ ...prev, status: tab.status, pageNumber: 1, sort: '-createdAt' })}
-                key={tab.status}
-                className={cn(
-                  'relative w-[70px] pb-4 text-center text-muted',
-                  active && 'text-gradient-foreground font-bold'
-                )}
-              >
-                {tab.label}
-                {active && <div className='bg-gradient absolute bottom-0 left-0 h-[3px] w-full'></div>}
-              </Link>
-            )
-          })}
-        </div>
-
         <div className='grid w-full'>
           <div className='overflow-x-auto'>
             <Table className='overflow-hidden'>
               <TableHeader className='rounded-lg bg-border'>
                 <TableRow className='rounded-lg'>
                   <TableHead className=''></TableHead>
-                  <TableHead onClick={handleSortByCode} className='h-10 cursor-pointer rounded-l-lg'>
+                  <TableHead className='h-10 cursor-pointer rounded-l-lg'>
                     <div className='flex items-center'>
                       <p className='select-none'>Code</p>
-                      <CodeSortIcon />
                     </div>
                   </TableHead>
-                  <TableHead onClick={handleSortByName} className='h-10 w-fit cursor-pointer'>
+                  <TableHead className='h-10 w-fit cursor-pointer'>
                     <div className='flex items-center'>
                       <p className='select-none text-nowrap'>Job Name</p>
-                      <NameSortIcon />
                     </div>
                   </TableHead>
-                  <TableHead onClick={handleSortByCreatedAt} className='h-10 w-fit cursor-pointer'>
+                  <TableHead className='h-10 w-fit cursor-pointer'>
                     <div className='flex items-center justify-center'>
                       <p className='select-none'>Created At</p>
-                      <CreatedAtSortIcon />
                     </div>
                   </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {isLoading && <TableRowsSkeleton colSpan={5} pageSize={pageSize} />}
+                {isLoading && <TableRowsSkeleton colSpan={5} pageSize={5} />}
 
-                {data?.items.map((job) => (
+                {data?.map((job) => (
                   <TableRow key={job.id}>
                     <TableCell className=''>
                       <Checkbox
@@ -173,14 +146,28 @@ function TestExamAddJobsPage() {
           </div>
         </div>
 
-        {!isLoading && data?.items.length === 0 && (
+        {!isLoading && data?.length === 0 && (
           <div className='mt-36 text-center text-xl font-bold'>Not found any Jobs.</div>
         )}
       </div>
-
-      {data && data.items.length > 0 && <Paginator metadata={data.metadata} />}
     </section>
   )
 }
 
-export default TestExamAddJobsPage
+export default TestExamJobsPage
+
+type SearchBarProps = { searchTerm: string; setSearchTerm: React.Dispatch<React.SetStateAction<string>> }
+
+function SearchBar({ searchTerm, setSearchTerm }: SearchBarProps) {
+  return (
+    <div className='flex max-w-md flex-1 items-center rounded-lg border-2 px-2'>
+      <Search className='size-6' />
+      <Input
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className='rounded-none border-none bg-transparent focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0'
+        placeholder='Search jobs...'
+      />
+    </div>
+  )
+}

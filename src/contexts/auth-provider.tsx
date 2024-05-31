@@ -1,5 +1,5 @@
 import { Role, User } from '@prisma/client'
-import React, { createContext, useContext, useEffect, useMemo } from 'react'
+import React, { createContext, useContext, useMemo } from 'react'
 import { type Role as TRole } from '@/types'
 import { useQuery } from '@tanstack/react-query'
 import { useAuth } from '@clerk/clerk-react'

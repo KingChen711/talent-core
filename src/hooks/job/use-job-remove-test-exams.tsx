@@ -7,7 +7,7 @@ type TJobRemoveTestExams = {
   testExamIds: string[]
 }
 
-function useJobRemoveTestExam() {
+function useJobRemoveTestExams() {
   const { getToken } = useAuth()
 
   return useMutation({
@@ -24,4 +24,4 @@ function useJobRemoveTestExam() {
   })
 }
 
-export default useJobRemoveTestExam
+export default useJobRemoveTestExams

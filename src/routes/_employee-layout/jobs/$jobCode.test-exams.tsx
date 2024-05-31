@@ -4,7 +4,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { toast } from '@/components/ui/use-toast'
-import useJobRemoveTestExam from '@/hooks/job/use-job-remove-test-exams'
+import useJobRemoveTestExams from '@/hooks/job/use-job-remove-test-exams'
 import useJobTestExams from '@/hooks/job/use-job-test-exams'
 import { isAxiosError, toDate } from '@/lib/utils'
 import { ErrorResponse } from '@/types'
@@ -25,7 +25,7 @@ function JobTestExamsPage() {
   const { jobCode } = Route.useParams()
 
   const { data, isLoading } = useJobTestExams(jobCode)
-  const { mutate, isPending } = useJobRemoveTestExam()
+  const { mutate, isPending } = useJobRemoveTestExams()
 
   const [selectedTestExamIds, setSelectedTestExamIds] = useState<string[]>([])
   const [searchTerm, setSearchTerm] = useState('')
@@ -69,8 +69,6 @@ function JobTestExamsPage() {
             description: error.response?.data.message,
             variant: 'danger'
           })
-
-          console.log({ error })
         }
       }
     )
