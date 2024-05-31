@@ -5,9 +5,10 @@ import { useEffect, useState } from 'react'
 
 type Props = {
   search: string
+  placeholder: string
 }
 
-function SearchForm({ search }: Props) {
+function SearchForm({ search, placeholder }: Props) {
   const [searchTerm, setSearchTerm] = useState(search)
   const navigate = useNavigate()
 
@@ -36,7 +37,7 @@ function SearchForm({ search }: Props) {
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         className='rounded-none border-none bg-transparent focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0'
-        placeholder='Search jobs...'
+        placeholder={placeholder}
       />
     </form>
   )

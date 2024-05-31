@@ -1,4 +1,5 @@
 export type Role = 'Guest' | 'Candidate' | 'Employee'
+
 export type PagingMetaData = {
   pageNumber: number
   pageSize: number
@@ -6,4 +7,9 @@ export type PagingMetaData = {
   totalCount: number
   hasPrevious: boolean
   hasNext: boolean
+}
+
+export type ErrorResponse = {
+  statusCode: number
+  message: string
 }

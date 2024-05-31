@@ -36,7 +36,7 @@ function TestExamsPage() {
     <section className='flex flex-col'>
       <div className='flex items-center justify-between gap-x-5'>
         <h3 className='text-2xl font-semibold'>Test Exams</h3>
-        <SearchForm search={search} />
+        <SearchForm search={search} placeholder='Search test exams...' />
         <Button asChild>
           <Link to='/test-exams/create'>
             <Plus className='mr-1 size-5' />

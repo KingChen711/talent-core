@@ -43,7 +43,7 @@ function JobsPage() {
     <section className='flex flex-col'>
       <div className='flex items-center justify-between gap-x-5'>
         <h3 className='text-2xl font-semibold'>Jobs</h3>
-        <SearchForm search={search} />
+        <SearchForm search={search} placeholder='Search jobs...' />
         <Button asChild>
           <Link to='/jobs/create'>
             <Plus className='mr-1 size-5' />

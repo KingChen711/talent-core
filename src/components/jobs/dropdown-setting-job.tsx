@@ -32,6 +32,12 @@ function DropdownSettingJob({ jobId, jobCode }: Props) {
               View Test Exams
             </Link>
           </DropdownMenuItem>
+          <DropdownMenuItem className='cursor-pointer' asChild>
+            <Link to={`/jobs/${jobCode}/add-test-exams`} className='flex items-center gap-x-2'>
+              <img alt='edit' src='/icons/side-bar/exam-active.svg' className='size-4' />
+              Add Test Exams
+            </Link>
+          </DropdownMenuItem>
           <DialogTrigger asChild>
             <DropdownMenuItem className='cursor-pointer' asChild>
               <div className='flex cursor-pointer items-center gap-x-2 rounded-sm px-2 py-[6px] text-sm leading-5 hover:bg-muted'>

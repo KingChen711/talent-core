@@ -1,8 +1,8 @@
-import { Link, createFileRoute } from '@tanstack/react-router'
+import { Link, createFileRoute, useNavigate } from '@tanstack/react-router'
 
 import useJobAddableTestExams from '@/hooks/job/use-job-addable-test-exams'
 import useSort from '@/hooks/query/use-sort'
-import { toDate } from '@/lib/utils'
+import { isAxiosError, toDate } from '@/lib/utils'
 import { testExamSearchSchema } from '@/lib/validation/job.validation'
 
 import { Checkbox } from '@/components/ui/checkbox'
@@ -12,6 +12,11 @@ import Paginator from '@/components/shared/paginator'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { CheckedState } from '@radix-ui/react-checkbox'
+import useJobAddTestExam from '@/hooks/job/use-job-add-test-exams'
+import { toast } from '@/components/ui/use-toast'
+import { StatusCodes } from 'http-status-codes'
+import { ErrorResponse } from '@/types'
+import SearchForm from '@/components/shared/search-form'
 
 export const Route = createFileRoute('/_employee-layout/jobs/$jobCode/add-test-exams')({
   component: JobAddTestExamsPage,
@@ -19,11 +24,12 @@ export const Route = createFileRoute('/_employee-layout/jobs/$jobCode/add-test-e
 })
 
 function JobAddTestExamsPage() {
+  const navigate = useNavigate()
+
   const { jobCode } = Route.useParams()
+  const { pageNumber, pageSize, search, sort } = Route.useSearch()
 
   const [selectedTestExamIds, setSelectedTestExamIds] = useState<string[]>([])
-
-  const { pageNumber, pageSize, search, sort } = Route.useSearch()
 
   const { Icon: CodeSortIcon, sorter: handleSortByCode } = useSort({ key: 'code', sortParams: sort })
   const { Icon: NameSortIcon, sorter: handleSortByName } = useSort({ key: 'name', sortParams: sort })
@@ -34,11 +40,52 @@ function JobAddTestExamsPage() {
     sortParams: sort
   })
 
-  const { data, isPending } = useJobAddableTestExams(jobCode, { pageNumber, pageSize, search, sort })
+  const { data, isLoading } = useJobAddableTestExams(jobCode, { pageNumber, pageSize, search, sort })
+
+  const { mutate, isPending } = useJobAddTestExam()
 
   const handleCheckedChange = (value: CheckedState, testExamId: string) => {
     const checked = value.valueOf() as boolean
     setSelectedTestExamIds((prev) => (checked ? [...prev, testExamId] : prev.filter((i) => i !== testExamId)))
+  }
+
+  const handleAddTestExams = () => {
+    if (selectedTestExamIds.length === 0) return
+
+    mutate(
+      { jobCode, testExamIds: selectedTestExamIds },
+      {
+        onSuccess: () => {
+          toast({
+            title: `Test exams have been added successfully`,
+            variant: 'success'
+          })
+
+          return navigate({
+            to: `/jobs/${jobCode}/test-exams`
+          })
+        },
+        onError: (error) => {
+          if (!isAxiosError<ErrorResponse>(error) || error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR) {
+            toast({
+              title: `Test exams have been added failure`,
+              description: 'Some thing went wrong.',
+              variant: 'danger'
+            })
+
+            return
+          }
+
+          toast({
+            title: `Test exams have been added failure`,
+            description: error.response?.data.message,
+            variant: 'danger'
+          })
+
+          console.log({ error })
+        }
+      }
+    )
   }
 
   return (
@@ -46,6 +93,20 @@ function JobAddTestExamsPage() {
       <div className='flex items-center justify-between gap-x-5'>
         <h3 className='mb-4 text-2xl font-semibold'>Add test exams to {jobCode}</h3>
         <div>{selectedTestExamIds.length} test exams have selected</div>
+      </div>
+
+      <div className='flex flex-wrap items-center justify-between gap-x-4'>
+        <SearchForm search={search} placeholder='Search test exams' />
+        <div className='flex items-center justify-end gap-x-4'>
+          <Button variant='secondary'>
+            <Link to={`/jobs/${jobCode}/test-exams`} disabled={isPending}>
+              Cancel
+            </Link>
+          </Button>
+          <Button onClick={handleAddTestExams} disabled={selectedTestExamIds.length === 0 || isPending}>
+            Add Test Exams
+          </Button>
+        </div>
       </div>
 
       <div className='my-5 rounded-2xl bg-card p-4'>
@@ -88,12 +149,13 @@ function JobAddTestExamsPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {isPending && <TableRowsSkeleton colSpan={6} pageSize={pageSize} />}
+                {isLoading && <TableRowsSkeleton colSpan={6} pageSize={pageSize} />}
 
                 {data?.items.map((testExam) => (
                   <TableRow key={testExam.id}>
                     <TableCell className=''>
                       <Checkbox
+                        disabled={isPending}
                         onCheckedChange={(value) => handleCheckedChange(value, testExam.id)}
                         checked={selectedTestExamIds.includes(testExam.id)}
                       />
@@ -110,19 +172,12 @@ function JobAddTestExamsPage() {
           </div>
         </div>
 
-        {!isPending && data?.items.length === 0 && (
+        {!isLoading && data?.items.length === 0 && (
           <div className='mt-36 text-center text-xl font-bold'>Not found any Test Exams.</div>
         )}
       </div>
 
       {data && data.items.length > 0 && <Paginator metadata={data.metadata} />}
-
-      <div className='flex items-center justify-end gap-x-4'>
-        <Button variant='secondary'>
-          <Link to={`/jobs/${jobCode}/test-exams`}>Cancel</Link>
-        </Button>
-        <Button disabled={selectedTestExamIds.length === 0}>Add Test Exams</Button>
-      </div>
     </section>
   )
 }
