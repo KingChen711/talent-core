@@ -12,7 +12,7 @@ import { CheckedState } from '@radix-ui/react-checkbox'
 import { useQueryClient } from '@tanstack/react-query'
 import { Link, createFileRoute } from '@tanstack/react-router'
 import { StatusCodes } from 'http-status-codes'
-import { Search } from 'lucide-react'
+import { Loader2, Search } from 'lucide-react'
 import { useState } from 'react'
 
 export const Route = createFileRoute('/_employee-layout/jobs/$jobCode/test-exams')({
@@ -89,12 +89,12 @@ function JobTestExamsPage() {
             disabled={selectedTestExamIds.length === 0 || isPending}
             variant='secondary'
           >
-            <Link to={`/jobs/${jobCode}/test-exams`} disabled={isPending}>
-              Remove
-            </Link>
+            Remove {isPending && <Loader2 className='ml-1 size-4 animate-spin' />}
           </Button>
           <Button disabled={isPending} asChild>
-            <Link to={`/jobs/${jobCode}/add-test-exams`}>Add Test Exams</Link>
+            <Link to={`/jobs/${jobCode}/add-test-exams`} disabled={isPending}>
+              Add Test Exams
+            </Link>
           </Button>
         </div>
       </div>

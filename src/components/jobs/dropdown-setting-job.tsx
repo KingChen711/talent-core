@@ -41,7 +41,7 @@ function DropdownSettingJob({ jobId, jobCode }: Props) {
           <DialogTrigger asChild>
             <DropdownMenuItem className='cursor-pointer' asChild>
               <div className='flex cursor-pointer items-center gap-x-2 rounded-sm px-2 py-[6px] text-sm leading-5 hover:bg-muted'>
-                <img alt='edit' src='/icons/recruitment.svg' className='size-4' />
+                <img alt='edit' src='/icons/side-bar/recruitment-active.svg' className='size-4' />
                 Open This Job
               </div>
             </DropdownMenuItem>

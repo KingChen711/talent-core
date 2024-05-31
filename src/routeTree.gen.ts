@@ -19,11 +19,12 @@ import { Route as EmployeeLayoutDashboardImport } from './routes/_employee-layou
 import { Route as AuthLayoutSignUpImport } from './routes/_auth-layout/sign-up'
 import { Route as AuthLayoutSignInImport } from './routes/_auth-layout/sign-in'
 import { Route as EmployeeLayoutTestExamsIndexImport } from './routes/_employee-layout/test-exams/index'
+import { Route as EmployeeLayoutRecruitmentDrivesIndexImport } from './routes/_employee-layout/recruitment-drives/index'
 import { Route as EmployeeLayoutJobsIndexImport } from './routes/_employee-layout/jobs/index'
 import { Route as EmployeeLayoutTestExamsCreateImport } from './routes/_employee-layout/test-exams/create'
+import { Route as EmployeeLayoutRecruitmentDrivesCreateImport } from './routes/_employee-layout/recruitment-drives/create'
 import { Route as EmployeeLayoutJobsCreateImport } from './routes/_employee-layout/jobs/create'
 import { Route as EmployeeLayoutTestExamsTestExamIdTestSessionsImport } from './routes/_employee-layout/test-exams/$testExamId.test-sessions'
-import { Route as EmployeeLayoutTestExamsTestExamIdJobsImport } from './routes/_employee-layout/test-exams/$testExamId.jobs'
 import { Route as EmployeeLayoutTestExamsTestExamIdEditImport } from './routes/_employee-layout/test-exams/$testExamId.edit'
 import { Route as EmployeeLayoutTestExamsTestExamCodeJobsImport } from './routes/_employee-layout/test-exams/$testExamCode.jobs'
 import { Route as EmployeeLayoutTestExamsTestExamCodeAddJobsImport } from './routes/_employee-layout/test-exams/$testExamCode.add-jobs'
@@ -74,6 +75,12 @@ const EmployeeLayoutTestExamsIndexRoute =
     getParentRoute: () => EmployeeLayoutRoute,
   } as any)
 
+const EmployeeLayoutRecruitmentDrivesIndexRoute =
+  EmployeeLayoutRecruitmentDrivesIndexImport.update({
+    path: '/recruitment-drives/',
+    getParentRoute: () => EmployeeLayoutRoute,
+  } as any)
+
 const EmployeeLayoutJobsIndexRoute = EmployeeLayoutJobsIndexImport.update({
   path: '/jobs/',
   getParentRoute: () => EmployeeLayoutRoute,
@@ -85,6 +92,12 @@ const EmployeeLayoutTestExamsCreateRoute =
     getParentRoute: () => EmployeeLayoutRoute,
   } as any)
 
+const EmployeeLayoutRecruitmentDrivesCreateRoute =
+  EmployeeLayoutRecruitmentDrivesCreateImport.update({
+    path: '/recruitment-drives/create',
+    getParentRoute: () => EmployeeLayoutRoute,
+  } as any)
+
 const EmployeeLayoutJobsCreateRoute = EmployeeLayoutJobsCreateImport.update({
   path: '/jobs/create',
   getParentRoute: () => EmployeeLayoutRoute,
@@ -93,12 +106,6 @@ const EmployeeLayoutJobsCreateRoute = EmployeeLayoutJobsCreateImport.update({
 const EmployeeLayoutTestExamsTestExamIdTestSessionsRoute =
   EmployeeLayoutTestExamsTestExamIdTestSessionsImport.update({
     path: '/test-exams/$testExamId/test-sessions',
-    getParentRoute: () => EmployeeLayoutRoute,
-  } as any)
-
-const EmployeeLayoutTestExamsTestExamIdJobsRoute =
-  EmployeeLayoutTestExamsTestExamIdJobsImport.update({
-    path: '/test-exams/$testExamId/jobs',
     getParentRoute: () => EmployeeLayoutRoute,
   } as any)
 
@@ -198,6 +205,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EmployeeLayoutJobsCreateImport
       parentRoute: typeof EmployeeLayoutImport
     }
+    '/_employee-layout/recruitment-drives/create': {
+      id: '/_employee-layout/recruitment-drives/create'
+      path: '/recruitment-drives/create'
+      fullPath: '/recruitment-drives/create'
+      preLoaderRoute: typeof EmployeeLayoutRecruitmentDrivesCreateImport
+      parentRoute: typeof EmployeeLayoutImport
+    }
     '/_employee-layout/test-exams/create': {
       id: '/_employee-layout/test-exams/create'
       path: '/test-exams/create'
@@ -210,6 +224,13 @@ declare module '@tanstack/react-router' {
       path: '/jobs'
       fullPath: '/jobs'
       preLoaderRoute: typeof EmployeeLayoutJobsIndexImport
+      parentRoute: typeof EmployeeLayoutImport
+    }
+    '/_employee-layout/recruitment-drives/': {
+      id: '/_employee-layout/recruitment-drives/'
+      path: '/recruitment-drives'
+      fullPath: '/recruitment-drives'
+      preLoaderRoute: typeof EmployeeLayoutRecruitmentDrivesIndexImport
       parentRoute: typeof EmployeeLayoutImport
     }
     '/_employee-layout/test-exams/': {
@@ -261,13 +282,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EmployeeLayoutTestExamsTestExamIdEditImport
       parentRoute: typeof EmployeeLayoutImport
     }
-    '/_employee-layout/test-exams/$testExamId/jobs': {
-      id: '/_employee-layout/test-exams/$testExamId/jobs'
-      path: '/test-exams/$testExamId/jobs'
-      fullPath: '/test-exams/$testExamId/jobs'
-      preLoaderRoute: typeof EmployeeLayoutTestExamsTestExamIdJobsImport
-      parentRoute: typeof EmployeeLayoutImport
-    }
     '/_employee-layout/test-exams/$testExamId/test-sessions': {
       id: '/_employee-layout/test-exams/$testExamId/test-sessions'
       path: '/test-exams/$testExamId/test-sessions'
@@ -288,8 +302,10 @@ export const routeTree = rootRoute.addChildren({
   EmployeeLayoutRoute: EmployeeLayoutRoute.addChildren({
     EmployeeLayoutDashboardRoute,
     EmployeeLayoutJobsCreateRoute,
+    EmployeeLayoutRecruitmentDrivesCreateRoute,
     EmployeeLayoutTestExamsCreateRoute,
     EmployeeLayoutJobsIndexRoute,
+    EmployeeLayoutRecruitmentDrivesIndexRoute,
     EmployeeLayoutTestExamsIndexRoute,
     EmployeeLayoutJobsJobCodeAddTestExamsRoute,
     EmployeeLayoutJobsJobCodeTestExamsRoute,
@@ -297,7 +313,6 @@ export const routeTree = rootRoute.addChildren({
     EmployeeLayoutTestExamsTestExamCodeAddJobsRoute,
     EmployeeLayoutTestExamsTestExamCodeJobsRoute,
     EmployeeLayoutTestExamsTestExamIdEditRoute,
-    EmployeeLayoutTestExamsTestExamIdJobsRoute,
     EmployeeLayoutTestExamsTestExamIdTestSessionsRoute,
   }),
   MainLayoutRoute: MainLayoutRoute.addChildren({ MainLayoutIndexRoute }),

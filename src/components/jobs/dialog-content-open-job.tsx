@@ -26,7 +26,7 @@ function DialogContentOpenJob({ jobId }: Props) {
   return (
     <DialogContent>
       <DialogHeader>
-        <DialogTitle>Open Job In Current Recruitment Round</DialogTitle>
+        <DialogTitle>Open Job In Current Recruitment Drive</DialogTitle>
         <DialogDescription asChild>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className='mt-4'>

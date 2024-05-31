@@ -13,10 +13,30 @@ export const employeeRoutes = [
     route: '/test-exams',
     label: 'Test Exams',
     icon: (active: boolean) => (active ? '/icons/side-bar/test-exam-active.svg' : '/icons/side-bar/test-exam.svg')
+  },
+  {
+    route: '/recruitment-drives',
+    label: 'Recruitment Drives',
+    icon: (active: boolean) => (active ? '/icons/side-bar/recruitment-active.svg' : '/icons/side-bar/recruitment.svg')
   }
 ] as const
 
 export const jobTabs = [
+  {
+    label: 'All',
+    status: 'all'
+  },
+  {
+    label: 'Opening',
+    status: 'opening'
+  },
+  {
+    label: 'Closed',
+    status: 'closed'
+  }
+] as const
+
+export const recruitmentDriveTabs = [
   {
     label: 'All',
     status: 'all'

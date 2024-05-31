@@ -221,7 +221,7 @@ function JobForm({ type, jobId }: Props) {
                               htmlFor='openInCurrentRecruitment'
                               className='flex items-center gap-x-4 no-underline'
                             >
-                              Add this job to opening recruitment round
+                              Add this job to current recruitment drive
                             </FormLabel>
                           </div>
                         </AccordionTrigger>

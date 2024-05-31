@@ -15,6 +15,7 @@ import { ErrorResponse } from '@/types'
 import { CheckedState } from '@radix-ui/react-checkbox'
 import { Link, createFileRoute, useNavigate } from '@tanstack/react-router'
 import { StatusCodes } from 'http-status-codes'
+import { Loader2 } from 'lucide-react'
 import { useState } from 'react'
 
 export const Route = createFileRoute('/_employee-layout/test-exams/$testExamCode/add-jobs')({
@@ -89,13 +90,13 @@ function TestExamAddJobsPage() {
       <div className='flex flex-wrap items-center justify-between gap-x-4'>
         <SearchForm search={search} placeholder='Search jobs...' />
         <div className='flex items-center justify-end gap-x-4'>
-          <Button variant='secondary'>
+          <Button variant='secondary' disabled={isPending}>
             <Link to={`/test-exams/${testExamCode}/jobs`} disabled={isPending}>
               Cancel
             </Link>
           </Button>
           <Button onClick={handleAddTestExams} disabled={selectedJobIds.length === 0 || isPending}>
-            Add Jobs
+            Add Jobs {isPending && <Loader2 className='ml-1 size-4 animate-spin' />}
           </Button>
         </div>
       </div>

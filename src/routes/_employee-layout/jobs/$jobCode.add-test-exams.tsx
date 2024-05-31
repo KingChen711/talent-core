@@ -17,6 +17,7 @@ import { StatusCodes } from 'http-status-codes'
 import { ErrorResponse } from '@/types'
 import SearchForm from '@/components/shared/search-form'
 import { testExamSearchSchema } from '@/lib/validation/test-exam.validation'
+import { Loader2 } from 'lucide-react'
 
 export const Route = createFileRoute('/_employee-layout/jobs/$jobCode/add-test-exams')({
   component: JobAddTestExamsPage,
@@ -96,13 +97,13 @@ function JobAddTestExamsPage() {
       <div className='flex flex-wrap items-center justify-between gap-x-4'>
         <SearchForm search={search} placeholder='Search test exams' />
         <div className='flex items-center justify-end gap-x-4'>
-          <Button variant='secondary'>
+          <Button variant='secondary' disabled={isPending}>
             <Link to={`/jobs/${jobCode}/test-exams`} disabled={isPending}>
               Cancel
             </Link>
           </Button>
           <Button onClick={handleAddTestExams} disabled={selectedTestExamIds.length === 0 || isPending}>
-            Add Test Exams
+            Add Test Exams {isPending && <Loader2 className='ml-1 size-4 animate-spin' />}
           </Button>
         </div>
       </div>
