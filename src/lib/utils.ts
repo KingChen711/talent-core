@@ -1,3 +1,4 @@
+import { BaseErrorResponse } from '@/types'
 import axios, { AxiosError } from 'axios'
 import { type ClassValue, clsx } from 'clsx'
 import { format } from 'date-fns'
@@ -8,7 +9,11 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function isAxiosError<T>(error: unknown): error is AxiosError<T> {
+export function isFormError<T>(error: unknown): error is AxiosError<{ errors: T }> {
+  return axios.isAxiosError(error)
+}
+
+export function isBaseError(error: unknown): error is AxiosError<BaseErrorResponse> {
   return axios.isAxiosError(error)
 }
 

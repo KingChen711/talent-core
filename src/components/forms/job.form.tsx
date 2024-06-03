@@ -1,4 +1,4 @@
-import { cn, getContrastYIQ, getRandomHexColor, isAxiosError } from '@/lib/utils'
+import { cn, getContrastYIQ, getRandomHexColor, isBaseError, isFormError } from '@/lib/utils'
 import { TMutateJobErrors, TMutationJobSchema, mutationJobSchema } from '@/lib/validation/job.validation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import React, { useMemo, useState } from 'react'
@@ -98,10 +98,16 @@ function JobForm({ type, jobId }: Props) {
         })
       },
       onError: (error) => {
-        if (
-          !isAxiosError<{ errors: TMutateJobErrors }>(error) ||
-          error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR
-        ) {
+        if (isFormError<TMutateJobErrors>(error) && error.response?.status === StatusCodes.UNPROCESSABLE_ENTITY) {
+          const fieldErrors = error.response?.data.errors
+          const keys = Object.keys(fieldErrors) as (keyof TMutateJobErrors)[]
+          keys.forEach((key) => form.setError(key, { message: fieldErrors[key] }))
+          form.setFocus(keys[0])
+
+          return
+        }
+
+        if (!isBaseError(error) || error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR) {
           toast({
             title: `Job has been ${type === 'create' ? 'created' : 'updated'} failure`,
             description: 'Some thing went wrong.',
@@ -111,18 +117,9 @@ function JobForm({ type, jobId }: Props) {
           return
         }
 
-        if (error.response?.status === StatusCodes.UNPROCESSABLE_ENTITY) {
-          const fieldErrors = error.response?.data.errors
-          const keys = Object.keys(fieldErrors) as (keyof TMutateJobErrors)[]
-          keys.forEach((key) => form.setError(key, { message: fieldErrors[key] }))
-          form.setFocus(keys[0])
-
-          return
-        }
-
         toast({
           title: `Job has been ${type === 'create' ? 'created' : 'updated'} failure`,
-          description: error.message,
+          description: error.response?.data.message,
           variant: 'danger'
         })
       }

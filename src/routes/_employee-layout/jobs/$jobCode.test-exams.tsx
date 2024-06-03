@@ -6,8 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { toast } from '@/components/ui/use-toast'
 import useJobRemoveTestExams from '@/hooks/job/use-job-remove-test-exams'
 import useJobTestExams from '@/hooks/job/use-job-test-exams'
-import { isAxiosError, toDate } from '@/lib/utils'
-import { ErrorResponse } from '@/types'
+import { isBaseError, toDate } from '@/lib/utils'
 import { CheckedState } from '@radix-ui/react-checkbox'
 import { useQueryClient } from '@tanstack/react-query'
 import { Link, createFileRoute } from '@tanstack/react-router'
@@ -54,7 +53,7 @@ function JobTestExamsPage() {
           setSelectedTestExamIds([])
         },
         onError: (error) => {
-          if (!isAxiosError<ErrorResponse>(error) || error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR) {
+          if (!isBaseError(error) || error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR) {
             toast({
               title: `Test exams have been removed failure`,
               description: 'Some thing went wrong.',

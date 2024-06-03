@@ -1,6 +1,6 @@
 import { CalendarIcon, Loader2 } from 'lucide-react'
 import { StatusCodes } from 'http-status-codes'
-import { cn, isAxiosError, toDate } from '@/lib/utils'
+import { cn, isBaseError, isFormError, toDate } from '@/lib/utils'
 import { format } from 'date-fns'
 import { useNavigate } from '@tanstack/react-router'
 import { useForm } from 'react-hook-form'
@@ -93,26 +93,30 @@ function RecruitmentDriveForm({ type, recruitmentDriveId }: Props) {
       },
       onError: (error) => {
         if (
-          !isAxiosError<{ errors: TMutateRecruitmentDriveErrors }>(error) ||
-          error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR
+          isFormError<TMutateRecruitmentDriveErrors>(error) &&
+          error.response?.status === StatusCodes.UNPROCESSABLE_ENTITY
         ) {
+          const fieldErrors = error.response?.data.errors
+          const keys = Object.keys(fieldErrors) as (keyof TMutateRecruitmentDriveErrors)[]
+          keys.forEach((key) => form.setError(key, { message: fieldErrors[key] }))
+          form.setFocus(keys[0])
+
+          return
+        }
+
+        if (!isBaseError(error) || error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR) {
           toast({
             title: `Recruitment drive has been ${type === 'create' ? 'created' : 'updated'} failure`,
             description: 'Some thing went wrong.',
             variant: 'danger'
           })
+
           return
         }
-        if (error.response?.status === StatusCodes.UNPROCESSABLE_ENTITY) {
-          const fieldErrors = error.response?.data.errors
-          const keys = Object.keys(fieldErrors) as (keyof TMutateRecruitmentDriveErrors)[]
-          keys.forEach((key) => form.setError(key, { message: fieldErrors[key] }))
-          form.setFocus(keys[0])
-          return
-        }
+
         toast({
           title: `Recruitment drive has been ${type === 'create' ? 'created' : 'updated'} failure`,
-          description: error.message,
+          description: error.response?.data.message,
           variant: 'danger'
         })
       }

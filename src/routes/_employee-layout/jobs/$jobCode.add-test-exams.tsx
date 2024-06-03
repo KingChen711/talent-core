@@ -2,7 +2,7 @@ import { Link, createFileRoute, useNavigate } from '@tanstack/react-router'
 
 import useJobAddableTestExams from '@/hooks/job/use-job-addable-test-exams'
 import useSort from '@/hooks/query/use-sort'
-import { isAxiosError, toDate } from '@/lib/utils'
+import { isBaseError, toDate } from '@/lib/utils'
 
 import { Checkbox } from '@/components/ui/checkbox'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
@@ -14,7 +14,6 @@ import { CheckedState } from '@radix-ui/react-checkbox'
 import useJobAddTestExam from '@/hooks/job/use-job-add-test-exams'
 import { toast } from '@/components/ui/use-toast'
 import { StatusCodes } from 'http-status-codes'
-import { ErrorResponse } from '@/types'
 import SearchForm from '@/components/shared/search-form'
 import { testExamSearchSchema } from '@/lib/validation/test-exam.validation'
 import { Loader2 } from 'lucide-react'
@@ -67,7 +66,7 @@ function JobAddTestExamsPage() {
           })
         },
         onError: (error) => {
-          if (!isAxiosError<ErrorResponse>(error) || error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR) {
+          if (!isBaseError(error) || error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR) {
             toast({
               title: `Test exams have been added failure`,
               description: 'Some thing went wrong.',

@@ -49,7 +49,12 @@ export type TMutateJobErrors = {
 }
 
 export const openJobSchema = z.object({
-  quantityInCurrentRecruitment: z.coerce.number().int().min(1)
+  jobId: z.string(),
+  quantity: z.coerce.number().int().min(1)
 })
 
 export type TOpenJobSchema = z.infer<typeof openJobSchema>
+
+export type TOpenJobErrors = {
+  [key in keyof TOpenJobSchema]: string
+}

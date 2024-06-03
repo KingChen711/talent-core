@@ -13,6 +13,8 @@ import { Loader2 } from 'lucide-react'
 import { toast } from '../ui/use-toast'
 import { useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
+import { isBaseError } from '@/lib/utils'
+import { StatusCodes } from 'http-status-codes'
 
 type Props = {
   jobId: string
@@ -32,6 +34,23 @@ function DialogDeleteJob({ jobId }: Props) {
         })
         queryClient.invalidateQueries({ queryKey: ['jobs'] })
         setOpen(false)
+      },
+      onError: (error) => {
+        if (!isBaseError(error) || error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR) {
+          toast({
+            title: `Job has been delete failure`,
+            description: 'Some thing went wrong.',
+            variant: 'danger'
+          })
+
+          return
+        }
+
+        toast({
+          title: `Job has been delete failure`,
+          description: error.response?.data.message,
+          variant: 'danger'
+        })
       }
     })
   }

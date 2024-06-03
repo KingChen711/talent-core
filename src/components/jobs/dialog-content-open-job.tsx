@@ -1,26 +1,72 @@
 import { DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogClose } from '../ui/dialog'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { Input } from '../ui/input'
-import { TOpenJobSchema, openJobSchema } from '../../lib/validation/job.validation'
+import { TOpenJobErrors, TOpenJobSchema, openJobSchema } from '../../lib/validation/job.validation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '../ui/button'
+import useAddJobToCurrentRecruitmentDrive from '@/hooks/recruitment-drive/use-add-job-to-current-recruitment-drive'
+import { toast } from '../ui/use-toast'
+import { useNavigate } from '@tanstack/react-router'
+import { StatusCodes } from 'http-status-codes'
+import { isBaseError, isFormError } from '@/lib/utils'
 
 type Props = {
   jobId: string
 }
 
 function DialogContentOpenJob({ jobId }: Props) {
+  const navigate = useNavigate()
+
   const form = useForm<TOpenJobSchema>({
     resolver: zodResolver(openJobSchema),
     defaultValues: {
-      quantityInCurrentRecruitment: 1
+      jobId,
+      quantity: 1
     }
   })
 
+  const { mutate, isPending } = useAddJobToCurrentRecruitmentDrive()
+
   const onSubmit = async (values: TOpenJobSchema) => {
-    console.log({ jobId })
-    console.log(values)
+    mutate(values, {
+      onSuccess: (data) => {
+        toast({
+          title: `Job has been open in current recruitment drive successfully`,
+          variant: 'success'
+        })
+
+        return navigate({
+          to: `/recruitment-drives/${data.recruitmentDriveId}/detail`
+        })
+      },
+      onError: (error) => {
+        if (isFormError<TOpenJobErrors>(error) && error.response?.status === StatusCodes.UNPROCESSABLE_ENTITY) {
+          const fieldErrors = error.response?.data.errors
+          const keys = Object.keys(fieldErrors) as (keyof TOpenJobErrors)[]
+          keys.forEach((key) => form.setError(key, { message: fieldErrors[key] }))
+          form.setFocus(keys[0])
+
+          return
+        }
+
+        if (!isBaseError(error) || error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR) {
+          toast({
+            title: `Job has been open in current recruitment drive failure`,
+            description: 'Some thing went wrong.',
+            variant: 'danger'
+          })
+
+          return
+        }
+
+        toast({
+          title: `Job has been open in current recruitment drive failure`,
+          description: error.response?.data.message,
+          variant: 'danger'
+        })
+      }
+    })
   }
 
   return (
@@ -32,7 +78,7 @@ function DialogContentOpenJob({ jobId }: Props) {
             <form onSubmit={form.handleSubmit(onSubmit)} className='mt-4'>
               <FormField
                 control={form.control}
-                name='quantityInCurrentRecruitment'
+                name='quantity'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className='text-base'>Number of candidates needed</FormLabel>
@@ -45,6 +91,7 @@ function DialogContentOpenJob({ jobId }: Props) {
                           type='number'
                           className='text-base'
                           placeholder='Number of candidates needed...'
+                          disabled={isPending}
                         />
                       </div>
                     </FormControl>
@@ -55,12 +102,12 @@ function DialogContentOpenJob({ jobId }: Props) {
 
               <div className='flex justify-end gap-x-4'>
                 <DialogClose asChild>
-                  <Button variant='secondary' className='float-right mt-4'>
+                  <Button disabled={isPending} variant='secondary' className='float-right mt-4'>
                     Cancel
                   </Button>
                 </DialogClose>
 
-                <Button type='submit' className='float-right mt-4'>
+                <Button disabled={isPending} type='submit' className='float-right mt-4'>
                   Submit
                 </Button>
               </div>

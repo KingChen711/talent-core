@@ -4,9 +4,11 @@ import { Link } from '@tanstack/react-router'
 
 type Props = {
   recruitmentDriveId: string
+  recruitmentDriveCode: string
+  showAddJobs: boolean
 }
 
-function DropdownSettingRecruitmentDrive({ recruitmentDriveId }: Props) {
+function DropdownSettingRecruitmentDrive({ recruitmentDriveId, recruitmentDriveCode, showAddJobs }: Props) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -16,11 +18,25 @@ function DropdownSettingRecruitmentDrive({ recruitmentDriveId }: Props) {
       </DropdownMenuTrigger>
       <DropdownMenuContent className='border-2'>
         <DropdownMenuItem className='cursor-pointer' asChild>
+          <Link to={`/recruitment-drives/${recruitmentDriveId}/detail`} className='flex items-center gap-x-2'>
+            <img alt='edit' src='/icons/actions/view.svg' className='size-4' />
+            View Detail
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem className='cursor-pointer' asChild>
           <Link to={`/recruitment-drives/${recruitmentDriveId}/edit`} className='flex items-center gap-x-2'>
             <img alt='edit' src='/icons/actions/edit.svg' className='size-4' />
             Update
           </Link>
         </DropdownMenuItem>
+        {showAddJobs && (
+          <DropdownMenuItem className='cursor-pointer' asChild>
+            <Link to={`/recruitment-drives/${recruitmentDriveCode}/add-jobs`} className='flex items-center gap-x-2'>
+              <img alt='edit' src='/icons/side-bar/suitcase-active.svg' className='size-4' />
+              Add Jobs
+            </Link>
+          </DropdownMenuItem>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   )

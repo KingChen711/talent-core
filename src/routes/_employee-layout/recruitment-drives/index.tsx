@@ -125,7 +125,11 @@ function RecruitmentDrivesPage() {
                       )}
                     </TableCell>
                     <TableCell className='flex justify-end'>
-                      <DropdownSettingRecruitmentDrive recruitmentDriveId={recruitmentDrive.id} />
+                      <DropdownSettingRecruitmentDrive
+                        recruitmentDriveId={recruitmentDrive.id}
+                        recruitmentDriveCode={recruitmentDrive.code}
+                        showAddJobs={recruitmentDrive.isOpening}
+                      />
                       <DialogDeleteRecruitmentDrive recruitmentDriveId={recruitmentDrive.id} />
                     </TableCell>
                   </TableRow>

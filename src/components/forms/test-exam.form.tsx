@@ -4,7 +4,7 @@ import useTestExam from '@/hooks/test-exam/use-test-exam'
 import { useNavigate } from '@tanstack/react-router'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { getExampleQuestions, getOneExampleQuestion, isAxiosError } from '@/lib/utils'
+import { getExampleQuestions, getOneExampleQuestion, isBaseError, isFormError } from '@/lib/utils'
 import { StatusCodes } from 'http-status-codes'
 import { editorPlugin, testExamsPageSize } from '@/constants'
 import {
@@ -96,27 +96,28 @@ function TestExamForm({ type, testExamId }: Props) {
         })
       },
       onError: (error) => {
-        if (
-          !isAxiosError<{ errors: TMutateTestExamErrors }>(error) ||
-          error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR
-        ) {
+        if (isFormError<TMutateTestExamErrors>(error) && error.response?.status === StatusCodes.UNPROCESSABLE_ENTITY) {
+          const fieldErrors = error.response?.data.errors
+          const keys = Object.keys(fieldErrors) as (keyof TMutateTestExamErrors)[]
+          keys.forEach((key) => form.setError(key, { message: fieldErrors[key] }))
+          form.setFocus(keys[0])
+
+          return
+        }
+
+        if (!isBaseError(error) || error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR) {
           toast({
             title: `Test exam has been ${type === 'create' ? 'created' : 'updated'} failure`,
             description: 'Some thing went wrong.',
             variant: 'danger'
           })
+
           return
         }
-        if (error.response?.status === StatusCodes.UNPROCESSABLE_ENTITY) {
-          const fieldErrors = error.response?.data.errors
-          const keys = Object.keys(fieldErrors) as (keyof TMutateTestExamErrors)[]
-          keys.forEach((key) => form.setError(key, { message: fieldErrors[key] }))
-          form.setFocus(keys[0])
-          return
-        }
+
         toast({
           title: `Test exam has been ${type === 'create' ? 'created' : 'updated'} failure`,
-          description: error.message,
+          description: error.response?.data.message,
           variant: 'danger'
         })
       }

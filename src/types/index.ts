@@ -9,7 +9,7 @@ export type PagingMetaData = {
   hasNext: boolean
 }
 
-export type ErrorResponse = {
+export type BaseErrorResponse = {
   statusCode: number
   message: string
 }
