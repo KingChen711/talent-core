@@ -2,15 +2,17 @@ import RecruitmentDriveForm from '@/components/forms/recruitment-drive.form'
 import { Button } from '@/components/ui/button'
 import { Link, createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/_employee-layout/recruitment-drives/create')({
-  component: CreateRecruitmentDrivePage
+export const Route = createFileRoute('/_employee-layout/recruitment-drives/$recruitmentDriveId/edit')({
+  component: UpdateRecruitmentDrivePage
 })
 
-function CreateRecruitmentDrivePage() {
+function UpdateRecruitmentDrivePage() {
+  const { recruitmentDriveId } = Route.useParams()
+
   return (
     <div className='flex flex-col'>
       <div className='flex items-center justify-between'>
-        <div className='mb-5 text-2xl font-semibold'>Create Recruitment Drive</div>
+        <div className='mb-5 text-2xl font-semibold'>Edit Recruitment Drive</div>
         <Button>
           <Link
             to='/recruitment-drives'
@@ -31,9 +33,9 @@ function CreateRecruitmentDrivePage() {
         </Button>
       </div>
 
-      <RecruitmentDriveForm type='create' />
+      <RecruitmentDriveForm type='update' recruitmentDriveId={recruitmentDriveId} />
     </div>
   )
 }
 
-export default CreateRecruitmentDrivePage
+export default UpdateRecruitmentDrivePage

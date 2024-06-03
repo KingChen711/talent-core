@@ -1,3 +1,5 @@
+import DialogDeleteRecruitmentDrive from '@/components/recruitment-drive/dialog-delete-recruitment-drive'
+import DropdownSettingRecruitmentDrive from '@/components/recruitment-drive/dropdown-setting-recruitment-drive'
 import Paginator from '@/components/shared/paginator'
 import SearchForm from '@/components/shared/search-form'
 import TableRowsSkeleton from '@/components/shared/table-rows-skeleton'
@@ -23,6 +25,7 @@ function RecruitmentDrivesPage() {
   const { Icon: StartDateSortIcon, sorter: handleSortByStartDate } = useSort({ key: 'startDate', sortParams: sort })
   const { Icon: EndDateSortIcon, sorter: handleSortByEndDate } = useSort({ key: 'endDate', sortParams: sort })
   const { Icon: NameSortIcon, sorter: handleSortByName } = useSort({ key: 'name', sortParams: sort })
+  const { Icon: CodeSortIcon, sorter: handleSortByCode } = useSort({ key: 'code', sortParams: sort })
   const { Icon: CreatedAtSortIcon, sorter: handleSortByCreatedAt } = useSort({ key: 'createdAt', sortParams: sort })
 
   const { data, isPending } = useRecruitmentDrives({ pageNumber, pageSize, search, status, sort })
@@ -66,21 +69,27 @@ function RecruitmentDrivesPage() {
             <Table className='overflow-hidden'>
               <TableHeader className='rounded-lg bg-border'>
                 <TableRow className='rounded-lg'>
+                  <TableHead onClick={handleSortByCode} className='h-10 cursor-pointer rounded-l-lg'>
+                    <div className='flex items-center'>
+                      <p className='select-none'>Code</p>
+                      <CodeSortIcon />
+                    </div>
+                  </TableHead>
                   <TableHead onClick={handleSortByName} className='h-10 cursor-pointer rounded-l-lg'>
                     <div className='flex items-center'>
                       <p className='select-none'>Name</p>
                       <NameSortIcon />
                     </div>
                   </TableHead>
-                  <TableHead onClick={handleSortByStartDate} className='h-10 cursor-pointer rounded-l-lg'>
-                    <div className='flex items-center'>
-                      <p className='select-none'>StartDate</p>
+                  <TableHead onClick={handleSortByStartDate} className='h-10 w-fit cursor-pointer'>
+                    <div className='flex items-center justify-center'>
+                      <p className='select-none'>Start Date</p>
                       <StartDateSortIcon />
                     </div>
                   </TableHead>
-                  <TableHead onClick={handleSortByEndDate} className='h-10 cursor-pointer rounded-l-lg'>
-                    <div className='flex items-center'>
-                      <p className='select-none'>EndDate</p>
+                  <TableHead onClick={handleSortByEndDate} className='h-10 w-fit cursor-pointer'>
+                    <div className='flex items-center justify-center'>
+                      <p className='select-none'>End Date</p>
                       <EndDateSortIcon />
                     </div>
                   </TableHead>
@@ -91,17 +100,16 @@ function RecruitmentDrivesPage() {
                     </div>
                   </TableHead>
                   <TableHead className='h-10 select-none text-center'>Status</TableHead>
-                  <TableHead className='h-10 select-none text-nowrap rounded-r-lg text-end'>
-                    Recruitment Drive Actions
-                  </TableHead>
+                  <TableHead className='h-10 select-none text-nowrap rounded-r-lg text-end'>Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {isPending && <TableRowsSkeleton colSpan={6} pageSize={pageSize} />}
+                {isPending && <TableRowsSkeleton colSpan={7} pageSize={pageSize} />}
 
                 {data?.items.map((recruitmentDrive) => (
                   <TableRow key={recruitmentDrive.id}>
-                    <TableCell className='font-extrabold'>{recruitmentDrive.name}</TableCell>
+                    <TableCell className='font-extrabold'>{recruitmentDrive.code}</TableCell>
+                    <TableCell>{recruitmentDrive.name}</TableCell>
                     <TableCell className='text-center'>{toDate(recruitmentDrive.startDate)}</TableCell>
                     <TableCell className='text-center'>{toDate(recruitmentDrive.endDate)}</TableCell>
                     <TableCell className='text-center'>{toDate(recruitmentDrive.createdAt)}</TableCell>
@@ -117,11 +125,8 @@ function RecruitmentDrivesPage() {
                       )}
                     </TableCell>
                     <TableCell className='flex justify-end'>
-                      {/* <DropdownSettingRecruitmentDrive
-                        recruitmentDriveId={recruitmentDrive.id}
-                        recruitmentDriveCode={recruitmentDrive.code}
-                      />
-                      <DialogDeleteRecruitmentDrive recruitmentDriveId={recruitmentDrive.id} /> */}
+                      <DropdownSettingRecruitmentDrive recruitmentDriveId={recruitmentDrive.id} />
+                      <DialogDeleteRecruitmentDrive recruitmentDriveId={recruitmentDrive.id} />
                     </TableCell>
                   </TableRow>
                 ))}

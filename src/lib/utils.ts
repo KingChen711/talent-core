@@ -1,5 +1,6 @@
 import axios, { AxiosError } from 'axios'
 import { type ClassValue, clsx } from 'clsx'
+import { format } from 'date-fns'
 import { twMerge } from 'tailwind-merge'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -52,14 +53,7 @@ export function getContrastYIQ(hex: string): string {
 }
 
 export function toDate(isoString: Date): string {
-  const date = new Date(isoString)
-
-  const day = String(date.getDate()).padStart(2, '0')
-  const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-  const month = monthNames[date.getMonth()]
-  const year = date.getFullYear()
-
-  return `${day} ${month} ${year}`
+  return format(isoString, 'PPP')
 }
 
 export function getExampleQuestions() {

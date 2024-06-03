@@ -177,7 +177,7 @@ function TestExamForm({ type, testExamId }: Props) {
           render={({ field }) => (
             <FormItem>
               <FormLabel className='flex items-center'>
-                Code<span className='text-gradient text-3xl'>*</span>
+                Code<span className='text-gradient text-2xl font-bold leading-none'>*</span>
               </FormLabel>
               <FormControl>
                 <Input disabled={disabling} placeholder='Code...' {...field} />
@@ -193,7 +193,7 @@ function TestExamForm({ type, testExamId }: Props) {
           render={({ field }) => (
             <FormItem>
               <FormLabel className='flex items-center'>
-                Test Name<span className='text-gradient text-3xl'>*</span>
+                Test Name<span className='text-gradient text-2xl font-bold leading-none'>*</span>
               </FormLabel>
               <FormControl>
                 <Input disabled={disabling} placeholder='Test Name...' {...field} />
@@ -209,7 +209,7 @@ function TestExamForm({ type, testExamId }: Props) {
           render={({ field }) => (
             <FormItem>
               <FormLabel className='flex items-center'>
-                Condition Point<span className='text-gradient text-3xl'>*</span>
+                Condition Point<span className='text-gradient text-2xl font-bold leading-none'>*</span>
               </FormLabel>
               <FormControl>
                 <Input disabled={disabling} placeholder='Condition Point...' {...field} />
@@ -225,7 +225,7 @@ function TestExamForm({ type, testExamId }: Props) {
           render={({ field }) => (
             <FormItem>
               <FormLabel className='flex items-center'>
-                Duration (minutes)<span className='text-gradient text-3xl'>*</span>
+                Duration (minutes)<span className='text-gradient text-2xl font-bold leading-none'>*</span>
               </FormLabel>
               <FormControl>
                 <Input disabled={disabling} placeholder='Duration...' {...field} />

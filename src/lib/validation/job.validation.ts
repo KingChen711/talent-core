@@ -13,7 +13,13 @@ export type JobSearch = z.infer<typeof jobSearchSchema>
 
 export const mutationJobSchema = z
   .object({
-    code: z.string().min(2).max(50),
+    code: z
+      .string()
+      .min(2)
+      .max(50)
+      .refine((value) => !/\s/.test(value), {
+        message: 'Code must not contain any whitespace'
+      }),
     name: z.string().min(2).max(50),
     description: z.string().optional(),
     color: z.string().regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$|^$/, 'Invalid color'),

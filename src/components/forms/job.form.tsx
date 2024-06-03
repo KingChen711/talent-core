@@ -158,7 +158,7 @@ function JobForm({ type, jobId }: Props) {
           render={({ field }) => (
             <FormItem>
               <FormLabel className='flex items-center'>
-                Code<span className='text-gradient text-3xl'>*</span>
+                Code<span className='text-gradient text-2xl font-bold leading-none'>*</span>
               </FormLabel>
               <FormControl>
                 <Input disabled={disabling} placeholder='Code...' {...field} />
@@ -174,7 +174,7 @@ function JobForm({ type, jobId }: Props) {
           render={({ field }) => (
             <FormItem>
               <FormLabel className='flex items-center'>
-                Job Name<span className='text-gradient text-3xl'>*</span>
+                Job Name<span className='text-gradient text-2xl font-bold leading-none'>*</span>
               </FormLabel>
               <FormControl>
                 <Input disabled={disabling} placeholder='Job Name...' {...field} />

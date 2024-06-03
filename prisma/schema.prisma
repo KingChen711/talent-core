@@ -212,10 +212,11 @@ type QuestionOption {
 
 model RecruitmentDrive {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  code        String   @unique
   name        String
   startDate   DateTime
   endDate     DateTime
-  description String
+  description String?
   isOpening   Boolean
   createdAt   DateTime @default(now())
 

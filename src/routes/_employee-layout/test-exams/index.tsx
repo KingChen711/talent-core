@@ -81,9 +81,7 @@ function TestExamsPage() {
                       <CreatedAtSortIcon />
                     </div>
                   </TableHead>
-                  <TableHead className='h-10 select-none text-nowrap rounded-r-lg text-end'>
-                    Test Exam Actions
-                  </TableHead>
+                  <TableHead className='h-10 select-none text-nowrap rounded-r-lg text-end'>Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

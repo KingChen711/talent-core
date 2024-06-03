@@ -48,7 +48,13 @@ export type TQuestionSchema = z.infer<typeof questionSchema>
 
 export const mutationTestExamSchema = z.object({
   id: z.string().optional(),
-  code: z.string().min(2).max(50),
+  code: z
+    .string()
+    .min(2)
+    .max(50)
+    .refine((value) => !/\s/.test(value), {
+      message: 'Code must not contain any whitespace'
+    }),
   name: z.string().min(2).max(50),
   conditionPoint: z.coerce
     .number()

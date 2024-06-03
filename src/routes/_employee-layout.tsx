@@ -24,7 +24,7 @@ function EmployeeLayout() {
       return navigate({
         to: '/sign-in',
         search: {
-          redirect: location.href
+          redirect_url: location.href
         }
       })
     } else {

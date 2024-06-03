@@ -87,7 +87,7 @@ function JobsPage() {
                     </div>
                   </TableHead>
                   <TableHead className='h-10 select-none text-center'>Status</TableHead>
-                  <TableHead className='h-10 select-none text-nowrap rounded-r-lg text-end'>Job Actions</TableHead>
+                  <TableHead className='h-10 select-none text-nowrap rounded-r-lg text-end'>Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

@@ -6,7 +6,7 @@ export const Route = createFileRoute('/_auth-layout/sign-up')({
 })
 
 function SingUp() {
-  return <SignUp forceRedirectUrl='/' signInUrl='/sign-in' />
+  return <SignUp fallbackRedirectUrl='/' signInUrl='/sign-in' />
 }
 
 export default SingUp

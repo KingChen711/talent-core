@@ -28,6 +28,7 @@ import { Route as EmployeeLayoutTestExamsTestExamIdTestSessionsImport } from './
 import { Route as EmployeeLayoutTestExamsTestExamIdEditImport } from './routes/_employee-layout/test-exams/$testExamId.edit'
 import { Route as EmployeeLayoutTestExamsTestExamCodeJobsImport } from './routes/_employee-layout/test-exams/$testExamCode.jobs'
 import { Route as EmployeeLayoutTestExamsTestExamCodeAddJobsImport } from './routes/_employee-layout/test-exams/$testExamCode.add-jobs'
+import { Route as EmployeeLayoutRecruitmentDrivesRecruitmentDriveIdEditImport } from './routes/_employee-layout/recruitment-drives/$recruitmentDriveId.edit'
 import { Route as EmployeeLayoutJobsJobIdEditImport } from './routes/_employee-layout/jobs/$jobId.edit'
 import { Route as EmployeeLayoutJobsJobCodeTestExamsImport } from './routes/_employee-layout/jobs/$jobCode.test-exams'
 import { Route as EmployeeLayoutJobsJobCodeAddTestExamsImport } from './routes/_employee-layout/jobs/$jobCode.add-test-exams'
@@ -124,6 +125,12 @@ const EmployeeLayoutTestExamsTestExamCodeJobsRoute =
 const EmployeeLayoutTestExamsTestExamCodeAddJobsRoute =
   EmployeeLayoutTestExamsTestExamCodeAddJobsImport.update({
     path: '/test-exams/$testExamCode/add-jobs',
+    getParentRoute: () => EmployeeLayoutRoute,
+  } as any)
+
+const EmployeeLayoutRecruitmentDrivesRecruitmentDriveIdEditRoute =
+  EmployeeLayoutRecruitmentDrivesRecruitmentDriveIdEditImport.update({
+    path: '/recruitment-drives/$recruitmentDriveId/edit',
     getParentRoute: () => EmployeeLayoutRoute,
   } as any)
 
@@ -261,6 +268,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EmployeeLayoutJobsJobIdEditImport
       parentRoute: typeof EmployeeLayoutImport
     }
+    '/_employee-layout/recruitment-drives/$recruitmentDriveId/edit': {
+      id: '/_employee-layout/recruitment-drives/$recruitmentDriveId/edit'
+      path: '/recruitment-drives/$recruitmentDriveId/edit'
+      fullPath: '/recruitment-drives/$recruitmentDriveId/edit'
+      preLoaderRoute: typeof EmployeeLayoutRecruitmentDrivesRecruitmentDriveIdEditImport
+      parentRoute: typeof EmployeeLayoutImport
+    }
     '/_employee-layout/test-exams/$testExamCode/add-jobs': {
       id: '/_employee-layout/test-exams/$testExamCode/add-jobs'
       path: '/test-exams/$testExamCode/add-jobs'
@@ -310,6 +324,7 @@ export const routeTree = rootRoute.addChildren({
     EmployeeLayoutJobsJobCodeAddTestExamsRoute,
     EmployeeLayoutJobsJobCodeTestExamsRoute,
     EmployeeLayoutJobsJobIdEditRoute,
+    EmployeeLayoutRecruitmentDrivesRecruitmentDriveIdEditRoute,
     EmployeeLayoutTestExamsTestExamCodeAddJobsRoute,
     EmployeeLayoutTestExamsTestExamCodeJobsRoute,
     EmployeeLayoutTestExamsTestExamIdEditRoute,
