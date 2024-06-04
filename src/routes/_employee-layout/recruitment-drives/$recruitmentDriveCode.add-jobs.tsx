@@ -6,16 +6,19 @@ import { Button } from '@/components/ui/button'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { toast } from '@/components/ui/use-toast'
-import { jobTabs } from '@/constants'
 import useSort from '@/hooks/query/use-sort'
 import useRecruitmentDriveAddableJobs from '@/hooks/recruitment-drive/use-recruitment-drive-addable-jobs'
-import { cn, isBaseError, toDate } from '@/lib/utils'
+import { isBaseError, toDate } from '@/lib/utils'
 import { jobSearchSchema } from '@/lib/validation/job.validation'
 import { Link, createFileRoute } from '@tanstack/react-router'
 import { StatusCodes } from 'http-status-codes'
 export const Route = createFileRoute('/_employee-layout/recruitment-drives/$recruitmentDriveCode/add-jobs')({
   component: RecruitmentDriveAddJobsPage,
-  validateSearch: (search) => jobSearchSchema.parse(search)
+  validateSearch: (search) => {
+    const result = jobSearchSchema.parse(search)
+    result.status = 'closed' // in this page the status is always "closed"
+    return result
+  }
 })
 
 function RecruitmentDriveAddJobsPage() {
@@ -76,26 +79,6 @@ function RecruitmentDriveAddJobsPage() {
       </div>
 
       <div className='my-5 rounded-2xl bg-card p-4'>
-        <div className='mb-4 flex gap-x-8 border-b'>
-          {jobTabs.map((tab) => {
-            const active = status === tab.status
-
-            return (
-              <Link
-                search={(prev) => ({ ...prev, status: tab.status, pageNumber: 1, sort: '-createdAt' })}
-                key={tab.status}
-                className={cn(
-                  'relative w-[70px] pb-4 text-center text-muted',
-                  active && 'text-gradient-foreground font-bold'
-                )}
-              >
-                {tab.label}
-                {active && <div className='bg-gradient absolute bottom-0 left-0 h-[3px] w-full'></div>}
-              </Link>
-            )
-          })}
-        </div>
-
         <div className='grid w-full'>
           <div className='overflow-x-auto'>
             <Table className='overflow-hidden'>
@@ -133,7 +116,7 @@ function RecruitmentDriveAddJobsPage() {
                       <p>{job.name}</p>
                     </TableCell>
                     <TableCell className='text-center'>{toDate(job.createdAt)}</TableCell>
-                    <TableCell className='text-center'>
+                    <TableCell className='text-end'>
                       <Dialog>
                         <DialogTrigger asChild>
                           <Button>Open this job</Button>

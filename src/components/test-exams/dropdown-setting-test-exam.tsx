@@ -36,7 +36,7 @@ function DropdownSettingTestExam({ testExamId, testExamCode }: Props) {
         </DropdownMenuItem>
         <DropdownMenuItem className='cursor-pointer' asChild>
           <Link to={`/test-exams/${testExamId}/test-sessions`} className='flex items-center gap-x-2'>
-            <img alt='edit' src='/icons/actions/edit.svg' className='size-4' />
+            <img alt='edit' src='/icons/actions/view.svg' className='size-4' />
             View Candidate Results
           </Link>
         </DropdownMenuItem>
