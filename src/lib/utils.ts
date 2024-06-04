@@ -1,7 +1,7 @@
 import { BaseErrorResponse } from '@/types'
 import axios, { AxiosError } from 'axios'
 import { type ClassValue, clsx } from 'clsx'
-import { format } from 'date-fns'
+import { differenceInDays, format } from 'date-fns'
 import { twMerge } from 'tailwind-merge'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -82,4 +82,17 @@ export function getOneExampleQuestion() {
   }
 
   return question
+}
+
+export function toDaysAgo(date: Date): string {
+  const now = new Date()
+  const daysDifference = differenceInDays(now, new Date(date))
+
+  if (daysDifference === 0) {
+    return 'Posted today'
+  } else if (daysDifference === 1) {
+    return 'Posted yesterday'
+  } else {
+    return `Posted ${daysDifference} days ago`
+  }
 }

@@ -7,6 +7,7 @@ type RecruitmentDriveDetail = RecruitmentDrive & {
   jobDetails: (JobDetail & {
     job: Job
     countApplicationsLastWeek: number
+    countApplicationsAccepted: number
     applications: (Application & {
       candidate: Candidate
     })[]
@@ -18,8 +19,6 @@ function useRecruitmentDriveDetail(recruitmentDriveId: string) {
 
   return useQuery({
     queryKey: ['recruitment-drives', recruitmentDriveId],
-
-    refetchOnWindowFocus: false,
     queryFn: async () =>
       talentCoreApi
         .get<RecruitmentDriveDetail>(`/api/recruitment-drives/${recruitmentDriveId}/detail`, {

@@ -5,7 +5,7 @@ import { TOpenJobErrors, TOpenJobSchema, openJobSchema } from '../../lib/validat
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '../ui/button'
-import useAddJobToCurrentRecruitmentDrive from '@/hooks/recruitment-drive/use-add-job-to-current-recruitment-drive'
+import useOpenJob from '@/hooks/recruitment-drive/use-open-job'
 import { toast } from '../ui/use-toast'
 import { useNavigate } from '@tanstack/react-router'
 import { StatusCodes } from 'http-status-codes'
@@ -26,13 +26,13 @@ function DialogContentOpenJob({ jobId }: Props) {
     }
   })
 
-  const { mutate, isPending } = useAddJobToCurrentRecruitmentDrive()
+  const { mutate, isPending } = useOpenJob()
 
   const onSubmit = async (values: TOpenJobSchema) => {
     mutate(values, {
       onSuccess: (data) => {
         toast({
-          title: `Job has been open in current recruitment drive successfully`,
+          title: `Job has been open successfully`,
           variant: 'success'
         })
 
@@ -52,7 +52,7 @@ function DialogContentOpenJob({ jobId }: Props) {
 
         if (!isBaseError(error) || error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR) {
           toast({
-            title: `Job has been open in current recruitment drive failure`,
+            title: `Job has been open failure`,
             description: 'Some thing went wrong.',
             variant: 'danger'
           })
@@ -61,7 +61,7 @@ function DialogContentOpenJob({ jobId }: Props) {
         }
 
         toast({
-          title: `Job has been open in current recruitment drive failure`,
+          title: `Job has been open failure`,
           description: error.response?.data.message,
           variant: 'danger'
         })

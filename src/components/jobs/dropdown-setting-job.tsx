@@ -4,13 +4,54 @@ import { Link } from '@tanstack/react-router'
 import { DialogTrigger } from '@radix-ui/react-dialog'
 import { Dialog } from '../ui/dialog'
 import DialogContentOpenJob from './dialog-content-open-job'
+import useCloseJob from '@/hooks/recruitment-drive/use-close-job'
+import { useQueryClient } from '@tanstack/react-query'
+import { toast } from '../ui/use-toast'
+import { isBaseError } from '@/lib/utils'
+import { StatusCodes } from 'http-status-codes'
 
 type Props = {
   jobId: string
   jobCode: string
+  isOpening: boolean
 }
 
-function DropdownSettingJob({ jobId, jobCode }: Props) {
+function DropdownSettingJob({ jobId, jobCode, isOpening }: Props) {
+  const queryClient = useQueryClient()
+  const { mutate } = useCloseJob()
+
+  const handleCloseJob = () => {
+    mutate(jobId, {
+      onSuccess: () => {
+        toast({
+          title: `Job has been closed successfully`,
+          variant: 'success'
+        })
+
+        queryClient.invalidateQueries({
+          queryKey: ['jobs']
+        })
+      },
+      onError: (error) => {
+        if (!isBaseError(error) || error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR) {
+          toast({
+            title: `Job has been closed failure`,
+            description: 'Some thing went wrong.',
+            variant: 'danger'
+          })
+
+          return
+        }
+
+        toast({
+          title: `Job has been closed failure`,
+          description: error.response?.data.message,
+          variant: 'danger'
+        })
+      }
+    })
+  }
+
   return (
     <Dialog>
       <DropdownMenu>
@@ -38,17 +79,26 @@ function DropdownSettingJob({ jobId, jobCode }: Props) {
               Add Test Exams
             </Link>
           </DropdownMenuItem>
-          <DialogTrigger asChild>
+          {!isOpening ? (
+            <DialogTrigger asChild>
+              <DropdownMenuItem className='cursor-pointer' asChild>
+                <div className='flex cursor-pointer items-center gap-x-2 rounded-sm px-2 py-[6px] text-sm leading-5 hover:bg-muted'>
+                  <img alt='edit' src='/icons/side-bar/recruitment-active.svg' className='size-4' />
+                  Open This Job
+                </div>
+              </DropdownMenuItem>
+            </DialogTrigger>
+          ) : (
             <DropdownMenuItem className='cursor-pointer' asChild>
-              <div className='flex cursor-pointer items-center gap-x-2 rounded-sm px-2 py-[6px] text-sm leading-5 hover:bg-muted'>
+              <div onClick={handleCloseJob} className='flex items-center gap-x-2'>
                 <img alt='edit' src='/icons/side-bar/recruitment-active.svg' className='size-4' />
-                Open This Job
+                Close This Job
               </div>
             </DropdownMenuItem>
-          </DialogTrigger>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
-      <DialogContentOpenJob jobId={jobId} />
+      {!isOpening && <DialogContentOpenJob jobId={jobId} />}
     </Dialog>
   )
 }

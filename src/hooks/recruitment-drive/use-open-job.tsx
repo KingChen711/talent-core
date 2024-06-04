@@ -4,7 +4,7 @@ import { useAuth } from '@clerk/clerk-react'
 import { JobDetail } from '@prisma/client'
 import { useMutation } from '@tanstack/react-query'
 
-function useAddJobToCurrentRecruitmentDrive() {
+function useOpenJob() {
   const { getToken } = useAuth()
 
   return useMutation({
@@ -14,7 +14,7 @@ function useAddJobToCurrentRecruitmentDrive() {
       console.log({ token })
 
       return talentCoreApi
-        .post<JobDetail>('/api/recruitment-drives/add-job-to-current-drive', body, {
+        .post<JobDetail>('/api/recruitment-drives/open-job', body, {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -24,4 +24,4 @@ function useAddJobToCurrentRecruitmentDrive() {
   })
 }
 
-export default useAddJobToCurrentRecruitmentDrive
+export default useOpenJob

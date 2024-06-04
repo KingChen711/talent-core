@@ -115,7 +115,7 @@ function JobsPage() {
                       )}
                     </TableCell>
                     <TableCell className='flex justify-end'>
-                      <DropdownSettingJob jobId={job.id} jobCode={job.code} />
+                      <DropdownSettingJob jobId={job.id} jobCode={job.code} isOpening={job.isOpening} />
                       <DialogDeleteJob jobId={job.id} />
                     </TableCell>
                   </TableRow>
