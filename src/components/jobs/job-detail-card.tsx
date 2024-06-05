@@ -1,0 +1,73 @@
+import { toDaysAgo } from '@/lib/utils'
+import { Badge } from '../ui/badge'
+
+type Props = {
+  color: string
+  icon: string
+  countApplications: number
+  countApplicationsApproved: number
+  countApplicationsLastWeek: number
+  quantity: number
+  name: string
+  createdAt: Date
+}
+
+function JobDetailCard({
+  color,
+  icon,
+  name,
+  createdAt,
+  quantity,
+  countApplications,
+  countApplicationsLastWeek,
+  countApplicationsApproved
+}: Props) {
+  return (
+    <div
+      style={{
+        borderColor: color
+      }}
+      className='relative flex w-72 shrink-0 flex-col gap-y-3 overflow-hidden rounded-2xl border-l-[5px] bg-card px-[10px] py-4'
+    >
+      <div className='absolute right-2 top-2 z-10 flex size-11 items-center justify-center rounded-full bg-white/10'>
+        <img className='size-5' src='/icons/actions/navigate.svg' />
+      </div>
+
+      <div
+        style={{
+          backgroundColor: color,
+          boxShadow: `0 0 90px 90px ${color}30`
+        }}
+        className='absolute right-0 top-0 z-0 size-0'
+      ></div>
+
+      <div className='z-10 flex w-[215px] items-center gap-x-3'>
+        <img className='size-12 object-cover' src={icon} />
+        <div className='flex flex-col gap-y-1'>
+          <h4 className='line-clamp-1 text-lg font-bold'>{name}</h4>
+          <p className='text-xs text-muted'>{toDaysAgo(createdAt)}</p>
+        </div>
+      </div>
+
+      <div className='z-10 flex gap-x-2'>
+        <Badge variant='secondary' className='w-fit bg-[#282828] py-1 text-sm font-normal'>
+          {countApplicationsApproved} approved
+        </Badge>
+        <Badge variant='secondary' className='w-fit bg-[#282828] py-1 text-sm font-normal'>
+          {quantity} needed
+        </Badge>
+      </div>
+
+      <div className='z-10 flex items-end justify-between'>
+        <div className='ml-1 flex items-end gap-x-2'>
+          <p className='text-[40px] font-bold leading-none'>{countApplications}</p>
+          <p className='mb-[6px] text-sm text-muted'>applications</p>
+        </div>
+
+        <div className='mb-[6px] text-sm text-success'>{countApplicationsLastWeek} in last week</div>
+      </div>
+    </div>
+  )
+}
+
+export default JobDetailCard

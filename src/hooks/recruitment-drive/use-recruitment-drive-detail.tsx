@@ -7,7 +7,7 @@ type RecruitmentDriveDetail = RecruitmentDrive & {
   jobDetails: (JobDetail & {
     job: Job
     countApplicationsLastWeek: number
-    countApplicationsAccepted: number
+    countApplicationsApproved: number
     applications: (Application & {
       candidate: Candidate
     })[]
