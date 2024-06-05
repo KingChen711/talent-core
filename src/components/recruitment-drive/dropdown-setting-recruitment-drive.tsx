@@ -18,7 +18,7 @@ function DropdownSettingRecruitmentDrive({ recruitmentDriveId, recruitmentDriveC
       </DropdownMenuTrigger>
       <DropdownMenuContent className='border-2'>
         <DropdownMenuItem className='cursor-pointer' asChild>
-          <Link to={`/recruitment-drives/${recruitmentDriveId}/detail`} className='flex items-center gap-x-2'>
+          <Link to={`/recruitment-drives/${recruitmentDriveCode}/detail`} className='flex items-center gap-x-2'>
             <img alt='edit' src='/icons/actions/view.svg' className='size-4' />
             View Detail
           </Link>

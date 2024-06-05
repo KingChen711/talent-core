@@ -3,15 +3,17 @@ import { useAuth } from '@clerk/clerk-react'
 import { Application, Candidate, Job, JobDetail, RecruitmentDrive } from '@prisma/client'
 import { useQuery } from '@tanstack/react-query'
 
-type RecruitmentDriveDetail = RecruitmentDrive & {
-  jobDetails: (JobDetail & {
-    job: Job
-    countApplicationsLastWeek: number
-    countApplicationsApproved: number
-    applications: (Application & {
-      candidate: Candidate
-    })[]
+export type JobDetails = (JobDetail & {
+  job: Job
+  countApplicationsLastWeek: number
+  countApplicationsApproved: number
+  applications: (Application & {
+    candidate: Candidate
   })[]
+})[]
+
+type RecruitmentDriveDetail = RecruitmentDrive & {
+  jobDetails: JobDetails
 }
 
 function useRecruitmentDriveDetail(recruitmentDriveId: string) {

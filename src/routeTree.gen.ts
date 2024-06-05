@@ -34,6 +34,7 @@ import { Route as EmployeeLayoutRecruitmentDrivesRecruitmentDriveCodeAddJobsImpo
 import { Route as EmployeeLayoutJobsJobIdEditImport } from './routes/_employee-layout/jobs/$jobId.edit'
 import { Route as EmployeeLayoutJobsJobCodeTestExamsImport } from './routes/_employee-layout/jobs/$jobCode.test-exams'
 import { Route as EmployeeLayoutJobsJobCodeAddTestExamsImport } from './routes/_employee-layout/jobs/$jobCode.add-test-exams'
+import { Route as EmployeeLayoutRecruitmentDrivesRecruitmentDriveCodeJobsJobCodeAddCandidateImport } from './routes/_employee-layout/recruitment-drives/$recruitmentDriveCode.jobs.$jobCode.add-candidate'
 
 // Create/Update Routes
 
@@ -165,6 +166,14 @@ const EmployeeLayoutJobsJobCodeAddTestExamsRoute =
     path: '/jobs/$jobCode/add-test-exams',
     getParentRoute: () => EmployeeLayoutRoute,
   } as any)
+
+const EmployeeLayoutRecruitmentDrivesRecruitmentDriveCodeJobsJobCodeAddCandidateRoute =
+  EmployeeLayoutRecruitmentDrivesRecruitmentDriveCodeJobsJobCodeAddCandidateImport.update(
+    {
+      path: '/recruitment-drives/$recruitmentDriveCode/jobs/$jobCode/add-candidate',
+      getParentRoute: () => EmployeeLayoutRoute,
+    } as any,
+  )
 
 // Populate the FileRoutesByPath interface
 
@@ -331,6 +340,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EmployeeLayoutTestExamsTestExamIdTestSessionsImport
       parentRoute: typeof EmployeeLayoutImport
     }
+    '/_employee-layout/recruitment-drives/$recruitmentDriveCode/jobs/$jobCode/add-candidate': {
+      id: '/_employee-layout/recruitment-drives/$recruitmentDriveCode/jobs/$jobCode/add-candidate'
+      path: '/recruitment-drives/$recruitmentDriveCode/jobs/$jobCode/add-candidate'
+      fullPath: '/recruitment-drives/$recruitmentDriveCode/jobs/$jobCode/add-candidate'
+      preLoaderRoute: typeof EmployeeLayoutRecruitmentDrivesRecruitmentDriveCodeJobsJobCodeAddCandidateImport
+      parentRoute: typeof EmployeeLayoutImport
+    }
   }
 }
 
@@ -359,6 +375,7 @@ export const routeTree = rootRoute.addChildren({
     EmployeeLayoutTestExamsTestExamCodeJobsRoute,
     EmployeeLayoutTestExamsTestExamIdEditRoute,
     EmployeeLayoutTestExamsTestExamIdTestSessionsRoute,
+    EmployeeLayoutRecruitmentDrivesRecruitmentDriveCodeJobsJobCodeAddCandidateRoute,
   }),
   MainLayoutRoute: MainLayoutRoute.addChildren({ MainLayoutIndexRoute }),
 })

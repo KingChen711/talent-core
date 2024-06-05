@@ -14,6 +14,7 @@ import Paginator from '@/components/shared/paginator'
 import SearchForm from '@/components/shared/search-form'
 import { Button } from '@/components/ui/button'
 import TableRowsSkeleton from '@/components/shared/table-rows-skeleton'
+import { useEffect } from 'react'
 
 export const Route = createFileRoute('/_employee-layout/jobs/')({
   component: JobsPage,
@@ -22,6 +23,10 @@ export const Route = createFileRoute('/_employee-layout/jobs/')({
 
 function JobsPage() {
   const { pageNumber, pageSize, search, status, sort } = Route.useSearch()
+
+  useEffect(() => {
+    console.log({ pageNumber })
+  }, [pageNumber])
 
   const { Icon: CodeSortIcon, sorter: handleSortByCode } = useSort({ key: 'code', sortParams: sort })
   const { Icon: NameSortIcon, sorter: handleSortByName } = useSort({ key: 'name', sortParams: sort })

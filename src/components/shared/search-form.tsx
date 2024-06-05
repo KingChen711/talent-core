@@ -13,6 +13,7 @@ function SearchForm({ search, placeholder }: Props) {
   const navigate = useNavigate()
   const [searchTerm, setSearchTerm] = useState(search)
   const debouncedSearchTerm = useDebounce(searchTerm, 1000)
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
     // sync "search" on url to "search" state, don't do the opposite
@@ -31,7 +32,13 @@ function SearchForm({ search, placeholder }: Props) {
       })
     }
 
-    handleSearch()
+    if (mounted) {
+      // This technique prevent the handleSearch active when use come with first load
+      handleSearch()
+      return
+    }
+
+    setMounted(true)
   }, [debouncedSearchTerm])
 
   return (

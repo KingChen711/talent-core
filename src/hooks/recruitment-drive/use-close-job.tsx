@@ -6,13 +6,13 @@ function useCloseJob() {
   const { getToken } = useAuth()
 
   return useMutation({
-    mutationFn: async (jobId: string) => {
+    mutationFn: async (jobCode: string) => {
       const token = await getToken()
 
       console.log({ token })
 
       return talentCoreApi
-        .delete(`/api/recruitment-drives/close-job/${jobId}`, {
+        .delete(`/api/recruitment-drives/close-job/${jobCode}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }

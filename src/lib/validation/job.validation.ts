@@ -49,7 +49,7 @@ export type TMutateJobErrors = {
 }
 
 export const openJobSchema = z.object({
-  jobId: z.string(),
+  jobCode: z.string(),
   quantity: z.coerce.number().int().min(1)
 })
 

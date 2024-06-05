@@ -21,7 +21,7 @@ function DropdownSettingJob({ jobId, jobCode, isOpening }: Props) {
   const { mutate } = useCloseJob()
 
   const handleCloseJob = () => {
-    mutate(jobId, {
+    mutate(jobCode, {
       onSuccess: () => {
         toast({
           title: `Job has been closed successfully`,
@@ -98,7 +98,7 @@ function DropdownSettingJob({ jobId, jobCode, isOpening }: Props) {
           )}
         </DropdownMenuContent>
       </DropdownMenu>
-      {!isOpening && <DialogContentOpenJob jobId={jobId} />}
+      {!isOpening && <DialogContentOpenJob jobCode={jobCode} />}
     </Dialog>
   )
 }

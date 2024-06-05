@@ -80,11 +80,13 @@ model Application {
   status         ApplicationStatus @default(Processing)
   receiveJobDate DateTime?
 
-  candidate        Candidate         @relation(fields: [candidateId], references: [id])
-  jobDetail        JobDetail         @relation(fields: [jobDetailId], references: [id])
+  candidate        Candidate         @relation(fields: [candidateId], references: [id], onDelete: Restrict)
+  jobDetail        JobDetail         @relation(fields: [jobDetailId], references: [id], onDelete: Restrict)
   testSession      TestSession?
   interviewSession InterviewSession?
   receiveJobWish   ReceiveJobWish?
+
+  createdAt DateTime @default(now())
 
   @@unique([candidateId, jobDetailId])
 }
@@ -136,7 +138,7 @@ model TestSession {
   startDate     DateTime
 
   application     Application      @relation(fields: [applicationId], references: [id])
-  testExam        TestExam         @relation(fields: [testExamId], references: [id])
+  testExam        TestExam         @relation(fields: [testExamId], references: [id], onDelete: Restrict)
   testSessionWish TestSessionWish?
 }
 
@@ -226,16 +228,17 @@ model RecruitmentDrive {
 }
 
 model JobDetail {
-  id                 String   @id @default(auto()) @map("_id") @db.ObjectId
-  recruitmentDriveId String   @db.ObjectId
-  jobId              String   @db.ObjectId
-  quantity           Int
-  createdAt          DateTime @default(now())
+  id                   String @id @default(auto()) @map("_id") @db.ObjectId
+  jobCode              String
+  recruitmentDriveCode String
 
-  recruitmentDrive RecruitmentDrive @relation(fields: [recruitmentDriveId], references: [id])
-  job              Job              @relation(fields: [jobId], references: [id], onDelete: Restrict)
+  quantity  Int
+  createdAt DateTime @default(now())
+
+  recruitmentDrive RecruitmentDrive @relation(fields: [recruitmentDriveCode], references: [code], onDelete: Cascade)
+  job              Job              @relation(fields: [jobCode], references: [code], onDelete: Restrict)
   applications     Application[]
 
-  @@unique([jobId, recruitmentDriveId])
-  @@index([recruitmentDriveId, createdAt(sort: Desc)])
+  @@unique([jobCode, recruitmentDriveCode])
+  @@index([recruitmentDriveCode, createdAt(sort: Desc)])
 }

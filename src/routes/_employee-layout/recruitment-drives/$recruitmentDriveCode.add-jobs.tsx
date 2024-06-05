@@ -121,7 +121,7 @@ function RecruitmentDriveAddJobsPage() {
                         <DialogTrigger asChild>
                           <Button>Open this job</Button>
                         </DialogTrigger>
-                        <DialogContentOpenJob jobId={job.id} />
+                        <DialogContentOpenJob jobCode={job.code} />
                       </Dialog>
                     </TableCell>
                   </TableRow>

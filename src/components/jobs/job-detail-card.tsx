@@ -10,6 +10,7 @@ type Props = {
   quantity: number
   name: string
   createdAt: Date
+  showNavigate?: boolean
 }
 
 function JobDetailCard({
@@ -20,7 +21,8 @@ function JobDetailCard({
   quantity,
   countApplications,
   countApplicationsLastWeek,
-  countApplicationsApproved
+  countApplicationsApproved,
+  showNavigate = true
 }: Props) {
   return (
     <div
@@ -29,14 +31,16 @@ function JobDetailCard({
       }}
       className='relative flex w-72 shrink-0 flex-col gap-y-3 overflow-hidden rounded-2xl border-l-[5px] bg-card px-[10px] py-4'
     >
-      <div className='absolute right-2 top-2 z-10 flex size-11 items-center justify-center rounded-full bg-white/10'>
-        <img className='size-5' src='/icons/actions/navigate.svg' />
-      </div>
+      {showNavigate && (
+        <div className='absolute right-2 top-2 z-10 flex size-11 items-center justify-center rounded-full bg-white/10'>
+          <img className='size-5' src='/icons/actions/navigate.svg' />
+        </div>
+      )}
 
       <div
         style={{
           backgroundColor: color,
-          boxShadow: `0 0 90px 90px ${color}30`
+          boxShadow: `0 0 90px 90px ${color}40`
         }}
         className='absolute right-0 top-0 z-0 size-0'
       ></div>
@@ -50,10 +54,10 @@ function JobDetailCard({
       </div>
 
       <div className='z-10 flex gap-x-2'>
-        <Badge variant='secondary' className='w-fit bg-[#282828] py-1 text-sm font-normal'>
+        <Badge variant='secondary' className='pointer-events-none w-fit bg-[#282828] py-1 text-sm font-normal'>
           {countApplicationsApproved} approved
         </Badge>
-        <Badge variant='secondary' className='w-fit bg-[#282828] py-1 text-sm font-normal'>
+        <Badge variant='secondary' className='pointer-events-none w-fit bg-[#282828] py-1 text-sm font-normal'>
           {quantity} needed
         </Badge>
       </div>

@@ -12,16 +12,16 @@ import { StatusCodes } from 'http-status-codes'
 import { isBaseError, isFormError } from '@/lib/utils'
 
 type Props = {
-  jobId: string
+  jobCode: string
 }
 
-function DialogContentOpenJob({ jobId }: Props) {
+function DialogContentOpenJob({ jobCode }: Props) {
   const navigate = useNavigate()
 
   const form = useForm<TOpenJobSchema>({
     resolver: zodResolver(openJobSchema),
     defaultValues: {
-      jobId,
+      jobCode,
       quantity: 1
     }
   })
@@ -37,7 +37,7 @@ function DialogContentOpenJob({ jobId }: Props) {
         })
 
         return navigate({
-          to: `/recruitment-drives/${data.recruitmentDriveId}/detail`
+          to: `/recruitment-drives/${data.recruitmentDriveCode}/detail`
         })
       },
       onError: (error) => {

@@ -1,16 +1,18 @@
 import { Link } from '@tanstack/react-router'
 import { Button } from '../ui/button'
+import { cn } from '@/lib/utils'
 
 type Props = {
   title: string
   description: string
   link?: string
   linkTitle?: string
+  className?: string
 }
 
-function NoResult({ title, description, link, linkTitle }: Props) {
+function NoResult({ title, description, link, linkTitle, className }: Props) {
   return (
-    <div className='mt-10 flex w-full flex-col items-center justify-center'>
+    <div className={cn('flex w-full flex-col items-center justify-center', className)}>
       {/* <img
         src='/assets/images/dark-illustration.png'
         alt='no result'

@@ -38,14 +38,16 @@ export const mutationRecruitmentDriveSchema = z
         message: 'Code must not contain any whitespace'
       }),
     name: z.string().min(2).max(50),
-    startDate: z.date(),
-    endDate: z.date(),
+    startDate: z.coerce.date(),
+    endDate: z.coerce.date(),
     description: z.string().optional(),
     isOpening: z.boolean()
   })
   .refine(
     (data) => {
-      return data.endDate > data.startDate
+      console.log({ start: data.startDate.getTime(), end: data.endDate.getTime() })
+
+      return data.endDate.getTime() > data.startDate.getTime()
     },
     {
       message: 'End date must be after Start date',
