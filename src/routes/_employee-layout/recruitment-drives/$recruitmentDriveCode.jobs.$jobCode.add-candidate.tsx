@@ -1,3 +1,4 @@
+import ApplicationForm from '@/components/forms/application.form'
 import { Button } from '@/components/ui/button'
 import { Link, createFileRoute } from '@tanstack/react-router'
 
@@ -18,6 +19,8 @@ function RecruitmentDriveAddCandidatePage() {
           <Link to={`/recruitment-drives/${recruitmentDriveCode}/detail`}>Cancel</Link>
         </Button>
       </div>
+
+      <ApplicationForm jobCode={jobCode} recruitmentDriveCode={recruitmentDriveCode} />
     </div>
   )
 }
