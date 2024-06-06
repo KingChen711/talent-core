@@ -1,6 +1,6 @@
 import useRecruitmentDriveDetail, { JobDetails } from '@/hooks/recruitment-drive/use-recruitment-drive-detail'
 import { toDate } from '@/lib/utils'
-import { Link, createFileRoute, useNavigate } from '@tanstack/react-router'
+import { Link, createFileRoute } from '@tanstack/react-router'
 import { Plus } from 'lucide-react'
 
 import JobDetailCard from '@/components/jobs/job-detail-card'
@@ -23,7 +23,6 @@ export const Route = createFileRoute('/_employee-layout/recruitment-drives/$recr
 
 function RecruitmentDriveDetailPage() {
   const { recruitmentDriveId } = Route.useParams()
-  const navigate = useNavigate()
 
   const { data, isLoading } = useRecruitmentDriveDetail(recruitmentDriveId)
 
