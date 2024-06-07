@@ -1,5 +1,5 @@
 import useRecruitmentDriveDetail, { JobDetails } from '@/hooks/recruitment-drive/use-recruitment-drive-detail'
-import { toDate } from '@/lib/utils'
+import { cn, toDate } from '@/lib/utils'
 import { Link, createFileRoute } from '@tanstack/react-router'
 import { Plus } from 'lucide-react'
 
@@ -16,6 +16,8 @@ import {
   DialogTrigger
 } from '@/components/ui/dialog'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { applicationTabs } from '@/constants'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 
 export const Route = createFileRoute('/_employee-layout/recruitment-drives/$recruitmentDriveId/detail')({
   component: RecruitmentDriveDetailPage
@@ -91,6 +93,65 @@ function RecruitmentDriveDetailPage() {
         <div className='text-xl font-semibold'>Candidates</div>
         <DialogSelectJobForAddCandidate recruitmentDriveCode={data.code} jobDetails={data.jobDetails} />
       </div>
+
+      <div className='my-5 rounded-2xl bg-card p-4'>
+        <div className='mb-4 flex flex-wrap gap-x-8 gap-y-3 border-b'>
+          {applicationTabs.map((tab) => {
+            const active = status === tab.status
+
+            return (
+              <Link
+                search={(prev) => ({ ...prev, status: tab.status, pageNumber: 1, sort: '-createdAt' })}
+                key={tab.status}
+                className={cn(
+                  'relative w-[90px] pb-4 text-center text-muted',
+                  active && 'text-gradient-foreground font-bold'
+                )}
+              >
+                {tab.label}
+                {active && <div className='bg-gradient absolute bottom-0 left-0 h-[3px] w-full'></div>}
+              </Link>
+            )
+          })}
+        </div>
+
+        <div className='grid w-full'>
+          <div className='overflow-x-auto'>
+            <Table className='overflow-hidden'>
+              <TableHeader className='rounded-lg bg-border'>
+                <TableRow className='rounded-lg'>
+                  <TableHead className='h-10 cursor-pointer rounded-l-lg'>
+                    <div className='flex items-center'>
+                      <p className='select-none'>Code</p>
+                      {/* <CodeSortIcon /> */}
+                    </div>
+                  </TableHead>
+
+                  <TableHead className='h-10 select-none text-center'>Status</TableHead>
+                  <TableHead className='h-10 select-none text-nowrap rounded-r-lg text-end'>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {/* {isPending && <TableRowsSkeleton colSpan={7} pageSize={pageSize} />} */}
+
+                {data.jobDetails
+                  .flatMap((jd) => jd.applications)
+                  .map((application) => (
+                    <TableRow key={application.id}>
+                      <TableCell className='font-extrabold'>{application.candidate.id}</TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </div>
+        </div>
+
+        {/* {!isPending && data?.items.length === 0 && (
+          <div className='mt-36 text-center text-xl font-bold'>Not found any Recruitment Drives.</div>
+        )} */}
+      </div>
+
+      {/* {data && data.items.length > 0 && <Paginator metadata={data.metadata} />} */}
     </section>
   )
 }

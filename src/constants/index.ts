@@ -51,6 +51,37 @@ export const recruitmentDriveTabs = [
   }
 ] as const
 
+export const applicationTabs = [
+  {
+    label: 'All',
+    status: 'all'
+  },
+  {
+    label: 'Screening',
+    status: 'screening'
+  },
+  {
+    label: 'Testing',
+    status: 'testing'
+  },
+  {
+    label: 'Interviewing',
+    status: 'interviewing'
+  },
+  {
+    label: 'Approve',
+    status: 'approve'
+  },
+  {
+    label: 'Saved',
+    status: 'saved'
+  },
+  {
+    label: 'Reject',
+    status: 'reject'
+  }
+] as const
+
 export const defaultJobIcon = '/icons/jobs/suitcase.png'
 
 export const defaultAvatar = '/images/default-avatar.png'

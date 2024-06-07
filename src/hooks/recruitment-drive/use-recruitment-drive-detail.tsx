@@ -1,6 +1,6 @@
 import { talentCoreApi } from '@/services/talent-core-api'
 import { useAuth } from '@clerk/clerk-react'
-import { Application, Candidate, Job, JobDetail, RecruitmentDrive } from '@prisma/client'
+import { Application, Candidate, Job, JobDetail, RecruitmentDrive, User } from '@prisma/client'
 import { useQuery } from '@tanstack/react-query'
 
 export type JobDetails = (JobDetail & {
@@ -8,7 +8,7 @@ export type JobDetails = (JobDetail & {
   countApplicationsLastWeek: number
   countApplicationsApproved: number
   applications: (Application & {
-    candidate: Candidate
+    candidate: Candidate & { user: User }
   })[]
 })[]
 
