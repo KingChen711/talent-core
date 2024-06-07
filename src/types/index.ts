@@ -1,3 +1,5 @@
+import { User, Role as TRole } from '@prisma/client'
+
 export type Role = 'Guest' | 'Candidate' | 'Employee'
 
 export type PagingMetaData = {
@@ -13,3 +15,5 @@ export type BaseErrorResponse = {
   statusCode: number
   message: string
 }
+
+export type UserWithRole = User & { role: TRole }

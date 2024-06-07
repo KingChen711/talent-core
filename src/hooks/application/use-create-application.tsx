@@ -17,16 +17,14 @@ function useCreateApplication() {
       const body = {
         candidateEmail: data.candidateEmail,
         createCandidate: data.createCandidate,
-        candidateData: data.createCandidate
-          ? {
-              ...data,
-              candidateEmail: undefined,
-              createCandidate: undefined
-            }
-          : undefined
+        candidateData: {
+          ...data,
+          candidateEmail: undefined,
+          createCandidate: undefined
+        }
       }
 
-      talentCoreApi.post(`/api/recruitment-drives/${recruitmentDriveCode}/jobs/${jobCode}/applications`, body, {
+      return talentCoreApi.post(`/api/recruitment-drives/${recruitmentDriveCode}/jobs/${jobCode}/applications`, body, {
         headers: {
           Authorization: `Bearer ${await getToken()}`
         }

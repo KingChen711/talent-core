@@ -13,7 +13,6 @@ export const createApplicationSchema = z.object({
   createCandidate: z.boolean(),
   candidateEmail: z.string().email(),
   fullName: z.string().min(2),
-  // Vietnamese phone number regex
   phone: z.string().regex(/^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$/, 'Invalid phone number'),
   gender: z.enum([Gender.Male, Gender.Female, Gender.Other]),
   bornYear: z.coerce.number().int().min(1900)

@@ -1,4 +1,4 @@
-import { Gender, User } from '@prisma/client'
+import { Gender } from '@prisma/client'
 import SearchCandidateForm from './search-candidate-profile-form'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { useState } from 'react'
@@ -14,6 +14,7 @@ import { Loader2 } from 'lucide-react'
 import { toast } from '../ui/use-toast'
 import { useNavigate } from '@tanstack/react-router'
 import { StatusCodes } from 'http-status-codes'
+import { UserWithRole } from '@/types'
 
 type Props = {
   jobCode: string
@@ -38,15 +39,21 @@ function ApplicationForm({ jobCode, recruitmentDriveCode }: Props) {
     }
   })
 
-  const disabling = !form.getValues('createCandidate') || isPending
+  const disabling = isPending
 
-  const handleSearchedCandidateData = (email: string, data: User | null) => {
+  const handleSearchedCandidateData = (email: string, data: UserWithRole | null) => {
     setHasSearched(true)
     form.setValue('candidateEmail', email)
 
     if (!data) {
-      form.setValue('createCandidate', true)
+      return form.setValue('createCandidate', true)
     }
+
+    form.setValue('createCandidate', false)
+    form.setValue('fullName', data.fullName)
+    form.setValue('phone', data.phone || '')
+    form.setValue('bornYear', data.bornYear || 0)
+    form.setValue('gender', data.gender || 'Male')
   }
 
   const onSubmit = async (values: TCreateApplicationSchema) => {
@@ -177,7 +184,7 @@ function ApplicationForm({ jobCode, recruitmentDriveCode }: Props) {
               )}
             />
 
-            <Button type='submit' className='float-right'>
+            <Button disabled={disabling} type='submit' className='float-right'>
               Submit {disabling && <Loader2 className='ml-1 size-4 animate-spin' />}
             </Button>
           </form>

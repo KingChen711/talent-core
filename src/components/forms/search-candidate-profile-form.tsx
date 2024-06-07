@@ -2,19 +2,19 @@ import useSearchCandidateProfile from '@/hooks/user/use-search-candidate-profile
 import { isBaseError } from '@/lib/utils'
 import { TSearchCandidateEmailSchema, searchCandidateEmailSchema } from '@/lib/validation/application.validation'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { User } from '@prisma/client'
 import { StatusCodes } from 'http-status-codes'
 import { useForm } from 'react-hook-form'
 import { toast } from '../ui/use-toast'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
+import { UserWithRole } from '@/types'
 
 type SearchCandidateFormProps = {
   hasSearched: boolean
   isPending: boolean
   setHasSearched: React.Dispatch<React.SetStateAction<boolean>>
-  handleSearchedCandidateData: (email: string, candidate: User | null) => void
+  handleSearchedCandidateData: (email: string, candidate: UserWithRole | null) => void
 }
 
 function SearchCandidateForm({
@@ -40,7 +40,9 @@ function SearchCandidateForm({
     }
 
     mutate(values.email, {
-      onSuccess: () => {},
+      onSuccess: (res) => {
+        handleSearchedCandidateData(form.getValues('email'), res.data)
+      },
       onError: (error) => {
         if (!isBaseError(error) || error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR) {
           return toast({

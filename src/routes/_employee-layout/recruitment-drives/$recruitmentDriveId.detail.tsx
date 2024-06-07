@@ -72,7 +72,7 @@ function RecruitmentDriveDetailPage() {
           <div className='flex gap-x-6 pb-2'>
             {data.jobDetails.map((jd) => (
               <JobDetailCard
-                key={jd.id}
+                key={jd.job.id}
                 name={jd.job.name}
                 color={jd.job.color}
                 icon={jd.job.icon}
@@ -105,7 +105,7 @@ type DialogSelectJobForAddCandidateProps = {
 function DialogSelectJobForAddCandidate({ jobDetails, recruitmentDriveCode }: DialogSelectJobForAddCandidateProps) {
   return (
     <Dialog>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <Button size='sm'>
           <Plus className='mr-1 size-5' />
           Add Candidate
@@ -120,7 +120,7 @@ function DialogSelectJobForAddCandidate({ jobDetails, recruitmentDriveCode }: Di
                 {jobDetails.map((jd) => (
                   <Link
                     to={`/recruitment-drives/${recruitmentDriveCode}/jobs/${jd.job.code}/add-candidate`}
-                    key={jd.id}
+                    key={jd.job.id}
                     className='block hover:opacity-70'
                   >
                     <JobDetailCard

@@ -1,6 +1,6 @@
 import { talentCoreApi } from '@/services/talent-core-api'
+import { UserWithRole } from '@/types'
 import { useAuth } from '@clerk/clerk-react'
-import { Role, User } from '@prisma/client'
 import { useMutation } from '@tanstack/react-query'
 
 function useSearchCandidateProfile() {
@@ -8,7 +8,7 @@ function useSearchCandidateProfile() {
 
   return useMutation({
     mutationFn: async (candidateEmail: string) =>
-      talentCoreApi.get<User & { role: Role }>(`/api/users/candidate-profile/${candidateEmail}`, {
+      talentCoreApi.get<UserWithRole>(`/api/users/candidate-profile/${candidateEmail}`, {
         headers: {
           Authorization: `Bearer ${await getToken()}`
         }
