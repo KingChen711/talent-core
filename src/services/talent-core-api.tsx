@@ -5,7 +5,7 @@ class TalentCoreApi {
 
   constructor() {
     this.instance = axios.create({
-      baseURL: 'http://localhost:5000',
+      baseURL: import.meta.env.VITE_TALENT_CORE_API_URL,
       timeout: 10000,
       headers: {
         'Content-Type': 'application/json'
