@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/dialog'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { applicationTabs } from '@/constants'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 
 export const Route = createFileRoute('/_employee-layout/recruitment-drives/$recruitmentDriveId/detail')({
   component: RecruitmentDriveDetailPage
@@ -26,11 +26,11 @@ export const Route = createFileRoute('/_employee-layout/recruitment-drives/$recr
 function RecruitmentDriveDetailPage() {
   const { recruitmentDriveId } = Route.useParams()
 
-  const { data, isLoading } = useRecruitmentDriveDetail(recruitmentDriveId)
+  const { data: recruitmentDrive, isLoading: isLoadingRecruitmentDrive } = useRecruitmentDriveDetail(recruitmentDriveId)
 
-  if (isLoading) return <div>Skeleton</div>
+  if (isLoadingRecruitmentDrive) return <div>Skeleton</div>
 
-  if (!data) {
+  if (!recruitmentDrive) {
     return (
       <NoResult
         title='No recruitment drive found.'
@@ -45,25 +45,25 @@ function RecruitmentDriveDetailPage() {
     <section>
       <div className='mb-5 space-y-1'>
         <div className='flex items-center gap-x-2'>
-          <h2 className='text-2xl font-semibold'>{data.name}</h2>
-          <OpenCloseBadge isOpening={data.isOpening} />
+          <h2 className='text-2xl font-semibold'>{recruitmentDrive.name}</h2>
+          <OpenCloseBadge isOpening={recruitmentDrive.isOpening} />
         </div>
         <p className='text-xl text-muted'>
-          {data.code}, {toDate(data.startDate)} - {toDate(data.endDate)}
+          {recruitmentDrive.code}, {toDate(recruitmentDrive.startDate)} - {toDate(recruitmentDrive.endDate)}
         </p>
       </div>
 
       <div className='mb-2 flex items-center justify-between'>
         <div className='text-xl font-semibold'>Jobs</div>
         <Button size='sm' asChild>
-          <Link to={`/recruitment-drives/${data.code}/add-jobs`}>
+          <Link to={`/recruitment-drives/${recruitmentDrive.code}/add-jobs`}>
             <Plus className='mr-1 size-5' />
             Add Job
           </Link>
         </Button>
       </div>
 
-      {data.jobDetails.length === 0 && (
+      {recruitmentDrive.jobDetails.length === 0 && (
         <div className='flex h-44 items-center justify-center rounded-md border text-xl font-medium'>
           No any jobs found
         </div>
@@ -72,7 +72,7 @@ function RecruitmentDriveDetailPage() {
       <div className='grid w-full'>
         <div className='overflow-x-auto'>
           <div className='flex gap-x-6 pb-2'>
-            {data.jobDetails.map((jd) => (
+            {recruitmentDrive.jobDetails.map((jd) => (
               <JobDetailCard
                 key={jd.job.id}
                 name={jd.job.name}
@@ -80,7 +80,7 @@ function RecruitmentDriveDetailPage() {
                 icon={jd.job.icon}
                 quantity={jd.quantity}
                 createdAt={jd.createdAt}
-                countApplications={jd.applications.length}
+                countApplications={jd.countApplications}
                 countApplicationsApproved={jd.countApplicationsApproved}
                 countApplicationsLastWeek={jd.countApplicationsLastWeek}
               />
@@ -91,7 +91,10 @@ function RecruitmentDriveDetailPage() {
 
       <div className='mb-2 mt-8 flex items-center justify-between'>
         <div className='text-xl font-semibold'>Candidates</div>
-        <DialogSelectJobForAddCandidate recruitmentDriveCode={data.code} jobDetails={data.jobDetails} />
+        <DialogSelectJobForAddCandidate
+          recruitmentDriveCode={recruitmentDrive.code}
+          jobDetails={recruitmentDrive.jobDetails}
+        />
       </div>
 
       <div className='my-5 rounded-2xl bg-card p-4'>
@@ -134,13 +137,13 @@ function RecruitmentDriveDetailPage() {
               <TableBody>
                 {/* {isPending && <TableRowsSkeleton colSpan={7} pageSize={pageSize} />} */}
 
-                {data.jobDetails
+                {/* {data.jobDetails
                   .flatMap((jd) => jd.applications)
                   .map((application) => (
                     <TableRow key={application.id}>
                       <TableCell className='font-extrabold'>{application.candidate.id}</TableCell>
                     </TableRow>
-                  ))}
+                  ))} */}
               </TableBody>
             </Table>
           </div>
@@ -190,7 +193,7 @@ function DialogSelectJobForAddCandidate({ jobDetails, recruitmentDriveCode }: Di
                       icon={jd.job.icon}
                       quantity={jd.quantity}
                       createdAt={jd.createdAt}
-                      countApplications={jd.applications.length}
+                      countApplications={jd.countApplications}
                       countApplicationsApproved={jd.countApplicationsApproved}
                       countApplicationsLastWeek={jd.countApplicationsLastWeek}
                       showNavigate={false}

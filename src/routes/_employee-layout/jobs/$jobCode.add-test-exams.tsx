@@ -1,4 +1,4 @@
-import { Link, createFileRoute, useNavigate } from '@tanstack/react-router'
+import { createFileRoute, useNavigate, useRouter } from '@tanstack/react-router'
 
 import useJobAddableTestExams from '@/hooks/job/use-job-addable-test-exams'
 import useSort from '@/hooks/query/use-sort'
@@ -24,6 +24,7 @@ export const Route = createFileRoute('/_employee-layout/jobs/$jobCode/add-test-e
 })
 
 function JobAddTestExamsPage() {
+  const router = useRouter()
   const navigate = useNavigate()
 
   const { jobCode } = Route.useParams()
@@ -96,10 +97,8 @@ function JobAddTestExamsPage() {
       <div className='flex flex-wrap items-center justify-between gap-x-4'>
         <SearchForm search={search} placeholder='Search test exams' />
         <div className='flex items-center justify-end gap-x-4'>
-          <Button variant='secondary' disabled={isPending}>
-            <Link to={`/jobs/${jobCode}/test-exams`} disabled={isPending}>
-              Cancel
-            </Link>
+          <Button variant='secondary' disabled={isPending} onClick={() => router.history.back()}>
+            Cancel
           </Button>
           <Button onClick={handleAddTestExams} disabled={selectedTestExamIds.length === 0 || isPending}>
             Add Test Exams {isPending && <Loader2 className='ml-1 size-4 animate-spin' />}

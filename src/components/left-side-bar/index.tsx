@@ -17,7 +17,7 @@ function LeftSideBar() {
               to={item.route}
               className={cn(
                 'flex items-center justify-start gap-4 p-4 lg:pl-9',
-                isActive && 'bg-gradient rounded-r-full max-lg:rounded-lg'
+                isActive && 'bg-gradient rounded-r-full max-lg:rounded-lg text-gradient-foreground'
               )}
             >
               <img src={item.icon(isActive)} alt={item.label} width={20} height={20} />

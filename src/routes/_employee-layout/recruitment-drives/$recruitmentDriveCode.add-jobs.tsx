@@ -10,7 +10,7 @@ import useSort from '@/hooks/query/use-sort'
 import useRecruitmentDriveAddableJobs from '@/hooks/recruitment-drive/use-recruitment-drive-addable-jobs'
 import { isBaseError, toDate } from '@/lib/utils'
 import { jobSearchSchema } from '@/lib/validation/job.validation'
-import { Link, createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useRouter } from '@tanstack/react-router'
 import { StatusCodes } from 'http-status-codes'
 export const Route = createFileRoute('/_employee-layout/recruitment-drives/$recruitmentDriveCode/add-jobs')({
   component: RecruitmentDriveAddJobsPage,
@@ -22,6 +22,7 @@ export const Route = createFileRoute('/_employee-layout/recruitment-drives/$recr
 })
 
 function RecruitmentDriveAddJobsPage() {
+  const router = useRouter()
   const { recruitmentDriveCode } = Route.useParams()
   const { pageNumber, pageSize, search, sort, status } = Route.useSearch()
 
@@ -67,13 +68,8 @@ function RecruitmentDriveAddJobsPage() {
       <div className='flex flex-wrap items-center justify-between gap-x-4'>
         <SearchForm search={search} placeholder='Search jobs...' />
         <div className='flex items-center justify-end gap-x-4'>
-          <Button variant='secondary'>
-            <Link
-              to='/recruitment-drives'
-              search={{ pageNumber: 1, pageSize: 5, search: '', status: 'all', sort: '-createdAt' }}
-            >
-              Cancel
-            </Link>
+          <Button variant='secondary' onClick={() => router.history.back()}>
+            Cancel
           </Button>
         </div>
       </div>

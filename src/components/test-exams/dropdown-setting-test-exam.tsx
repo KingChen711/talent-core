@@ -18,25 +18,25 @@ function DropdownSettingTestExam({ testExamId, testExamCode }: Props) {
       <DropdownMenuContent className='border-2'>
         <DropdownMenuItem className='cursor-pointer' asChild>
           <Link to={`/test-exams/${testExamId}/edit`} className='flex items-center gap-x-2'>
-            <img alt='edit' src='/icons/actions/edit.svg' className='size-4' />
+            <img alt='edit' src='/icons/actions/edit.svg' className='size-4 invert dark:invert-0' />
             Update
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem className='cursor-pointer' asChild>
           <Link to={`/test-exams/${testExamCode}/jobs`} className='flex items-center gap-x-2'>
-            <img alt='edit' src='/icons/side-bar/suitcase-active.svg' className='size-4' />
+            <img alt='edit' src='/icons/side-bar/suitcase-active.svg' className='size-4 invert dark:invert-0' />
             View Jobs
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem className='cursor-pointer' asChild>
           <Link to={`/test-exams/${testExamCode}/add-jobs`} className='flex items-center gap-x-2'>
-            <img alt='edit' src='/icons/side-bar/suitcase-active.svg' className='size-4' />
+            <img alt='edit' src='/icons/side-bar/suitcase-active.svg' className='size-4 invert dark:invert-0' />
             Add Jobs
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem className='cursor-pointer' asChild>
           <Link to={`/test-exams/${testExamId}/test-sessions`} className='flex items-center gap-x-2'>
-            <img alt='edit' src='/icons/actions/view.svg' className='size-4' />
+            <img alt='edit' src='/icons/actions/view.svg' className='size-4 invert dark:invert-0' />
             View Candidate Results
           </Link>
         </DropdownMenuItem>

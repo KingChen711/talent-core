@@ -12,7 +12,7 @@ import useTestExamAddableJobs from '@/hooks/test-exam/use-test-exam-addable-jobs
 import { cn, isBaseError, toDate } from '@/lib/utils'
 import { jobSearchSchema } from '@/lib/validation/job.validation'
 import { CheckedState } from '@radix-ui/react-checkbox'
-import { Link, createFileRoute, useNavigate } from '@tanstack/react-router'
+import { Link, createFileRoute, useNavigate, useRouter } from '@tanstack/react-router'
 import { StatusCodes } from 'http-status-codes'
 import { Loader2 } from 'lucide-react'
 import { useState } from 'react'
@@ -23,6 +23,7 @@ export const Route = createFileRoute('/_employee-layout/test-exams/$testExamCode
 })
 
 function TestExamAddJobsPage() {
+  const router = useRouter()
   const navigate = useNavigate()
   const [selectedJobIds, setSelectedJobIds] = useState<string[]>([])
 
@@ -89,10 +90,8 @@ function TestExamAddJobsPage() {
       <div className='flex flex-wrap items-center justify-between gap-x-4'>
         <SearchForm search={search} placeholder='Search jobs...' />
         <div className='flex items-center justify-end gap-x-4'>
-          <Button variant='secondary' disabled={isPending}>
-            <Link to={`/test-exams/${testExamCode}/jobs`} disabled={isPending}>
-              Cancel
-            </Link>
+          <Button variant='secondary' disabled={isPending} onClick={() => router.history.back()}>
+            Cancel
           </Button>
           <Button onClick={handleAddTestExams} disabled={selectedJobIds.length === 0 || isPending}>
             Add Jobs {isPending && <Loader2 className='ml-1 size-4 animate-spin' />}
