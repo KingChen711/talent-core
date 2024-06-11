@@ -18,13 +18,18 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { applicationTabs } from '@/constants'
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { getApplicationsByRecruitmentDriveSchema } from '@/lib/validation/application.validation'
+import TableRowsSkeleton from '@/components/shared/table-rows-skeleton'
 
 export const Route = createFileRoute('/_employee-layout/recruitment-drives/$recruitmentDriveId/detail')({
-  component: RecruitmentDriveDetailPage
+  component: RecruitmentDriveDetailPage,
+  validateSearch: (search) => getApplicationsByRecruitmentDriveSchema.parse(search)
 })
 
 function RecruitmentDriveDetailPage() {
   const { recruitmentDriveId } = Route.useParams()
+
+  const { pageNumber, pageSize, sort, status, search } = Route.useSearch()
 
   const { data: recruitmentDrive, isLoading: isLoadingRecruitmentDrive } = useRecruitmentDriveDetail(recruitmentDriveId)
 
@@ -100,6 +105,8 @@ function RecruitmentDriveDetailPage() {
       <div className='my-5 rounded-2xl bg-card p-4'>
         <div className='mb-4 flex flex-wrap gap-x-8 gap-y-3 border-b'>
           {applicationTabs.map((tab) => {
+            console.log(status)
+
             const active = status === tab.status
 
             return (
@@ -125,8 +132,18 @@ function RecruitmentDriveDetailPage() {
                 <TableRow className='rounded-lg'>
                   <TableHead className='h-10 cursor-pointer rounded-l-lg'>
                     <div className='flex items-center'>
-                      <p className='select-none'>Code</p>
+                      <p className='select-none'>Candidate Name</p>
                       {/* <CodeSortIcon /> */}
+                    </div>
+                  </TableHead>
+                  <TableHead className='h-10 cursor-pointer rounded-l-lg'>
+                    <div className='flex items-center'>
+                      <p className='select-none'>Applied Job</p>
+                    </div>
+                  </TableHead>
+                  <TableHead className='h-10 cursor-pointer rounded-l-lg'>
+                    <div className='flex items-center'>
+                      <p className='select-none'>Applied Date</p>
                     </div>
                   </TableHead>
 
@@ -135,7 +152,7 @@ function RecruitmentDriveDetailPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {/* {isPending && <TableRowsSkeleton colSpan={7} pageSize={pageSize} />} */}
+                {/* {isPending && <TableRowsSkeleton colSpan={5} pageSize={pageSize} />} */}
 
                 {/* {data.jobDetails
                   .flatMap((jd) => jd.applications)

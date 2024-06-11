@@ -54,31 +54,31 @@ export const recruitmentDriveTabs = [
 export const applicationTabs = [
   {
     label: 'All',
-    status: 'all'
+    status: 'All'
   },
   {
     label: 'Screening',
-    status: 'screening'
+    status: 'Screening'
   },
   {
     label: 'Testing',
-    status: 'testing'
+    status: 'Testing'
   },
   {
     label: 'Interviewing',
-    status: 'interviewing'
+    status: 'Interviewing'
   },
   {
     label: 'Approve',
-    status: 'approve'
+    status: 'Approve'
   },
   {
     label: 'Saved',
-    status: 'saved'
+    status: 'Saved'
   },
   {
     label: 'Reject',
-    status: 'reject'
+    status: 'Reject'
   }
 ] as const
 
