@@ -4,9 +4,9 @@ import { ClerkProvider } from '@clerk/clerk-react'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
 import { routeTree } from './routeTree.gen'
 import { dark } from '@clerk/themes'
-import { ThemeProvider } from './contexts/theme-provider'
+import { ThemeProvider, useTheme } from './contexts/theme-provider'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import AuthProvider, { useAuthContext } from './contexts/auth-provider'
+import AuthProvider from './contexts/auth-provider'
 
 const queryClient = new QueryClient()
 
@@ -19,11 +19,7 @@ if (!PUBLISHABLE_KEY) {
 
 // Create a new router instance
 const router = createRouter({
-  routeTree,
-
-  context: {
-    authData: undefined!
-  }
+  routeTree
 })
 
 // Register the router instance for type safety
@@ -34,28 +30,29 @@ declare module '@tanstack/react-router' {
 }
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <ClerkProvider
-    publishableKey={PUBLISHABLE_KEY}
-    appearance={{
-      baseTheme: dark,
-      elements: {
-        formButtonPrimary: 'bg-gradient text-gradient-foreground !shadow-none'
-      }
-    }}
-  >
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider defaultTheme='dark'>
-        <AuthProvider>
-          <App />
-        </AuthProvider>
-      </ThemeProvider>
-    </QueryClientProvider>
-  </ClerkProvider>
+  <ThemeProvider>
+    <App />
+  </ThemeProvider>
 )
 
 function App() {
-  const authData = useAuthContext()
-  return <RouterProvider router={router} context={{ authData }} />
-}
+  const { actualTheme } = useTheme()
 
-export default App
+  return (
+    <ClerkProvider
+      publishableKey={PUBLISHABLE_KEY}
+      appearance={{
+        baseTheme: actualTheme === 'dark' ? dark : undefined,
+        elements: {
+          formButtonPrimary: 'bg-gradient text-gradient-foreground !shadow-none'
+        }
+      }}
+    >
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <RouterProvider router={router} />
+        </AuthProvider>
+      </QueryClientProvider>
+    </ClerkProvider>
+  )
+}

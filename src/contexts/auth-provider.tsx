@@ -1,6 +1,6 @@
-import { Role, User } from '@prisma/client'
+import { User } from '@prisma/client'
 import React, { createContext, useContext, useMemo } from 'react'
-import { type Role as TRole } from '@/types'
+import { UserWithRole, type Role as TRole } from '@/types'
 import { useQuery } from '@tanstack/react-query'
 import { useAuth } from '@clerk/clerk-react'
 import { talentCoreApi } from '@/services/talent-core-api'
@@ -24,7 +24,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     queryKey: ['users', 'who-am-i'],
     queryFn: async () =>
       talentCoreApi
-        .get<User & { role: Role }>('/api/users/who-am-i', {
+        .get<UserWithRole>('/api/users/who-am-i', {
           headers: {
             Authorization: `Bearer ${await getToken()}`
           }

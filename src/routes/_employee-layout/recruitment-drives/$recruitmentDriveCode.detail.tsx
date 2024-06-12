@@ -23,6 +23,9 @@ import TableRowsSkeleton from '@/components/shared/table-rows-skeleton'
 import useSort from '@/hooks/query/use-sort'
 import SearchForm from '@/components/shared/search-form'
 import useRecruitmentDriveApplications from '@/hooks/recruitment-drive/use-recruitment-drive-applications'
+import ApplicationBadge from '@/components/shared/application-badge'
+import Paginator from '@/components/shared/paginator'
+import DropdownSettingApplication from '@/components/application/dropdown-setting-application'
 
 export const Route = createFileRoute('/_employee-layout/recruitment-drives/$recruitmentDriveCode/detail')({
   component: RecruitmentDriveDetailPage,
@@ -177,7 +180,7 @@ function RecruitmentDriveDetailPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {isLoadingApplications && <TableRowsSkeleton colSpan={5} pageSize={pageSize} />}
+                {isLoadingApplications && <TableRowsSkeleton colSpan={10} pageSize={pageSize} />}
 
                 {data?.items?.map((application) => {
                   return (
@@ -202,8 +205,12 @@ function RecruitmentDriveDetailPage() {
                       </TableCell>
 
                       <TableCell>{toDate(application.createdAt)}</TableCell>
-                      <TableCell className='text-end'></TableCell>
-                      <TableCell className='text-end'></TableCell>
+                      <TableCell className='text-center'>
+                        <ApplicationBadge status={application.status} />
+                      </TableCell>
+                      <TableCell className='text-end'>
+                        <DropdownSettingApplication status={application.status} />
+                      </TableCell>
                     </TableRow>
                   )
                 })}
@@ -212,12 +219,12 @@ function RecruitmentDriveDetailPage() {
           </div>
         </div>
 
-        {/* {!isPending && data?.items.length === 0 && (
+        {!isLoadingApplications && data?.items.length === 0 && (
           <div className='mt-36 text-center text-xl font-bold'>Not found any Recruitment Drives.</div>
-        )} */}
+        )}
       </div>
 
-      {/* {data && data.items.length > 0 && <Paginator metadata={data.metadata} />} */}
+      {data && data.items.length > 0 && <Paginator metadata={data.metadata} />}
     </section>
   )
 }

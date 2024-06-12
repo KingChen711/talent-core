@@ -23,6 +23,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
 import useMutateTestExam from '@/hooks/test-exam/use-mutate-test-exam'
 import { toast } from '@/components/ui/use-toast'
+import { useTheme } from '@/contexts/theme-provider'
 
 type Props = {
   type: 'create' | 'update'
@@ -39,6 +40,7 @@ type Props = {
 
 function TestExamForm({ type, testExamId }: Props) {
   const navigate = useNavigate()
+  const { actualTheme } = useTheme()
 
   const form = useForm<TMutationTestExamSchema>({
     resolver: zodResolver(mutationTestExamSchema),
@@ -302,7 +304,7 @@ function TestExamForm({ type, testExamId }: Props) {
                                     apiKey={import.meta.env.VITE_TINY_EDITOR_API_KEY}
                                     init={{
                                       ...editorPlugin,
-                                      skin: 'oxide-dark',
+                                      skin: actualTheme === 'dark' ? 'oxide-dark' : undefined,
                                       content_css: 'dark'
                                     }}
                                     onEditorChange={(value) =>

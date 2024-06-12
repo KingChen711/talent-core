@@ -2,7 +2,9 @@ import { ClerkLoaded, ClerkLoading, SignedIn, SignedOut, UserButton } from '@cle
 import { Button } from '../ui/button'
 import { Link } from '@tanstack/react-router'
 import MobileNavbar from './mobile-nav'
+import { ThemeToggle } from '../theme-toggle'
 
+// TODO: Loading clerk
 function Actions() {
   return (
     <div className='flex items-center gap-x-4'>
@@ -17,6 +19,7 @@ function Actions() {
           <UserButton />
         </SignedIn>
       </ClerkLoaded>
+      <ThemeToggle />
       <MobileNavbar />
     </div>
   )

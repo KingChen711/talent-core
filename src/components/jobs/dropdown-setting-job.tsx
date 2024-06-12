@@ -70,13 +70,13 @@ function DropdownSettingJob({ jobId, jobCode, isOpening }: Props) {
           <DropdownMenuItem className='cursor-pointer' asChild>
             <Link to={`/jobs/${jobCode}/test-exams`} className='flex items-center gap-x-2'>
               <img alt='edit' src='/icons/side-bar/exam-active.svg' className='size-4 invert dark:invert-0' />
-              View Test Exams
+              View test exams
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem className='cursor-pointer' asChild>
             <Link to={`/jobs/${jobCode}/add-test-exams`} className='flex items-center gap-x-2'>
               <img alt='edit' src='/icons/side-bar/exam-active.svg' className='size-4 invert dark:invert-0' />
-              Add Test Exams
+              Add test exams
             </Link>
           </DropdownMenuItem>
           {!isOpening ? (
@@ -88,7 +88,7 @@ function DropdownSettingJob({ jobId, jobCode, isOpening }: Props) {
                     src='/icons/side-bar/recruitment-active.svg'
                     className='size-4 invert dark:invert-0'
                   />
-                  Open This Job
+                  Open this job
                 </div>
               </DropdownMenuItem>
             </DialogTrigger>
@@ -96,7 +96,7 @@ function DropdownSettingJob({ jobId, jobCode, isOpening }: Props) {
             <DropdownMenuItem className='cursor-pointer' asChild>
               <div onClick={handleCloseJob} className='flex items-center gap-x-2'>
                 <img alt='edit' src='/icons/side-bar/recruitment-active.svg' className='size-4 invert dark:invert-0' />
-                Close This Job
+                Close this job
               </div>
             </DropdownMenuItem>
           )}
