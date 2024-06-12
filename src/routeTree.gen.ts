@@ -29,7 +29,7 @@ import { Route as EmployeeLayoutTestExamsTestExamIdEditImport } from './routes/_
 import { Route as EmployeeLayoutTestExamsTestExamCodeJobsImport } from './routes/_employee-layout/test-exams/$testExamCode.jobs'
 import { Route as EmployeeLayoutTestExamsTestExamCodeAddJobsImport } from './routes/_employee-layout/test-exams/$testExamCode.add-jobs'
 import { Route as EmployeeLayoutRecruitmentDrivesRecruitmentDriveIdEditImport } from './routes/_employee-layout/recruitment-drives/$recruitmentDriveId.edit'
-import { Route as EmployeeLayoutRecruitmentDrivesRecruitmentDriveIdDetailImport } from './routes/_employee-layout/recruitment-drives/$recruitmentDriveId.detail'
+import { Route as EmployeeLayoutRecruitmentDrivesRecruitmentDriveCodeDetailImport } from './routes/_employee-layout/recruitment-drives/$recruitmentDriveCode.detail'
 import { Route as EmployeeLayoutRecruitmentDrivesRecruitmentDriveCodeAddJobsImport } from './routes/_employee-layout/recruitment-drives/$recruitmentDriveCode.add-jobs'
 import { Route as EmployeeLayoutJobsJobIdEditImport } from './routes/_employee-layout/jobs/$jobId.edit'
 import { Route as EmployeeLayoutJobsJobCodeTestExamsImport } from './routes/_employee-layout/jobs/$jobCode.test-exams'
@@ -137,9 +137,9 @@ const EmployeeLayoutRecruitmentDrivesRecruitmentDriveIdEditRoute =
     getParentRoute: () => EmployeeLayoutRoute,
   } as any)
 
-const EmployeeLayoutRecruitmentDrivesRecruitmentDriveIdDetailRoute =
-  EmployeeLayoutRecruitmentDrivesRecruitmentDriveIdDetailImport.update({
-    path: '/recruitment-drives/$recruitmentDriveId/detail',
+const EmployeeLayoutRecruitmentDrivesRecruitmentDriveCodeDetailRoute =
+  EmployeeLayoutRecruitmentDrivesRecruitmentDriveCodeDetailImport.update({
+    path: '/recruitment-drives/$recruitmentDriveCode/detail',
     getParentRoute: () => EmployeeLayoutRoute,
   } as any)
 
@@ -298,11 +298,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EmployeeLayoutRecruitmentDrivesRecruitmentDriveCodeAddJobsImport
       parentRoute: typeof EmployeeLayoutImport
     }
-    '/_employee-layout/recruitment-drives/$recruitmentDriveId/detail': {
-      id: '/_employee-layout/recruitment-drives/$recruitmentDriveId/detail'
-      path: '/recruitment-drives/$recruitmentDriveId/detail'
-      fullPath: '/recruitment-drives/$recruitmentDriveId/detail'
-      preLoaderRoute: typeof EmployeeLayoutRecruitmentDrivesRecruitmentDriveIdDetailImport
+    '/_employee-layout/recruitment-drives/$recruitmentDriveCode/detail': {
+      id: '/_employee-layout/recruitment-drives/$recruitmentDriveCode/detail'
+      path: '/recruitment-drives/$recruitmentDriveCode/detail'
+      fullPath: '/recruitment-drives/$recruitmentDriveCode/detail'
+      preLoaderRoute: typeof EmployeeLayoutRecruitmentDrivesRecruitmentDriveCodeDetailImport
       parentRoute: typeof EmployeeLayoutImport
     }
     '/_employee-layout/recruitment-drives/$recruitmentDriveId/edit': {
@@ -369,7 +369,7 @@ export const routeTree = rootRoute.addChildren({
     EmployeeLayoutJobsJobCodeTestExamsRoute,
     EmployeeLayoutJobsJobIdEditRoute,
     EmployeeLayoutRecruitmentDrivesRecruitmentDriveCodeAddJobsRoute,
-    EmployeeLayoutRecruitmentDrivesRecruitmentDriveIdDetailRoute,
+    EmployeeLayoutRecruitmentDrivesRecruitmentDriveCodeDetailRoute,
     EmployeeLayoutRecruitmentDrivesRecruitmentDriveIdEditRoute,
     EmployeeLayoutTestExamsTestExamCodeAddJobsRoute,
     EmployeeLayoutTestExamsTestExamCodeJobsRoute,

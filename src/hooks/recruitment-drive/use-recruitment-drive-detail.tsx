@@ -14,14 +14,14 @@ type RecruitmentDriveDetail = RecruitmentDrive & {
   jobDetails: JobDetails
 }
 
-function useRecruitmentDriveDetail(recruitmentDriveId: string) {
+function useRecruitmentDriveDetail(recruitmentDriveCode: string) {
   const { getToken } = useAuth()
 
   return useQuery({
-    queryKey: ['recruitment-drives', recruitmentDriveId],
+    queryKey: ['recruitment-drives', recruitmentDriveCode],
     queryFn: async () =>
       talentCoreApi
-        .get<RecruitmentDriveDetail>(`/api/recruitment-drives/${recruitmentDriveId}/detail`, {
+        .get<RecruitmentDriveDetail>(`/api/recruitment-drives/${recruitmentDriveCode}/detail`, {
           headers: {
             Authorization: `Bearer ${await getToken()}`
           }

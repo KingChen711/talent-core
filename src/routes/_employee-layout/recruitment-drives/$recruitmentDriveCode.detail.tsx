@@ -17,21 +17,43 @@ import {
 } from '@/components/ui/dialog'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { applicationTabs } from '@/constants'
-import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { getApplicationsByRecruitmentDriveSchema } from '@/lib/validation/application.validation'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { getApplicationsSchema } from '@/lib/validation/application.validation'
 import TableRowsSkeleton from '@/components/shared/table-rows-skeleton'
+import useSort from '@/hooks/query/use-sort'
+import SearchForm from '@/components/shared/search-form'
+import useRecruitmentDriveApplications from '@/hooks/recruitment-drive/use-recruitment-drive-applications'
 
-export const Route = createFileRoute('/_employee-layout/recruitment-drives/$recruitmentDriveId/detail')({
+export const Route = createFileRoute('/_employee-layout/recruitment-drives/$recruitmentDriveCode/detail')({
   component: RecruitmentDriveDetailPage,
-  validateSearch: (search) => getApplicationsByRecruitmentDriveSchema.parse(search)
+  validateSearch: (search) => getApplicationsSchema.parse(search)
 })
 
 function RecruitmentDriveDetailPage() {
-  const { recruitmentDriveId } = Route.useParams()
+  const { recruitmentDriveCode } = Route.useParams()
 
   const { pageNumber, pageSize, sort, status, search } = Route.useSearch()
 
-  const { data: recruitmentDrive, isLoading: isLoadingRecruitmentDrive } = useRecruitmentDriveDetail(recruitmentDriveId)
+  const { data: recruitmentDrive, isLoading: isLoadingRecruitmentDrive } =
+    useRecruitmentDriveDetail(recruitmentDriveCode)
+
+  const { data, isPending: isLoadingApplications } = useRecruitmentDriveApplications(recruitmentDriveCode, {
+    pageNumber,
+    pageSize,
+    search,
+    sort,
+    status
+  })
+
+  const { Icon: CandidateNameSortIcon, sorter: handleSortByCandidateName } = useSort({
+    key: 'candidateName',
+    sortParams: sort
+  })
+  const { Icon: AppliedJobSortIcon, sorter: handleSortByAppliedJob } = useSort({ key: 'appliedJob', sortParams: sort })
+  const { Icon: CreatedAtSortIcon, sorter: handleSortByCreatedAt } = useSort({
+    key: 'createdAt',
+    sortParams: sort
+  })
 
   if (isLoadingRecruitmentDrive) return <div>Skeleton</div>
 
@@ -96,6 +118,7 @@ function RecruitmentDriveDetailPage() {
 
       <div className='mb-2 mt-8 flex items-center justify-between'>
         <div className='text-xl font-semibold'>Candidates</div>
+        <SearchForm search={search} placeholder='Search candidate...' />
         <DialogSelectJobForAddCandidate
           recruitmentDriveCode={recruitmentDrive.code}
           jobDetails={recruitmentDrive.jobDetails}
@@ -130,20 +153,22 @@ function RecruitmentDriveDetailPage() {
             <Table className='overflow-hidden'>
               <TableHeader className='rounded-lg bg-border'>
                 <TableRow className='rounded-lg'>
-                  <TableHead className='h-10 cursor-pointer rounded-l-lg'>
+                  <TableHead onClick={handleSortByCandidateName} className='h-10 cursor-pointer rounded-l-lg'>
                     <div className='flex items-center'>
                       <p className='select-none'>Candidate Name</p>
-                      {/* <CodeSortIcon /> */}
+                      <CandidateNameSortIcon />
                     </div>
                   </TableHead>
-                  <TableHead className='h-10 cursor-pointer rounded-l-lg'>
+                  <TableHead onClick={handleSortByAppliedJob} className='h-10 cursor-pointer rounded-l-lg'>
                     <div className='flex items-center'>
                       <p className='select-none'>Applied Job</p>
+                      <AppliedJobSortIcon />
                     </div>
                   </TableHead>
-                  <TableHead className='h-10 cursor-pointer rounded-l-lg'>
+                  <TableHead onClick={handleSortByCreatedAt} className='h-10 cursor-pointer rounded-l-lg'>
                     <div className='flex items-center'>
                       <p className='select-none'>Applied Date</p>
+                      <CreatedAtSortIcon />
                     </div>
                   </TableHead>
 
@@ -152,15 +177,36 @@ function RecruitmentDriveDetailPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {/* {isPending && <TableRowsSkeleton colSpan={5} pageSize={pageSize} />} */}
+                {isLoadingApplications && <TableRowsSkeleton colSpan={5} pageSize={pageSize} />}
 
-                {/* {data.jobDetails
-                  .flatMap((jd) => jd.applications)
-                  .map((application) => (
+                {data?.items?.map((application) => {
+                  return (
                     <TableRow key={application.id}>
-                      <TableCell className='font-extrabold'>{application.candidate.id}</TableCell>
+                      <TableCell className='flex items-center gap-x-3 font-semibold'>
+                        <img
+                          alt='candidate'
+                          src={application.candidate.user.avatar}
+                          className='size-8 rounded-full object-cover'
+                        />
+                        <p>{application.candidate.user.fullName}</p>
+                      </TableCell>
+                      <TableCell>
+                        <div className='flex items-center gap-x-3 font-semibold'>
+                          <img
+                            alt='job'
+                            src={application.jobDetail.job.icon}
+                            className='size-8 rounded-full object-cover'
+                          />
+                          <p>{application.jobDetail.job.name}</p>
+                        </div>
+                      </TableCell>
+
+                      <TableCell>{toDate(application.createdAt)}</TableCell>
+                      <TableCell className='text-end'></TableCell>
+                      <TableCell className='text-end'></TableCell>
                     </TableRow>
-                  ))} */}
+                  )
+                })}
               </TableBody>
             </Table>
           </div>

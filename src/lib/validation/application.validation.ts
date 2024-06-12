@@ -18,15 +18,15 @@ export const searchCandidateEmailSchema = z.object({
 
 export type TSearchCandidateEmailSchema = z.infer<typeof searchCandidateEmailSchema>
 
-export const getApplicationsByRecruitmentDriveSchema = z.object({
-  pageNumber: z.coerce.number().default(1),
-  pageSize: z.coerce
-    .number()
-    .default(10)
-    .transform((data) => Math.min(data, 50)),
-  search: z.coerce.string().trim().optional(),
+export const getApplicationsSchema = z.object({
+  pageNumber: z.number().catch(1),
+  pageSize: z.number().catch(5),
+  search: z.string().catch(''),
   status: z.enum(['All', 'Screening', 'Testing', 'Interviewing', 'Saved', 'Approve', 'Reject']).catch('All'),
-  sort: z.enum(['createdAt', '-createdAt']).optional().default('createdAt')
+  sort: z
+    .enum(['createdAt', '-createdAt', 'candidateName', '-candidateName', 'appliedJob', '-appliedJob'])
+    .optional()
+    .default('-createdAt')
 })
 
-export type TGetApplicationsByRecruitmentDriveSchema = z.infer<typeof getApplicationsByRecruitmentDriveSchema>
+export type TGetApplicationsSchema = z.infer<typeof getApplicationsSchema>
