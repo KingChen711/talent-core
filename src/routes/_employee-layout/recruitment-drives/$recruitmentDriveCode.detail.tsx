@@ -140,8 +140,8 @@ function RecruitmentDriveDetailPage() {
                 search={(prev) => ({ ...prev, status: tab.status, pageNumber: 1, sort: '-createdAt' })}
                 key={tab.status}
                 className={cn(
-                  'relative w-[90px] pb-4 text-center text-muted',
-                  active && 'text-gradient-foreground font-bold'
+                  'relative w-24 pb-4 text-center text-muted-foreground',
+                  active && 'text-card-foreground font-bold'
                 )}
               >
                 {tab.label}
@@ -162,13 +162,13 @@ function RecruitmentDriveDetailPage() {
                       <CandidateNameSortIcon />
                     </div>
                   </TableHead>
-                  <TableHead onClick={handleSortByAppliedJob} className='h-10 cursor-pointer rounded-l-lg'>
+                  <TableHead onClick={handleSortByAppliedJob} className='h-10 cursor-pointer'>
                     <div className='flex items-center'>
                       <p className='select-none'>Applied Job</p>
                       <AppliedJobSortIcon />
                     </div>
                   </TableHead>
-                  <TableHead onClick={handleSortByCreatedAt} className='h-10 cursor-pointer rounded-l-lg'>
+                  <TableHead onClick={handleSortByCreatedAt} className='h-10 cursor-pointer'>
                     <div className='flex items-center'>
                       <p className='select-none'>Applied Date</p>
                       <CreatedAtSortIcon />

@@ -109,8 +109,8 @@ function TestExamAddJobsPage() {
                 search={(prev) => ({ ...prev, status: tab.status, pageNumber: 1, sort: '-createdAt' })}
                 key={tab.status}
                 className={cn(
-                  'relative w-[70px] pb-4 text-center text-muted',
-                  active && 'text-gradient-foreground font-bold'
+                  'relative w-[70px] pb-4 text-center text-muted-foreground',
+                  active && 'text-card-foreground font-bold'
                 )}
               >
                 {tab.label}
@@ -125,8 +125,8 @@ function TestExamAddJobsPage() {
             <Table className='overflow-hidden'>
               <TableHeader className='rounded-lg bg-border'>
                 <TableRow className='rounded-lg'>
-                  <TableHead className=''></TableHead>
-                  <TableHead onClick={handleSortByCode} className='h-10 cursor-pointer rounded-l-lg'>
+                  <TableHead className='rounded-l-lg'></TableHead>
+                  <TableHead onClick={handleSortByCode} className='h-10 cursor-pointer'>
                     <div className='flex items-center'>
                       <p className='select-none'>Code</p>
                       <CodeSortIcon />

@@ -54,10 +54,10 @@ function JobDetailCard({
       </div>
 
       <div className='z-10 flex gap-x-2'>
-        <Badge variant='secondary' className='pointer-events-none w-fit bg-[#282828] py-1 text-sm font-normal'>
+        <Badge className='pointer-events-none w-fit bg-[#d1d1d1] py-1 text-sm font-normal text-card-foreground dark:bg-[#282828] dark:text-white'>
           {countApplicationsApproved} approved
         </Badge>
-        <Badge variant='secondary' className='pointer-events-none w-fit bg-[#282828] py-1 text-sm font-normal'>
+        <Badge className='pointer-events-none w-fit bg-[#d1d1d1] py-1 text-sm font-normal text-card-foreground dark:bg-[#282828] dark:text-white'>
           {quantity} needed
         </Badge>
       </div>

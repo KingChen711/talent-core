@@ -104,8 +104,8 @@ function JobTestExamsPage() {
             <Table className='overflow-hidden'>
               <TableHeader className='rounded-lg bg-border'>
                 <TableRow className='rounded-lg'>
-                  <TableHead className=''></TableHead>
-                  <TableHead className='h-10 cursor-pointer rounded-l-lg'>
+                  <TableHead className='rounded-l-lg'></TableHead>
+                  <TableHead className='h-10 cursor-pointer'>
                     <div className='flex items-center'>
                       <p className='select-none'>Code</p>
                     </div>

@@ -57,8 +57,8 @@ function JobsPage() {
                 search={(prev) => ({ ...prev, status: tab.status, pageNumber: 1, sort: '-createdAt' })}
                 key={tab.status}
                 className={cn(
-                  'relative w-[70px] pb-4 text-center text-muted',
-                  active && 'text-gradient-foreground font-bold'
+                  'relative w-[70px] pb-4 text-center text-muted-foreground',
+                  active && 'text-card-foreground font-bold'
                 )}
               >
                 {tab.label}
