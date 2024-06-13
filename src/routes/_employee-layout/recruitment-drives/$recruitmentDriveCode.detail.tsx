@@ -185,14 +185,7 @@ function RecruitmentDriveDetailPage() {
                 {data?.items?.map((application) => {
                   return (
                     <TableRow key={application.id}>
-                      <TableCell className='flex items-center gap-x-3 font-semibold'>
-                        <img
-                          alt='candidate'
-                          src={application.candidate.user.avatar}
-                          className='size-8 rounded-full object-cover'
-                        />
-                        <p>{application.candidate.user.fullName}</p>
-                      </TableCell>
+                      <TableCell>{application.fullName}</TableCell>
                       <TableCell>
                         <div className='flex items-center gap-x-3 font-semibold'>
                           <img

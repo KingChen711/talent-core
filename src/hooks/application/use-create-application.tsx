@@ -1,35 +1,24 @@
 import { useMutation } from '@tanstack/react-query'
 import { talentCoreApi } from '../../services/talent-core-api'
 import { useAuth } from '@clerk/clerk-react'
-import { TCreateApplicationSchema } from '@/lib/validation/application.validation'
 
 type MutateType = {
   recruitmentDriveCode: string
   jobCode: string
-  data: TCreateApplicationSchema
+  formData: FormData
 }
 
 function useCreateApplication() {
   const { getToken } = useAuth()
 
   return useMutation({
-    mutationFn: async ({ jobCode, recruitmentDriveCode, data }: MutateType) => {
-      const body = {
-        candidateEmail: data.candidateEmail,
-        createCandidate: data.createCandidate,
-        candidateData: {
-          ...data,
-          candidateEmail: undefined,
-          createCandidate: undefined
-        }
-      }
-
-      return talentCoreApi.post(`/api/recruitment-drives/${recruitmentDriveCode}/jobs/${jobCode}/applications`, body, {
+    mutationFn: async ({ jobCode, recruitmentDriveCode, formData }: MutateType) =>
+      talentCoreApi.post(`/api/recruitment-drives/${recruitmentDriveCode}/jobs/${jobCode}/applications`, formData, {
         headers: {
+          'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${await getToken()}`
         }
       })
-    }
   })
 }
 

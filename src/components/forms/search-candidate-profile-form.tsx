@@ -41,6 +41,14 @@ function SearchCandidateForm({
 
     mutate(values.email, {
       onSuccess: (res) => {
+        if (!res.data.bornYear || !res.data.phone || !res.data.gender) {
+          toast({
+            title: `This candidate is exist in system.`,
+            description: 'But some information missing, complete them to create application',
+            variant: 'warning'
+          })
+        }
+
         handleSearchedCandidateData(form.getValues('email'), res.data)
       },
       onError: (error) => {
@@ -79,7 +87,9 @@ function SearchCandidateForm({
           name='email'
           render={({ field }) => (
             <FormItem className='flex-1'>
-              <FormLabel className='flex items-center'>Candidate Email</FormLabel>
+              <FormLabel className='flex items-center'>
+                Candidate Email<span className='text-gradient text-2xl font-bold leading-none'>*</span>
+              </FormLabel>
               <FormControl>
                 <div className='flex items-center gap-x-4'>
                   <Input disabled={hasSearched || disabling} {...field} />

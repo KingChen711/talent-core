@@ -31,11 +31,6 @@ model Job {
   @@index([code, name, description])
 }
 
-//ví dụ: 
-// Fr_FE_DEV, Fresher Frontend Developer, Lập trình viên FE.
-// Ju_BE_DEV, Junior Backend Developer, Lập trình viên BE.
-// Se_BA, Senior Business Analyst, Phân tích nghiệp vụ.
-
 model User {
   id       String  @id @default(auto()) @map("_id") @db.ObjectId
   roleId   String  @db.ObjectId
@@ -80,6 +75,15 @@ model Application {
   status         ApplicationStatus @default(Screening)
   receiveJobDate DateTime?
 
+  //Trong bảng application, fullName, gender, bornYear, phone có thể khác với trong bảng User. Bảng User có mục đích lưu trữ thông tin ứng viên để hệ thống có thể generate sẵn thông tin của ứng viên để có thể ứng tuyển nhanh chóng. Sau đó, ứng viên có thể thay đổi lại các trường thông tin này tùy ý để có thể tạo applition. Riêng trường email (unique và đại diện cho user) sẽ không đổi, nhưng vẫn cho vào bảng application để tiện cho việc query thông tin ứng tuyển
+  email                String
+  fullName             String
+  gender               Gender
+  bornYear             Int
+  phone                String
+  cv                   String
+  personalIntroduction String?
+
   candidate        Candidate         @relation(fields: [candidateId], references: [id], onDelete: Restrict)
   jobDetail        JobDetail         @relation(fields: [jobDetailId], references: [id], onDelete: Restrict)
   testSession      TestSession?
@@ -96,13 +100,13 @@ model InterviewSession {
   applicationId   String          @unique @db.ObjectId
   interviewDate   DateTime
   interviewResult InterviewResult @default(Processing)
-  method          InterviewMethod @default(Offline)
+  method          Method          @default(Offline)
 
   application          Application           @relation(fields: [applicationId], references: [id])
   interviewSessionWish InterviewSessionWish?
 }
 
-enum InterviewMethod {
+enum Method {
   Online
   Offline
 }
@@ -125,8 +129,7 @@ enum ReceiveJobWishType {
 
 enum InterviewResult {
   Processing
-  Fail
-  Pass
+  Completed
 }
 
 model TestSession {
@@ -136,6 +139,7 @@ model TestSession {
   point         Int?
   status        TestSessionStatus @default(Processing)
   startDate     DateTime
+  // method        Method            @default(Offline)
 
   application     Application      @relation(fields: [applicationId], references: [id])
   testExam        TestExam         @relation(fields: [testExamId], references: [id], onDelete: Restrict)
@@ -143,12 +147,12 @@ model TestSession {
 }
 
 model InterviewSessionWish {
-  id                 String          @id @default(auto()) @map("_id") @db.ObjectId
-  interviewSessionId String          @unique @db.ObjectId
+  id                 String     @id @default(auto()) @map("_id") @db.ObjectId
+  interviewSessionId String     @unique @db.ObjectId
   content            String
   status             WishStatus
   wishTime           DateTime
-  wishMethod         InterviewMethod
+  wishMethod         Method
 
   interviewSession InterviewSession @relation(fields: [interviewSessionId], references: [id])
 }
@@ -171,8 +175,7 @@ enum WishStatus {
 
 enum TestSessionStatus {
   Processing
-  Fail
-  Pass
+  Completed
 }
 
 enum ApplicationStatus {
