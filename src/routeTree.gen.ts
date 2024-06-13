@@ -41,146 +41,132 @@ import { Route as EmployeeLayoutRecruitmentDrivesRecruitmentDriveCodeJobsJobCode
 
 const MainLayoutRoute = MainLayoutImport.update({
   id: '/_main-layout',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRoute
 } as any)
 
 const EmployeeLayoutRoute = EmployeeLayoutImport.update({
   id: '/_employee-layout',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRoute
 } as any)
 
 const AuthLayoutRoute = AuthLayoutImport.update({
   id: '/_auth-layout',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRoute
 } as any)
 
 const MainLayoutIndexRoute = MainLayoutIndexImport.update({
   path: '/',
-  getParentRoute: () => MainLayoutRoute,
+  getParentRoute: () => MainLayoutRoute
 } as any)
 
 const EmployeeLayoutDashboardRoute = EmployeeLayoutDashboardImport.update({
   path: '/dashboard',
-  getParentRoute: () => EmployeeLayoutRoute,
+  getParentRoute: () => EmployeeLayoutRoute
 } as any)
 
 const AuthLayoutSignUpRoute = AuthLayoutSignUpImport.update({
   path: '/sign-up',
-  getParentRoute: () => AuthLayoutRoute,
+  getParentRoute: () => AuthLayoutRoute
 } as any)
 
 const AuthLayoutSignInRoute = AuthLayoutSignInImport.update({
   path: '/sign-in',
-  getParentRoute: () => AuthLayoutRoute,
+  getParentRoute: () => AuthLayoutRoute
 } as any)
 
-const EmployeeLayoutTestExamsIndexRoute =
-  EmployeeLayoutTestExamsIndexImport.update({
-    path: '/test-exams/',
-    getParentRoute: () => EmployeeLayoutRoute,
-  } as any)
+const EmployeeLayoutTestExamsIndexRoute = EmployeeLayoutTestExamsIndexImport.update({
+  path: '/test-exams/',
+  getParentRoute: () => EmployeeLayoutRoute
+} as any)
 
-const EmployeeLayoutRecruitmentDrivesIndexRoute =
-  EmployeeLayoutRecruitmentDrivesIndexImport.update({
-    path: '/recruitment-drives/',
-    getParentRoute: () => EmployeeLayoutRoute,
-  } as any)
+const EmployeeLayoutRecruitmentDrivesIndexRoute = EmployeeLayoutRecruitmentDrivesIndexImport.update({
+  path: '/recruitment-drives/',
+  getParentRoute: () => EmployeeLayoutRoute
+} as any)
 
 const EmployeeLayoutJobsIndexRoute = EmployeeLayoutJobsIndexImport.update({
   path: '/jobs/',
-  getParentRoute: () => EmployeeLayoutRoute,
+  getParentRoute: () => EmployeeLayoutRoute
 } as any)
 
-const EmployeeLayoutTestExamsCreateRoute =
-  EmployeeLayoutTestExamsCreateImport.update({
-    path: '/test-exams/create',
-    getParentRoute: () => EmployeeLayoutRoute,
-  } as any)
+const EmployeeLayoutTestExamsCreateRoute = EmployeeLayoutTestExamsCreateImport.update({
+  path: '/test-exams/create',
+  getParentRoute: () => EmployeeLayoutRoute
+} as any)
 
-const EmployeeLayoutRecruitmentDrivesCreateRoute =
-  EmployeeLayoutRecruitmentDrivesCreateImport.update({
-    path: '/recruitment-drives/create',
-    getParentRoute: () => EmployeeLayoutRoute,
-  } as any)
+const EmployeeLayoutRecruitmentDrivesCreateRoute = EmployeeLayoutRecruitmentDrivesCreateImport.update({
+  path: '/recruitment-drives/create',
+  getParentRoute: () => EmployeeLayoutRoute
+} as any)
 
 const EmployeeLayoutJobsCreateRoute = EmployeeLayoutJobsCreateImport.update({
   path: '/jobs/create',
-  getParentRoute: () => EmployeeLayoutRoute,
+  getParentRoute: () => EmployeeLayoutRoute
 } as any)
 
-const EmployeeLayoutApplicationsApplicationIdRoute =
-  EmployeeLayoutApplicationsApplicationIdImport.update({
-    path: '/applications/$applicationId',
-    getParentRoute: () => EmployeeLayoutRoute,
-  } as any)
+const EmployeeLayoutApplicationsApplicationIdRoute = EmployeeLayoutApplicationsApplicationIdImport.update({
+  path: '/applications/$applicationId',
+  getParentRoute: () => EmployeeLayoutRoute
+} as any)
 
-const EmployeeLayoutTestExamsTestExamIdTestSessionsRoute =
-  EmployeeLayoutTestExamsTestExamIdTestSessionsImport.update({
-    path: '/test-exams/$testExamId/test-sessions',
-    getParentRoute: () => EmployeeLayoutRoute,
-  } as any)
+const EmployeeLayoutTestExamsTestExamIdTestSessionsRoute = EmployeeLayoutTestExamsTestExamIdTestSessionsImport.update({
+  path: '/test-exams/$testExamId/test-sessions',
+  getParentRoute: () => EmployeeLayoutRoute
+} as any)
 
-const EmployeeLayoutTestExamsTestExamIdEditRoute =
-  EmployeeLayoutTestExamsTestExamIdEditImport.update({
-    path: '/test-exams/$testExamId/edit',
-    getParentRoute: () => EmployeeLayoutRoute,
-  } as any)
+const EmployeeLayoutTestExamsTestExamIdEditRoute = EmployeeLayoutTestExamsTestExamIdEditImport.update({
+  path: '/test-exams/$testExamId/edit',
+  getParentRoute: () => EmployeeLayoutRoute
+} as any)
 
-const EmployeeLayoutTestExamsTestExamCodeJobsRoute =
-  EmployeeLayoutTestExamsTestExamCodeJobsImport.update({
-    path: '/test-exams/$testExamCode/jobs',
-    getParentRoute: () => EmployeeLayoutRoute,
-  } as any)
+const EmployeeLayoutTestExamsTestExamCodeJobsRoute = EmployeeLayoutTestExamsTestExamCodeJobsImport.update({
+  path: '/test-exams/$testExamCode/jobs',
+  getParentRoute: () => EmployeeLayoutRoute
+} as any)
 
-const EmployeeLayoutTestExamsTestExamCodeAddJobsRoute =
-  EmployeeLayoutTestExamsTestExamCodeAddJobsImport.update({
-    path: '/test-exams/$testExamCode/add-jobs',
-    getParentRoute: () => EmployeeLayoutRoute,
-  } as any)
+const EmployeeLayoutTestExamsTestExamCodeAddJobsRoute = EmployeeLayoutTestExamsTestExamCodeAddJobsImport.update({
+  path: '/test-exams/$testExamCode/add-jobs',
+  getParentRoute: () => EmployeeLayoutRoute
+} as any)
 
 const EmployeeLayoutRecruitmentDrivesRecruitmentDriveIdEditRoute =
   EmployeeLayoutRecruitmentDrivesRecruitmentDriveIdEditImport.update({
     path: '/recruitment-drives/$recruitmentDriveId/edit',
-    getParentRoute: () => EmployeeLayoutRoute,
+    getParentRoute: () => EmployeeLayoutRoute
   } as any)
 
 const EmployeeLayoutRecruitmentDrivesRecruitmentDriveCodeDetailRoute =
   EmployeeLayoutRecruitmentDrivesRecruitmentDriveCodeDetailImport.update({
     path: '/recruitment-drives/$recruitmentDriveCode/detail',
-    getParentRoute: () => EmployeeLayoutRoute,
+    getParentRoute: () => EmployeeLayoutRoute
   } as any)
 
 const EmployeeLayoutRecruitmentDrivesRecruitmentDriveCodeAddJobsRoute =
   EmployeeLayoutRecruitmentDrivesRecruitmentDriveCodeAddJobsImport.update({
     path: '/recruitment-drives/$recruitmentDriveCode/add-jobs',
-    getParentRoute: () => EmployeeLayoutRoute,
+    getParentRoute: () => EmployeeLayoutRoute
   } as any)
 
-const EmployeeLayoutJobsJobIdEditRoute =
-  EmployeeLayoutJobsJobIdEditImport.update({
-    path: '/jobs/$jobId/edit',
-    getParentRoute: () => EmployeeLayoutRoute,
-  } as any)
+const EmployeeLayoutJobsJobIdEditRoute = EmployeeLayoutJobsJobIdEditImport.update({
+  path: '/jobs/$jobId/edit',
+  getParentRoute: () => EmployeeLayoutRoute
+} as any)
 
-const EmployeeLayoutJobsJobCodeTestExamsRoute =
-  EmployeeLayoutJobsJobCodeTestExamsImport.update({
-    path: '/jobs/$jobCode/test-exams',
-    getParentRoute: () => EmployeeLayoutRoute,
-  } as any)
+const EmployeeLayoutJobsJobCodeTestExamsRoute = EmployeeLayoutJobsJobCodeTestExamsImport.update({
+  path: '/jobs/$jobCode/test-exams',
+  getParentRoute: () => EmployeeLayoutRoute
+} as any)
 
-const EmployeeLayoutJobsJobCodeAddTestExamsRoute =
-  EmployeeLayoutJobsJobCodeAddTestExamsImport.update({
-    path: '/jobs/$jobCode/add-test-exams',
-    getParentRoute: () => EmployeeLayoutRoute,
-  } as any)
+const EmployeeLayoutJobsJobCodeAddTestExamsRoute = EmployeeLayoutJobsJobCodeAddTestExamsImport.update({
+  path: '/jobs/$jobCode/add-test-exams',
+  getParentRoute: () => EmployeeLayoutRoute
+} as any)
 
 const EmployeeLayoutRecruitmentDrivesRecruitmentDriveCodeJobsJobCodeAddCandidateRoute =
-  EmployeeLayoutRecruitmentDrivesRecruitmentDriveCodeJobsJobCodeAddCandidateImport.update(
-    {
-      path: '/recruitment-drives/$recruitmentDriveCode/jobs/$jobCode/add-candidate',
-      getParentRoute: () => EmployeeLayoutRoute,
-    } as any,
-  )
+  EmployeeLayoutRecruitmentDrivesRecruitmentDriveCodeJobsJobCodeAddCandidateImport.update({
+    path: '/recruitment-drives/$recruitmentDriveCode/jobs/$jobCode/add-candidate',
+    getParentRoute: () => EmployeeLayoutRoute
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -369,7 +355,7 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren({
   AuthLayoutRoute: AuthLayoutRoute.addChildren({
     AuthLayoutSignInRoute,
-    AuthLayoutSignUpRoute,
+    AuthLayoutSignUpRoute
   }),
   EmployeeLayoutRoute: EmployeeLayoutRoute.addChildren({
     EmployeeLayoutDashboardRoute,
@@ -390,9 +376,9 @@ export const routeTree = rootRoute.addChildren({
     EmployeeLayoutTestExamsTestExamCodeJobsRoute,
     EmployeeLayoutTestExamsTestExamIdEditRoute,
     EmployeeLayoutTestExamsTestExamIdTestSessionsRoute,
-    EmployeeLayoutRecruitmentDrivesRecruitmentDriveCodeJobsJobCodeAddCandidateRoute,
+    EmployeeLayoutRecruitmentDrivesRecruitmentDriveCodeJobsJobCodeAddCandidateRoute
   }),
-  MainLayoutRoute: MainLayoutRoute.addChildren({ MainLayoutIndexRoute }),
+  MainLayoutRoute: MainLayoutRoute.addChildren({ MainLayoutIndexRoute })
 })
 
 /* prettier-ignore-end */

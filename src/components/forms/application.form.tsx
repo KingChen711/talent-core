@@ -1,12 +1,16 @@
 import { Gender } from '@prisma/client'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
-import { TCreateApplicationSchema, createApplicationSchema } from '@/lib/validation/application.validation'
+import {
+  TCreateApplicationErrors,
+  TCreateApplicationSchema,
+  createApplicationSchema
+} from '@/lib/validation/application.validation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Input } from '../ui/input'
-import { Button } from '../ui/button'
+import { Button, buttonVariants } from '../ui/button'
 import { useForm } from 'react-hook-form'
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
-import { cn, isBaseError } from '@/lib/utils'
+import { cn, isBaseError, isFormError } from '@/lib/utils'
 import useCreateApplication from '@/hooks/application/use-create-application'
 import { Loader2 } from 'lucide-react'
 import { toast } from '../ui/use-toast'
@@ -43,18 +47,31 @@ function ApplicationForm({ jobCode, recruitmentDriveCode, initialStates }: Props
 
   const disabling = isPending
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>, fieldChange: (value: string) => void) => {
+  const handleCvChange = (e: React.ChangeEvent<HTMLInputElement>, fieldChange: (value: string) => void) => {
     e.preventDefault()
 
     const fileReader = new FileReader()
 
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0]
-      setFile(file)
 
-      if (!file.type.includes('pdf')) {
+      if (
+        ![
+          'application/pdf',
+          'application/msword',
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        ].includes(file.type)
+      ) {
         toast({
-          title: 'CV must be a pdf file',
+          title: 'CV must be a pdf, doc, or docx file',
+          variant: 'danger'
+        })
+        return
+      }
+
+      if (file.size > 5 * 1024 * 1024) {
+        toast({
+          title: 'File too large',
           variant: 'danger'
         })
         return
@@ -96,6 +113,18 @@ function ApplicationForm({ jobCode, recruitmentDriveCode, initialStates }: Props
           })
         },
         onError: (error) => {
+          if (
+            isFormError<TCreateApplicationErrors>(error) &&
+            error.response?.status === StatusCodes.UNPROCESSABLE_ENTITY
+          ) {
+            const fieldErrors = error.response?.data.errors
+            const keys = Object.keys(fieldErrors) as (keyof TCreateApplicationErrors)[]
+            keys.forEach((key) => form.setError(key, { message: fieldErrors[key] }))
+            form.setFocus(keys[0])
+
+            return
+          }
+
           if (!isBaseError(error) || error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR) {
             toast({
               title: 'Candidate has been added failure',
@@ -213,43 +242,14 @@ function ApplicationForm({ jobCode, recruitmentDriveCode, initialStates }: Props
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                CV<span className='text-gradient text-2xl font-bold leading-none'>*</span>
-                {field.value ? (
-                  <div
-                    className={cn(
-                      'group relative mt-2 flex size-64 items-center justify-center rounded-md border-2',
-                      disabling && 'pointer-events-none opacity-80'
-                    )}
-                  >
-                    <img
-                      src={field.value}
-                      alt='imageUrl'
-                      className='size-60 rounded-md object-contain group-hover:opacity-55'
-                    />
-
-                    <Button
-                      onClick={(e) => {
-                        e.preventDefault()
-                        field.onChange('')
-                      }}
-                      variant='ghost'
-                      size='icon'
-                      className='absolute right-2 top-2 hidden group-hover:inline-flex'
-                    >
-                      <img alt='delete' src='/icons/actions/delete.svg' className='size-6 object-cover' />
-                    </Button>
-                  </div>
-                ) : (
-                  <div
-                    className={cn(
-                      'mt-2 flex size-64 cursor-pointer flex-col items-center justify-center gap-y-2 rounded-md border-[3px] border-dashed',
-                      disabling && 'pointer-events-none opacity-80'
-                    )}
-                  >
-                    <img alt='upload' src='/icons/actions/upload.svg' className='size-12' />
-                    <p>Upload Icon</p>
-                  </div>
-                )}
+                CV<span className='text-gradient text-2xl font-bold leading-none'>*</span>{' '}
+                <span className='font-normal'>(supports *.doc, *.docx, *.pdf, and &lt; 5MB formats)</span>
+                <div
+                  className={cn('flex items-center gap-x-4 mt-2 w-fit', disabling && 'pointer-events-none opacity-80')}
+                >
+                  <div className={cn(buttonVariants({ size: 'sm', variant: 'secondary' }))}>Choose File</div>
+                  {field.value ? <p>{file?.name}</p> : <p>No file chosen</p>}
+                </div>
               </FormLabel>
               <FormControl>
                 <Input
@@ -258,7 +258,7 @@ function ApplicationForm({ jobCode, recruitmentDriveCode, initialStates }: Props
                   accept='pdf/*'
                   placeholder='Add your CV'
                   className='hidden'
-                  onChange={(e) => handleImageChange(e, field.onChange)}
+                  onChange={(e) => handleCvChange(e, field.onChange)}
                 />
               </FormControl>
               <FormMessage />

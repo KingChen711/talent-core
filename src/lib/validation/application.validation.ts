@@ -13,6 +13,10 @@ export const createApplicationSchema = z.object({
 
 export type TCreateApplicationSchema = z.infer<typeof createApplicationSchema>
 
+export type TCreateApplicationErrors = {
+  [key in keyof TCreateApplicationSchema]: string
+}
+
 export const searchCandidateEmailSchema = z.object({
   email: z.string().email()
 })
