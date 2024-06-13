@@ -1,24 +1,24 @@
 import { talentCoreApi } from '@/services/talent-core-api'
 import { useAuth } from '@clerk/clerk-react'
-import { Application, Job, JobDetail } from '@prisma/client'
+import { Applicant, Job, JobDetail } from '@prisma/client'
 import { useQuery } from '@tanstack/react-query'
-import { TGetApplicationsSchema } from '@/lib/validation/application.validation'
+import { TGetApplicantsSchema } from '@/lib/validation/applicant.validation'
 import { PagingMetaData } from '@/types'
 
-type Applications = (Application & {
+type Applicants = (Applicant & {
   jobDetail: JobDetail & {
     job: Job
   }
 })[]
 
-function useRecruitmentDriveApplications(recruitmentDriveCode: string, searchParams: TGetApplicationsSchema) {
+function useRecruitmentDriveApplicants(recruitmentDriveCode: string, searchParams: TGetApplicantsSchema) {
   const { getToken } = useAuth()
 
   return useQuery({
-    queryKey: ['recruitment-drives', recruitmentDriveCode, 'applications', { searchParams }],
+    queryKey: ['recruitment-drives', recruitmentDriveCode, 'applicants', { searchParams }],
     queryFn: async () =>
       talentCoreApi
-        .get<Applications>(`/api/recruitment-drives/${recruitmentDriveCode}/applications`, {
+        .get<Applicants>(`/api/recruitment-drives/${recruitmentDriveCode}/applicants`, {
           params: searchParams,
           headers: {
             Authorization: `Bearer ${await getToken()}`
@@ -31,4 +31,4 @@ function useRecruitmentDriveApplications(recruitmentDriveCode: string, searchPar
   })
 }
 
-export default useRecruitmentDriveApplications
+export default useRecruitmentDriveApplicants

@@ -1,25 +1,22 @@
 import { talentCoreApi } from '@/services/talent-core-api'
 import { useAuth } from '@clerk/clerk-react'
-import { Application, Candidate, Job, JobDetail, User } from '@prisma/client'
+import { Applicant, Job, JobDetail } from '@prisma/client'
 import { useQuery } from '@tanstack/react-query'
 
-type ApplicationDetail = Application & {
+type ApplicantDetail = Applicant & {
   jobDetail: JobDetail & {
     job: Job
   }
-  candidate: Candidate & {
-    user: User
-  }
 }
 
-function useApplication(applicationId: string) {
+function useApplicant(applicantId: string) {
   const { getToken } = useAuth()
 
   return useQuery({
-    queryKey: ['applications', applicationId],
+    queryKey: ['applicants', applicantId],
     queryFn: async () =>
       talentCoreApi
-        .get<ApplicationDetail>(`/api/applications/${applicationId}`, {
+        .get<ApplicantDetail>(`/api/applicants/${applicantId}`, {
           headers: {
             Authorization: `Bearer ${await getToken()}`
           }
@@ -28,4 +25,4 @@ function useApplication(applicationId: string) {
   })
 }
 
-export default useApplication
+export default useApplicant

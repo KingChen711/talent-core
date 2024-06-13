@@ -1,7 +1,7 @@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu'
 import { Button } from '../ui/button'
 import { Link } from '@tanstack/react-router'
-import { ApplicationStatus } from '@prisma/client'
+import { ApplicantStatus } from '@prisma/client'
 
 // Screening => Testing, Saved
 // Testing => Interviewing, Saved
@@ -10,12 +10,12 @@ import { ApplicationStatus } from '@prisma/client'
 // Saved => Cannot change
 
 type Props = {
-  applicationId: string
-  // applicationCode: string
-  status: ApplicationStatus
+  applicantId: string
+  // applicantCode: string
+  status: ApplicantStatus
 }
 
-function DropdownSettingApplication({ status, applicationId }: Props) {
+function DropdownSettingApplicant({ status, applicantId }: Props) {
   console.log(status)
 
   return (
@@ -27,7 +27,7 @@ function DropdownSettingApplication({ status, applicationId }: Props) {
       </DropdownMenuTrigger>
       <DropdownMenuContent className='border-2'>
         <DropdownMenuItem className='cursor-pointer' asChild>
-          <Link to={`/applications/${applicationId}`} className='flex items-center gap-x-2'>
+          <Link to={`/applicants/${applicantId}`} className='flex items-center gap-x-2'>
             <img alt='edit' src='/icons/side-bar/exam-active.svg' className='size-4 invert dark:invert-0' />
             View Detail
           </Link>
@@ -37,4 +37,4 @@ function DropdownSettingApplication({ status, applicationId }: Props) {
   )
 }
 
-export default DropdownSettingApplication
+export default DropdownSettingApplicant

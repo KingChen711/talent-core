@@ -16,20 +16,20 @@ import {
   DialogTrigger
 } from '@/components/ui/dialog'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { applicationTabs } from '@/constants'
+import { applicantTabs } from '@/constants'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { getApplicationsSchema } from '@/lib/validation/application.validation'
+import { getApplicantsSchema } from '@/lib/validation/applicant.validation'
 import TableRowsSkeleton from '@/components/shared/table-rows-skeleton'
 import useSort from '@/hooks/query/use-sort'
 import SearchForm from '@/components/shared/search-form'
-import useRecruitmentDriveApplications from '@/hooks/recruitment-drive/use-recruitment-drive-applications'
-import ApplicationBadge from '@/components/shared/application-badge'
+import useRecruitmentDriveApplicants from '@/hooks/recruitment-drive/use-recruitment-drive-applicants'
+import ApplicantBadge from '@/components/shared/applicant-badge'
 import Paginator from '@/components/shared/paginator'
-import DropdownSettingApplication from '@/components/application/dropdown-setting-application'
+import DropdownSettingApplicant from '@/components/applicant/dropdown-setting-applicant'
 
 export const Route = createFileRoute('/_employee-layout/recruitment-drives/$recruitmentDriveCode/detail')({
   component: RecruitmentDriveDetailPage,
-  validateSearch: (search) => getApplicationsSchema.parse(search)
+  validateSearch: (search) => getApplicantsSchema.parse(search)
 })
 
 function RecruitmentDriveDetailPage() {
@@ -40,7 +40,7 @@ function RecruitmentDriveDetailPage() {
   const { data: recruitmentDrive, isLoading: isLoadingRecruitmentDrive } =
     useRecruitmentDriveDetail(recruitmentDriveCode)
 
-  const { data, isPending: isLoadingApplications } = useRecruitmentDriveApplications(recruitmentDriveCode, {
+  const { data, isPending: isLoadingApplicants } = useRecruitmentDriveApplicants(recruitmentDriveCode, {
     pageNumber,
     pageSize,
     search,
@@ -110,9 +110,9 @@ function RecruitmentDriveDetailPage() {
                 icon={jd.job.icon}
                 quantity={jd.quantity}
                 createdAt={jd.createdAt}
-                countApplications={jd.countApplications}
-                countApplicationsApproved={jd.countApplicationsApproved}
-                countApplicationsLastWeek={jd.countApplicationsLastWeek}
+                countApplicants={jd.countApplicants}
+                countApplicantsApproved={jd.countApplicantsApproved}
+                countApplicantsLastWeek={jd.countApplicantsLastWeek}
               />
             ))}
           </div>
@@ -130,7 +130,7 @@ function RecruitmentDriveDetailPage() {
 
       <div className='my-5 rounded-2xl bg-card p-4'>
         <div className='mb-4 flex flex-wrap gap-x-8 gap-y-3 border-b'>
-          {applicationTabs.map((tab) => {
+          {applicantTabs.map((tab) => {
             console.log(status)
 
             const active = status === tab.status
@@ -180,29 +180,29 @@ function RecruitmentDriveDetailPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {isLoadingApplications && <TableRowsSkeleton colSpan={10} pageSize={pageSize} />}
+                {isLoadingApplicants && <TableRowsSkeleton colSpan={10} pageSize={pageSize} />}
 
-                {data?.items?.map((application) => {
+                {data?.items?.map((applicant) => {
                   return (
-                    <TableRow key={application.id}>
-                      <TableCell>{application.fullName}</TableCell>
+                    <TableRow key={applicant.id}>
+                      <TableCell>{applicant.fullName}</TableCell>
                       <TableCell>
                         <div className='flex items-center gap-x-3 font-semibold'>
                           <img
                             alt='job'
-                            src={application.jobDetail.job.icon}
+                            src={applicant.jobDetail.job.icon}
                             className='size-8 rounded-full object-cover'
                           />
-                          <p>{application.jobDetail.job.name}</p>
+                          <p>{applicant.jobDetail.job.name}</p>
                         </div>
                       </TableCell>
 
-                      <TableCell>{toDate(application.createdAt)}</TableCell>
+                      <TableCell>{toDate(applicant.createdAt)}</TableCell>
                       <TableCell className='text-center'>
-                        <ApplicationBadge status={application.status} />
+                        <ApplicantBadge status={applicant.status} />
                       </TableCell>
                       <TableCell className='text-end'>
-                        <DropdownSettingApplication applicationId={application.id} status={application.status} />
+                        <DropdownSettingApplicant applicantId={applicant.id} status={applicant.status} />
                       </TableCell>
                     </TableRow>
                   )
@@ -212,7 +212,7 @@ function RecruitmentDriveDetailPage() {
           </div>
         </div>
 
-        {!isLoadingApplications && data?.items.length === 0 && (
+        {!isLoadingApplicants && data?.items.length === 0 && (
           <div className='mt-36 text-center text-xl font-bold'>Not found any Recruitment Drives.</div>
         )}
       </div>
@@ -256,9 +256,9 @@ function DialogSelectJobForAddCandidate({ jobDetails, recruitmentDriveCode }: Di
                       icon={jd.job.icon}
                       quantity={jd.quantity}
                       createdAt={jd.createdAt}
-                      countApplications={jd.countApplications}
-                      countApplicationsApproved={jd.countApplicationsApproved}
-                      countApplicationsLastWeek={jd.countApplicationsLastWeek}
+                      countApplicants={jd.countApplicants}
+                      countApplicantsApproved={jd.countApplicantsApproved}
+                      countApplicantsLastWeek={jd.countApplicantsLastWeek}
                       showNavigate={false}
                     />
                   </Link>

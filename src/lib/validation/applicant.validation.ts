@@ -1,7 +1,7 @@
 import { Gender } from '@prisma/client'
 import { z } from 'zod'
 
-export const createApplicationSchema = z.object({
+export const createApplicantSchema = z.object({
   email: z.string().email(),
   fullName: z.string().min(2),
   phone: z.string().regex(/^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$/),
@@ -11,10 +11,10 @@ export const createApplicationSchema = z.object({
   personalIntroduction: z.string().optional()
 })
 
-export type TCreateApplicationSchema = z.infer<typeof createApplicationSchema>
+export type TCreateApplicantSchema = z.infer<typeof createApplicantSchema>
 
-export type TCreateApplicationErrors = {
-  [key in keyof TCreateApplicationSchema]: string
+export type TCreateApplicantErrors = {
+  [key in keyof TCreateApplicantSchema]: string
 }
 
 export const searchCandidateEmailSchema = z.object({
@@ -23,7 +23,7 @@ export const searchCandidateEmailSchema = z.object({
 
 export type TSearchCandidateEmailSchema = z.infer<typeof searchCandidateEmailSchema>
 
-export const getApplicationsSchema = z.object({
+export const getApplicantsSchema = z.object({
   pageNumber: z.number().catch(1),
   pageSize: z.number().catch(5),
   search: z.string().catch(''),
@@ -34,4 +34,4 @@ export const getApplicationsSchema = z.object({
     .default('-createdAt')
 })
 
-export type TGetApplicationsSchema = z.infer<typeof getApplicationsSchema>
+export type TGetApplicantsSchema = z.infer<typeof getApplicantsSchema>

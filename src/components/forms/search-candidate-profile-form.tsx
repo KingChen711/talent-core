@@ -1,6 +1,6 @@
 import useSearchCandidateProfile from '@/hooks/user/use-search-candidate-profile'
 import { isBaseError } from '@/lib/utils'
-import { TSearchCandidateEmailSchema, searchCandidateEmailSchema } from '@/lib/validation/application.validation'
+import { TSearchCandidateEmailSchema, searchCandidateEmailSchema } from '@/lib/validation/applicant.validation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { StatusCodes } from 'http-status-codes'
 import { useForm } from 'react-hook-form'
@@ -44,7 +44,7 @@ function SearchCandidateForm({
         if (!res.data.bornYear || !res.data.phone || !res.data.gender) {
           toast({
             title: `This candidate is exist in system.`,
-            description: 'But some information missing, complete them to create application',
+            description: 'But some information missing, complete them to create applicant',
             variant: 'warning'
           })
         }
@@ -63,7 +63,7 @@ function SearchCandidateForm({
         if (error.response?.status === StatusCodes.NOT_FOUND) {
           toast({
             title: `This email is not exist in system`,
-            description: "Let's complete all candidate information to create an application",
+            description: "Let's complete all candidate information to create an applicant",
             variant: 'warning'
           })
 

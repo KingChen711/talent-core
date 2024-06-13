@@ -1,11 +1,11 @@
-import { ApplicationStatus } from '@prisma/client'
+import { ApplicantStatus } from '@prisma/client'
 import { Badge } from '../ui/badge'
 
 type Props = {
-  status: ApplicationStatus
+  status: ApplicantStatus
 }
 
-function ApplicationBadge({ status }: Props) {
+function ApplicantBadge({ status }: Props) {
   let variant: 'default' | 'success' | 'warning' | 'info' | 'danger' | 'outline' | 'secondary'
   switch (status) {
     case 'Screening':
@@ -37,4 +37,4 @@ function ApplicationBadge({ status }: Props) {
   )
 }
 
-export default ApplicationBadge
+export default ApplicantBadge

@@ -8,12 +8,12 @@ type MutateType = {
   formData: FormData
 }
 
-function useCreateApplication() {
+function useCreateApplicant() {
   const { getToken } = useAuth()
 
   return useMutation({
     mutationFn: async ({ jobCode, recruitmentDriveCode, formData }: MutateType) =>
-      talentCoreApi.post(`/api/recruitment-drives/${recruitmentDriveCode}/jobs/${jobCode}/applications`, formData, {
+      talentCoreApi.post(`/api/recruitment-drives/${recruitmentDriveCode}/jobs/${jobCode}/applicants`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${await getToken()}`
@@ -22,4 +22,4 @@ function useCreateApplication() {
   })
 }
 
-export default useCreateApplication
+export default useCreateApplicant

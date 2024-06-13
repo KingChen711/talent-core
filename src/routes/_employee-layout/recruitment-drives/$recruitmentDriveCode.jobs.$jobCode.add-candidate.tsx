@@ -1,4 +1,4 @@
-import ApplicationForm, { InitialApplicationFormStates } from '@/components/forms/application.form'
+import ApplicantForm, { InitialApplicantFormStates } from '@/components/forms/applicant.form'
 import SearchCandidateForm from '@/components/forms/search-candidate-profile-form'
 import { Button } from '@/components/ui/button'
 import { UserWithRole } from '@/types'
@@ -11,7 +11,7 @@ export const Route = createFileRoute(
   component: RecruitmentDriveAddCandidatePage
 })
 
-const initialApplicationFormStates = {
+const initialApplicantFormStates = {
   bornYear: undefined,
   email: '',
   fullName: '',
@@ -23,11 +23,11 @@ function RecruitmentDriveAddCandidatePage() {
   const router = useRouter()
   const { recruitmentDriveCode, jobCode } = Route.useParams()
   const [hasSearched, setHasSearched] = useState(false)
-  const [initialStates, setInitialStates] = useState<InitialApplicationFormStates>(initialApplicationFormStates)
+  const [initialStates, setInitialStates] = useState<InitialApplicantFormStates>(initialApplicantFormStates)
 
   useEffect(() => {
     if (!hasSearched) {
-      setInitialStates(initialApplicationFormStates)
+      setInitialStates(initialApplicantFormStates)
     }
   }, [hasSearched])
 
@@ -70,7 +70,7 @@ function RecruitmentDriveAddCandidatePage() {
       />
 
       {hasSearched && (
-        <ApplicationForm initialStates={initialStates} jobCode={jobCode} recruitmentDriveCode={recruitmentDriveCode} />
+        <ApplicantForm initialStates={initialStates} jobCode={jobCode} recruitmentDriveCode={recruitmentDriveCode} />
       )}
     </div>
   )

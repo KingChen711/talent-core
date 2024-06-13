@@ -8,7 +8,7 @@ class TalentCoreApi {
       baseURL: import.meta.env.VITE_TALENT_CORE_API_URL,
       timeout: 10000,
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'applicant/json'
       }
     })
   }

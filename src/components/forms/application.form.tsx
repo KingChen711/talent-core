@@ -1,17 +1,13 @@
 import { Gender } from '@prisma/client'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
-import {
-  TCreateApplicationErrors,
-  TCreateApplicationSchema,
-  createApplicationSchema
-} from '@/lib/validation/application.validation'
+import { TCreateApplicantSchema, createApplicantSchema } from '@/lib/validation/applicant.validation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Input } from '../ui/input'
 import { Button, buttonVariants } from '../ui/button'
 import { useForm } from 'react-hook-form'
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
-import { cn, isBaseError, isFormError } from '@/lib/utils'
-import useCreateApplication from '@/hooks/application/use-create-application'
+import { cn, isBaseError } from '@/lib/utils'
+import useCreateApplicant from '@/hooks/applicant/use-create-applicant'
 import { Loader2 } from 'lucide-react'
 import { toast } from '../ui/use-toast'
 import { useNavigate } from '@tanstack/react-router'
@@ -19,7 +15,7 @@ import { StatusCodes } from 'http-status-codes'
 import { useState } from 'react'
 import { Textarea } from '../ui/textarea'
 
-export type InitialApplicationFormStates = {
+export type InitialApplicantFormStates = {
   email: string
   fullName: string
   phone: string | undefined
@@ -30,18 +26,18 @@ export type InitialApplicationFormStates = {
 type Props = {
   jobCode: string
   recruitmentDriveCode: string
-  initialStates: InitialApplicationFormStates
+  initialStates: InitialApplicantFormStates
 }
 
-function ApplicationForm({ jobCode, recruitmentDriveCode, initialStates }: Props) {
+function ApplicantForm({ jobCode, recruitmentDriveCode, initialStates }: Props) {
   const navigate = useNavigate()
 
   const [file, setFile] = useState<File | null>(null)
 
-  const { mutate, isPending } = useCreateApplication()
+  const { mutate, isPending } = useCreateApplicant()
 
-  const form = useForm<TCreateApplicationSchema>({
-    resolver: zodResolver(createApplicationSchema),
+  const form = useForm<TCreateApplicantSchema>({
+    resolver: zodResolver(createApplicantSchema),
     defaultValues: initialStates
   })
 
@@ -57,9 +53,9 @@ function ApplicationForm({ jobCode, recruitmentDriveCode, initialStates }: Props
 
       if (
         ![
-          'application/pdf',
-          'application/msword',
-          'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+          'applicant/pdf',
+          'applicant/msword',
+          'applicant/vnd.openxmlformats-officedocument.wordprocessingml.document'
         ].includes(file.type)
       ) {
         toast({
@@ -88,7 +84,7 @@ function ApplicationForm({ jobCode, recruitmentDriveCode, initialStates }: Props
     }
   }
 
-  const onSubmit = async (values: TCreateApplicationSchema) => {
+  const onSubmit = async (values: TCreateApplicantSchema) => {
     const formData = new FormData()
 
     formData.append('email', values.email)
@@ -113,18 +109,6 @@ function ApplicationForm({ jobCode, recruitmentDriveCode, initialStates }: Props
           })
         },
         onError: (error) => {
-          if (
-            isFormError<TCreateApplicationErrors>(error) &&
-            error.response?.status === StatusCodes.UNPROCESSABLE_ENTITY
-          ) {
-            const fieldErrors = error.response?.data.errors
-            const keys = Object.keys(fieldErrors) as (keyof TCreateApplicationErrors)[]
-            keys.forEach((key) => form.setError(key, { message: fieldErrors[key] }))
-            form.setFocus(keys[0])
-
-            return
-          }
-
           if (!isBaseError(error) || error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR) {
             toast({
               title: 'Candidate has been added failure',
@@ -288,4 +272,4 @@ function ApplicationForm({ jobCode, recruitmentDriveCode, initialStates }: Props
   )
 }
 
-export default ApplicationForm
+export default ApplicantForm

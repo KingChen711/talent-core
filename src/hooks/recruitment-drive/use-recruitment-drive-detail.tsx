@@ -5,9 +5,9 @@ import { useQuery } from '@tanstack/react-query'
 
 export type JobDetails = (JobDetail & {
   job: Job
-  countApplicationsLastWeek: number
-  countApplicationsApproved: number
-  countApplications: number
+  countApplicantsLastWeek: number
+  countApplicantsApproved: number
+  countApplicants: number
 })[]
 
 type RecruitmentDriveDetail = RecruitmentDrive & {

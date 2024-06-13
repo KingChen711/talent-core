@@ -4,9 +4,9 @@ import { Badge } from '../ui/badge'
 type Props = {
   color: string
   icon: string
-  countApplications: number
-  countApplicationsApproved: number
-  countApplicationsLastWeek: number
+  countApplicants: number
+  countApplicantsApproved: number
+  countApplicantsLastWeek: number
   quantity: number
   name: string
   createdAt: Date
@@ -19,9 +19,9 @@ function JobDetailCard({
   name,
   createdAt,
   quantity,
-  countApplications,
-  countApplicationsLastWeek,
-  countApplicationsApproved,
+  countApplicants,
+  countApplicantsLastWeek,
+  countApplicantsApproved,
   showNavigate = true
 }: Props) {
   return (
@@ -55,7 +55,7 @@ function JobDetailCard({
 
       <div className='z-10 flex gap-x-2'>
         <Badge className='pointer-events-none w-fit bg-[#d1d1d1] py-1 text-sm font-normal text-card-foreground dark:bg-[#282828] dark:text-white'>
-          {countApplicationsApproved} approved
+          {countApplicantsApproved} approved
         </Badge>
         <Badge className='pointer-events-none w-fit bg-[#d1d1d1] py-1 text-sm font-normal text-card-foreground dark:bg-[#282828] dark:text-white'>
           {quantity} needed
@@ -64,11 +64,11 @@ function JobDetailCard({
 
       <div className='z-10 flex items-end justify-between'>
         <div className='ml-1 flex items-end gap-x-2'>
-          <p className='text-[40px] font-bold leading-none'>{countApplications}</p>
-          <p className='mb-[6px] text-sm text-muted'>applications</p>
+          <p className='text-[40px] font-bold leading-none'>{countApplicants}</p>
+          <p className='mb-[6px] text-sm text-muted'>applicants</p>
         </div>
 
-        <div className='mb-[6px] text-sm text-success'>{countApplicationsLastWeek} in last week</div>
+        <div className='mb-[6px] text-sm text-success'>{countApplicantsLastWeek} in last week</div>
       </div>
     </div>
   )

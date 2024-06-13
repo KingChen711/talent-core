@@ -51,7 +51,7 @@ export const recruitmentDriveTabs = [
   }
 ] as const
 
-export const applicationTabs = [
+export const applicantTabs = [
   {
     label: 'All',
     status: 'All'
