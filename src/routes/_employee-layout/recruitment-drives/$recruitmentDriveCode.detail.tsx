@@ -209,7 +209,7 @@ function RecruitmentDriveDetailPage() {
                         <ApplicationBadge status={application.status} />
                       </TableCell>
                       <TableCell className='text-end'>
-                        <DropdownSettingApplication status={application.status} />
+                        <DropdownSettingApplication applicationId={application.id} status={application.status} />
                       </TableCell>
                     </TableRow>
                   )

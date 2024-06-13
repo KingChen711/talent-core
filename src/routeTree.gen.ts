@@ -24,6 +24,7 @@ import { Route as EmployeeLayoutJobsIndexImport } from './routes/_employee-layou
 import { Route as EmployeeLayoutTestExamsCreateImport } from './routes/_employee-layout/test-exams/create'
 import { Route as EmployeeLayoutRecruitmentDrivesCreateImport } from './routes/_employee-layout/recruitment-drives/create'
 import { Route as EmployeeLayoutJobsCreateImport } from './routes/_employee-layout/jobs/create'
+import { Route as EmployeeLayoutApplicationsApplicationIdImport } from './routes/_employee-layout/applications/$applicationId'
 import { Route as EmployeeLayoutTestExamsTestExamIdTestSessionsImport } from './routes/_employee-layout/test-exams/$testExamId.test-sessions'
 import { Route as EmployeeLayoutTestExamsTestExamIdEditImport } from './routes/_employee-layout/test-exams/$testExamId.edit'
 import { Route as EmployeeLayoutTestExamsTestExamCodeJobsImport } from './routes/_employee-layout/test-exams/$testExamCode.jobs'
@@ -106,6 +107,12 @@ const EmployeeLayoutJobsCreateRoute = EmployeeLayoutJobsCreateImport.update({
   path: '/jobs/create',
   getParentRoute: () => EmployeeLayoutRoute,
 } as any)
+
+const EmployeeLayoutApplicationsApplicationIdRoute =
+  EmployeeLayoutApplicationsApplicationIdImport.update({
+    path: '/applications/$applicationId',
+    getParentRoute: () => EmployeeLayoutRoute,
+  } as any)
 
 const EmployeeLayoutTestExamsTestExamIdTestSessionsRoute =
   EmployeeLayoutTestExamsTestExamIdTestSessionsImport.update({
@@ -227,6 +234,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof MainLayoutIndexImport
       parentRoute: typeof MainLayoutImport
+    }
+    '/_employee-layout/applications/$applicationId': {
+      id: '/_employee-layout/applications/$applicationId'
+      path: '/applications/$applicationId'
+      fullPath: '/applications/$applicationId'
+      preLoaderRoute: typeof EmployeeLayoutApplicationsApplicationIdImport
+      parentRoute: typeof EmployeeLayoutImport
     }
     '/_employee-layout/jobs/create': {
       id: '/_employee-layout/jobs/create'
@@ -359,6 +373,7 @@ export const routeTree = rootRoute.addChildren({
   }),
   EmployeeLayoutRoute: EmployeeLayoutRoute.addChildren({
     EmployeeLayoutDashboardRoute,
+    EmployeeLayoutApplicationsApplicationIdRoute,
     EmployeeLayoutJobsCreateRoute,
     EmployeeLayoutRecruitmentDrivesCreateRoute,
     EmployeeLayoutTestExamsCreateRoute,

@@ -10,12 +10,12 @@ import { ApplicationStatus } from '@prisma/client'
 // Saved => Cannot change
 
 type Props = {
-  // applicationId: string
+  applicationId: string
   // applicationCode: string
   status: ApplicationStatus
 }
 
-function DropdownSettingApplication({ status }: Props) {
+function DropdownSettingApplication({ status, applicationId }: Props) {
   console.log(status)
 
   return (
@@ -27,10 +27,7 @@ function DropdownSettingApplication({ status }: Props) {
       </DropdownMenuTrigger>
       <DropdownMenuContent className='border-2'>
         <DropdownMenuItem className='cursor-pointer' asChild>
-          <Link
-            // to={`/applications/${applicationCode}/add-test-exams`}
-            className='flex items-center gap-x-2'
-          >
+          <Link to={`/applications/${applicationId}`} className='flex items-center gap-x-2'>
             <img alt='edit' src='/icons/side-bar/exam-active.svg' className='size-4 invert dark:invert-0' />
             View Detail
           </Link>
