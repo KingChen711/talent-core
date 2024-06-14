@@ -96,19 +96,14 @@ model Applicant {
 }
 
 model InterviewSession {
-  id              String          @id @default(auto()) @map("_id") @db.ObjectId
-  applicantId     String          @unique @db.ObjectId
-  interviewDate   DateTime
-  interviewResult InterviewResult @default(Processing)
-  method          Method          @default(Offline)
+  id            String          @id @default(auto()) @map("_id") @db.ObjectId
+  applicantId   String          @unique @db.ObjectId
+  interviewDate DateTime
+  status        InterviewStatus @default(Processing)
+  guide         String
 
   applicant            Applicant             @relation(fields: [applicantId], references: [id])
   interviewSessionWish InterviewSessionWish?
-}
-
-enum Method {
-  Online
-  Offline
 }
 
 model ReceiveJobWish {
@@ -127,22 +122,22 @@ enum ReceiveJobWishType {
   ChanegReceiJonTime
 }
 
-enum InterviewResult {
+enum InterviewStatus {
   Processing
   Completed
 }
 
 model TestSession {
-  id          String            @id @default(auto()) @map("_id") @db.ObjectId
-  applicantId String            @unique @db.ObjectId
-  testExamId  String            @db.ObjectId
-  point       Int?
-  status      TestSessionStatus @default(Processing)
-  testDate    DateTime
+  id           String            @id @default(auto()) @map("_id") @db.ObjectId
+  applicantId  String            @unique @db.ObjectId
+  testExamCode String
+  point        Int?
+  status       TestSessionStatus @default(Processing)
+  testDate     DateTime
   // method        Method            @default(Offline)
 
   applicant       Applicant        @relation(fields: [applicantId], references: [id])
-  testExam        TestExam         @relation(fields: [testExamId], references: [id], onDelete: Restrict)
+  testExam        TestExam         @relation(fields: [testExamCode], references: [code], onDelete: Restrict)
   testSessionWish TestSessionWish?
 }
 
@@ -152,7 +147,6 @@ model InterviewSessionWish {
   content            String
   status             WishStatus
   wishTime           DateTime
-  wishMethod         Method
 
   interviewSession InterviewSession @relation(fields: [interviewSessionId], references: [id])
 }
@@ -175,7 +169,8 @@ enum WishStatus {
 
 enum TestSessionStatus {
   Processing
-  Completed
+  Pass
+  Fail
 }
 
 enum ApplicantStatus {

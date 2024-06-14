@@ -61,6 +61,10 @@ export function toDate(isoString: Date): string {
   return format(isoString, 'PPP')
 }
 
+export function toDateTime(isoString: Date): string {
+  return format(isoString, 'PPP p')
+}
+
 export function getExampleQuestions() {
   const result = []
 

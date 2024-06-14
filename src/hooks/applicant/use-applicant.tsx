@@ -1,12 +1,14 @@
 import { talentCoreApi } from '@/services/talent-core-api'
 import { useAuth } from '@clerk/clerk-react'
-import { Applicant, Job, JobDetail } from '@prisma/client'
+import { Applicant, InterviewSession, Job, JobDetail, TestSession } from '@prisma/client'
 import { useQuery } from '@tanstack/react-query'
 
 type ApplicantDetail = Applicant & {
   jobDetail: JobDetail & {
     job: Job
   }
+  testSession: TestSession | null
+  interviewSession: InterviewSession | null
 }
 
 function useApplicant(applicantId: string) {

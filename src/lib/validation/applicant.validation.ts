@@ -46,3 +46,25 @@ export const scheduleTestExamSchema = z.object({
 })
 
 export type TScheduleTestExamSchema = z.infer<typeof scheduleTestExamSchema>
+
+export const scheduleInterviewSchema = z.object({
+  interviewDate: z.coerce.date().refine((data) => {
+    const now = new Date()
+    const threeDaysLater = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 3)
+    return data.getTime() >= threeDaysLater.getTime()
+  }, 'Interview date must be after today at least 3 day'),
+  guide: z.string()
+})
+
+export type TScheduleInterviewSchema = z.infer<typeof scheduleInterviewSchema>
+
+export const approveApplicantSchema = z.object({
+  receiveJobDate: z.coerce.date().refine((data) => {
+    const now = new Date()
+    const threeDaysLater = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 3)
+    return data.getTime() >= threeDaysLater.getTime()
+  }, 'Interview date must be after today at least 3 day'),
+  guide: z.string()
+})
+
+export type TApproveApplicantSchema = z.infer<typeof approveApplicantSchema>
