@@ -3,6 +3,10 @@ import { useAuth } from '@clerk/clerk-react'
 import { TestExam } from '@prisma/client'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 
+type TestExams = (TestExam & {
+  countQuestions: number
+})[]
+
 function useJobTestExams(jobCode: string) {
   const { getToken } = useAuth()
 
@@ -10,7 +14,7 @@ function useJobTestExams(jobCode: string) {
     queryKey: ['jobs', jobCode, 'test-exams'],
     queryFn: async () =>
       talentCoreApi
-        .get<TestExam[]>(`/api/jobs/${jobCode}/test-exams`, {
+        .get<TestExams>(`/api/jobs/${jobCode}/test-exams`, {
           headers: {
             Authorization: `Bearer ${await getToken()}`
           }

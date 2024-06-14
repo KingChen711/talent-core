@@ -1,7 +1,6 @@
-import DialogContentScheduleTestExam from '@/components/applicant/dialog-content-schedule-test-exam'
+import DialogScheduleTestExam from '@/components/applicant/dialog-schedule-test-exam'
 import NoResult from '@/components/shared/no-result'
 import { Button } from '@/components/ui/button'
-import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
 import useApplicant from '@/hooks/applicant/use-applicant'
 import { toDate } from '@/lib/utils'
@@ -22,7 +21,7 @@ function ApplicantDetailPage() {
   }
 
   if (!data) {
-    return <NoResult title='Not found application' description='' />
+    return <NoResult title='Not found applicant' description='' />
   }
 
   return (
@@ -78,12 +77,9 @@ function ApplicantDetailPage() {
         </div>
       </div>
 
-      <Dialog>
-        <DialogTrigger asChild>
-          <Button>Schedule test exam</Button>
-        </DialogTrigger>
-        <DialogContentScheduleTestExam jobCode={data.jobDetail.job.code} />
-      </Dialog>
+      {data.status === 'Screening' && (
+        <DialogScheduleTestExam applicantId={applicantId} jobCode={data.jobDetail.job.code} />
+      )}
     </div>
   )
 }

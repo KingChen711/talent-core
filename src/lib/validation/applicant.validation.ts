@@ -37,7 +37,11 @@ export const getApplicantsSchema = z.object({
 export type TGetApplicantsSchema = z.infer<typeof getApplicantsSchema>
 
 export const scheduleTestExamSchema = z.object({
-  testDate: z.coerce.date(),
+  testDate: z.coerce.date().refine((data) => {
+    const now = new Date()
+    const threeDaysLater = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 3)
+    return data.getTime() >= threeDaysLater.getTime()
+  }, 'Test date must be after today at least 3 day'),
   testExamCode: z.string()
 })
 
