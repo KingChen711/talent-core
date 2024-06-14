@@ -17,6 +17,7 @@ function useJobAddTestExam() {
         { testExamIds },
         {
           headers: {
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${await getToken()}`
           }
         }

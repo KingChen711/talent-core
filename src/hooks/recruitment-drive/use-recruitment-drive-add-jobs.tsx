@@ -17,6 +17,7 @@ function useRecruitmentDriveAddJobs() {
         { jobIds },
         {
           headers: {
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${await getToken()}`
           }
         }

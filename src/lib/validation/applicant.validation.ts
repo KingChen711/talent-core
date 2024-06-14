@@ -35,3 +35,10 @@ export const getApplicantsSchema = z.object({
 })
 
 export type TGetApplicantsSchema = z.infer<typeof getApplicantsSchema>
+
+export const scheduleTestExamSchema = z.object({
+  testDate: z.coerce.date(),
+  testExamCode: z.string()
+})
+
+export type TScheduleTestExamSchema = z.infer<typeof scheduleTestExamSchema>

@@ -138,7 +138,7 @@ model TestSession {
   testExamId  String            @db.ObjectId
   point       Int?
   status      TestSessionStatus @default(Processing)
-  startDate   DateTime
+  testDate    DateTime
   // method        Method            @default(Offline)
 
   applicant       Applicant        @relation(fields: [applicantId], references: [id])

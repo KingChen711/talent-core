@@ -51,11 +51,13 @@ function ApplicantForm({ jobCode, recruitmentDriveCode, initialStates }: Props) 
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0]
 
+      console.log(file.type)
+
       if (
         ![
-          'applicant/pdf',
-          'applicant/msword',
-          'applicant/vnd.openxmlformats-officedocument.wordprocessingml.document'
+          'application/pdf',
+          'application/msword',
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
         ].includes(file.type)
       ) {
         toast({

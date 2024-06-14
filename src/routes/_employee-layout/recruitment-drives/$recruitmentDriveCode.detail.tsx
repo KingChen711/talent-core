@@ -119,7 +119,7 @@ function RecruitmentDriveDetailPage() {
         </div>
       </div>
 
-      <div className='mb-2 mt-8 flex items-center justify-between'>
+      <div className='mb-2 mt-8 flex items-center justify-between gap-x-4'>
         <div className='text-xl font-semibold'>Candidates</div>
         <SearchForm search={search} placeholder='Search candidate...' />
         <DialogSelectJobForAddCandidate

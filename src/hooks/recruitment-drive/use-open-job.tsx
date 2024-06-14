@@ -16,6 +16,7 @@ function useOpenJob() {
       return talentCoreApi
         .post<JobDetail>('/api/recruitment-drives/open-job', body, {
           headers: {
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`
           }
         })

@@ -11,6 +11,7 @@ function useMutateRecruitmentDrive(type: 'create' | 'update') {
       mutationFn: async (recruitmentDrive: TMutationRecruitmentDriveSchema) =>
         talentCoreApi.post('/api/recruitment-drives', recruitmentDrive, {
           headers: {
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${await getToken()}`
           }
         })
@@ -22,6 +23,7 @@ function useMutateRecruitmentDrive(type: 'create' | 'update') {
       const recruitmentDriveId = recruitmentDrive.id
       return talentCoreApi.put(`/api/recruitment-drives/${recruitmentDriveId}`, recruitmentDrive, {
         headers: {
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${await getToken()}`
         }
       })

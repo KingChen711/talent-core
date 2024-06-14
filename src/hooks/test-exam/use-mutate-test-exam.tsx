@@ -11,6 +11,7 @@ function useMutateTestExam(type: 'create' | 'update') {
       mutationFn: async (testExam: TMutationTestExamSchema) =>
         talentCoreApi.post('/api/test-exams', testExam, {
           headers: {
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${await getToken()}`
           }
         })
@@ -22,6 +23,7 @@ function useMutateTestExam(type: 'create' | 'update') {
       //   const testExamId = testExam.get('id')
       return talentCoreApi.put(`/api/test-exams/${testExam.id}`, testExam, {
         headers: {
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${await getToken()}`
         }
       })

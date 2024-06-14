@@ -1,6 +1,10 @@
+import DialogContentScheduleTestExam from '@/components/applicant/dialog-content-schedule-test-exam'
+import NoResult from '@/components/shared/no-result'
 import { Button } from '@/components/ui/button'
+import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
 import useApplicant from '@/hooks/applicant/use-applicant'
+import { toDate } from '@/lib/utils'
 import { createFileRoute, useRouter } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_employee-layout/applicants/$applicantId')({
@@ -15,6 +19,10 @@ function ApplicantDetailPage() {
   // TODO: Skeleton
   if (isLoading) {
     return <div>Skeleton</div>
+  }
+
+  if (!data) {
+    return <NoResult title='Not found application' description='' />
   }
 
   return (
@@ -37,38 +45,45 @@ function ApplicantDetailPage() {
           <p>{data!.fullName}</p>
         </div>
         <div className='flex items-center gap-x-4'>
-          <Label>Email:</Label>
-          <p>{data!.email}</p>
+          <Label>bornYear:</Label>
+          <p>{data!.bornYear}</p>
+        </div>
+        <div className='flex items-center gap-x-4'>
+          <Label>Applied Date:</Label>
+          <p>{toDate(data!.createdAt)}</p>
+        </div>
+        <div className='flex items-center gap-x-4'>
+          <Label>CV:</Label>
+          <p>{data!.cv}</p>
+        </div>
+        <div className='flex items-center gap-x-4'>
+          <Label>Gender:</Label>
+          <p>{data!.gender}</p>
+        </div>
+        <div className='flex items-center gap-x-4'>
+          <Label>phone:</Label>
+          <p>{data!.phone}</p>
+        </div>
+        <div className='flex items-center gap-x-4'>
+          <Label>personalIntroduction:</Label>
+          <p>{data!.personalIntroduction}</p>
+        </div>
+        <div className='flex items-center gap-x-4'>
+          <Label>receiveJobDate:</Label>
+          <p></p>
         </div>
         <div className='flex items-center gap-x-4'>
           <Label>Email:</Label>
-          <p>{data!.email}</p>
-        </div>
-        <div className='flex items-center gap-x-4'>
-          <Label>Email:</Label>
-          <p>{data!.email}</p>
-        </div>
-        <div className='flex items-center gap-x-4'>
-          <Label>Email:</Label>
-          <p>{data!.email}</p>
-        </div>
-        <div className='flex items-center gap-x-4'>
-          <Label>Email:</Label>
-          <p>{data!.email}</p>
-        </div>
-        <div className='flex items-center gap-x-4'>
-          <Label>Email:</Label>
-          <p>{data!.email}</p>
-        </div>
-        <div className='flex items-center gap-x-4'>
-          <Label>Email:</Label>
-          <p>{data!.email}</p>
-        </div>
-        <div className='flex items-center gap-x-4'>
-          <Label>Email:</Label>
-          <p>{data!.email}</p>
+          <p>{data!.jobDetail.job.name}</p>
         </div>
       </div>
+
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button>Schedule test exam</Button>
+        </DialogTrigger>
+        <DialogContentScheduleTestExam jobCode={data.jobDetail.job.code} />
+      </Dialog>
     </div>
   )
 }

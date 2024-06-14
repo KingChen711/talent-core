@@ -32,7 +32,7 @@ function DialogDeleteRecruitmentDrive({ recruitmentDriveId }: Props) {
           title: 'RecruitmentDrive has been deleted successfully',
           variant: 'success'
         })
-        queryClient.invalidateQueries({ queryKey: ['recruitmentDrives'] })
+        queryClient.invalidateQueries({ queryKey: ['recruitment-drives'] })
         setOpen(false)
       },
       onError: (error) => {
