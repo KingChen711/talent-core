@@ -8,7 +8,7 @@ export const getRecruitmentDrivesSchema = z.object({
     .transform((data) => Math.min(data, 50))
     .catch(5),
   search: z.string().catch(''),
-  status: z.enum(['all', 'opening', 'closed']).catch('all'),
+  status: z.enum(['All', 'Open', 'Closed', 'Upcoming']).catch('All'),
   sort: z
     .enum([
       'startDate',
@@ -40,8 +40,7 @@ export const mutationRecruitmentDriveSchema = z
     name: z.string().min(2).max(50),
     startDate: z.coerce.date(),
     endDate: z.coerce.date(),
-    description: z.string().optional(),
-    isOpening: z.boolean()
+    description: z.string().optional()
   })
   .refine(
     (data) => {

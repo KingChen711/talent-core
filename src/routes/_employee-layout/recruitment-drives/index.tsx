@@ -1,6 +1,6 @@
 import DialogDeleteRecruitmentDrive from '@/components/recruitment-drive/dialog-delete-recruitment-drive'
 import DropdownSettingRecruitmentDrive from '@/components/recruitment-drive/dropdown-setting-recruitment-drive'
-import OpenCloseBadge from '@/components/shared/open-close-badge'
+import RecruitmentDriveBadge from '@/components/recruitment-drive/recruitment-drive-badge'
 import Paginator from '@/components/shared/paginator'
 import SearchForm from '@/components/shared/search-form'
 import TableRowsSkeleton from '@/components/shared/table-rows-skeleton'
@@ -114,13 +114,13 @@ function RecruitmentDrivesPage() {
                     <TableCell className='text-center'>{toDate(recruitmentDrive.endDate)}</TableCell>
                     <TableCell className='text-center'>{toDate(recruitmentDrive.createdAt)}</TableCell>
                     <TableCell className='text-center'>
-                      <OpenCloseBadge isOpening={recruitmentDrive.isOpening} />
+                      <RecruitmentDriveBadge status={recruitmentDrive.status} />
                     </TableCell>
                     <TableCell className='flex justify-end'>
                       <DropdownSettingRecruitmentDrive
                         recruitmentDriveId={recruitmentDrive.id}
                         recruitmentDriveCode={recruitmentDrive.code}
-                        showAddJobs={recruitmentDrive.isOpening}
+                        showAddJobs={recruitmentDrive.status !== 'Closed'}
                       />
                       <DialogDeleteRecruitmentDrive recruitmentDriveId={recruitmentDrive.id} />
                     </TableCell>

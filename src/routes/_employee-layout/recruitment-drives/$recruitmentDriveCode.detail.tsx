@@ -5,7 +5,7 @@ import { Plus } from 'lucide-react'
 
 import JobDetailCard from '@/components/jobs/job-detail-card'
 import NoResult from '@/components/shared/no-result'
-import OpenCloseBadge from '@/components/shared/open-close-badge'
+import RecruitmentDriveBadge from '@/components/recruitment-drive/recruitment-drive-badge'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -76,7 +76,7 @@ function RecruitmentDriveDetailPage() {
       <div className='mb-5 space-y-1'>
         <div className='flex items-center gap-x-2'>
           <h2 className='text-2xl font-semibold'>{recruitmentDrive.name}</h2>
-          <OpenCloseBadge isOpening={recruitmentDrive.isOpening} />
+          <RecruitmentDriveBadge status={recruitmentDrive.status} />
         </div>
         <p className='text-xl text-muted'>
           {recruitmentDrive.code}, {toDate(recruitmentDrive.startDate)} - {toDate(recruitmentDrive.endDate)}
@@ -199,7 +199,9 @@ function RecruitmentDriveDetailPage() {
 
                       <TableCell>{toDate(applicant.createdAt)}</TableCell>
                       <TableCell className='text-center'>
-                        <ApplicantBadge status={applicant.status} />
+                        <div className='flex size-full items-center justify-center'>
+                          <ApplicantBadge status={applicant.status} />
+                        </div>
                       </TableCell>
                       <TableCell className='text-end'>
                         <DropdownSettingApplicant applicantId={applicant.id} status={applicant.status} />

@@ -9,14 +9,15 @@ import { useQueryClient } from '@tanstack/react-query'
 import { toast } from '../ui/use-toast'
 import { isBaseError } from '@/lib/utils'
 import { StatusCodes } from 'http-status-codes'
+import { JobStatus } from '@/hooks/job/use-jobs'
 
 type Props = {
   jobId: string
   jobCode: string
-  isOpening: boolean
+  status: JobStatus
 }
 
-function DropdownSettingJob({ jobId, jobCode, isOpening }: Props) {
+function DropdownSettingJob({ jobId, jobCode, status }: Props) {
   const queryClient = useQueryClient()
   const { mutate } = useCloseJob()
 
@@ -79,7 +80,7 @@ function DropdownSettingJob({ jobId, jobCode, isOpening }: Props) {
               Add test exams
             </Link>
           </DropdownMenuItem>
-          {!isOpening ? (
+          {!status.includes('Open') ? (
             <DialogTrigger asChild>
               <DropdownMenuItem className='cursor-pointer' asChild>
                 <div className='flex cursor-pointer items-center gap-x-2 rounded-sm px-2 py-[6px] text-sm leading-5 hover:bg-muted'>
@@ -102,7 +103,7 @@ function DropdownSettingJob({ jobId, jobCode, isOpening }: Props) {
           )}
         </DropdownMenuContent>
       </DropdownMenu>
-      {!isOpening && <DialogContentOpenJob jobCode={jobCode} />}
+      {!status.includes('Open') && <DialogContentOpenJob jobCode={jobCode} />}
     </Dialog>
   )
 }

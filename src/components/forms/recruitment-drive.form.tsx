@@ -14,11 +14,10 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Calendar } from '@/components/ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Button } from '@/components/ui/button'
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { toast } from '@/components/ui/use-toast'
 import { Textarea } from '@/components/ui/textarea'
-import { Checkbox } from '../ui/checkbox'
 import useMutateRecruitmentDrive from '@/hooks/recruitment-drive/use-mutate-recruitment-drive'
 import useRecruitmentDrive from '@/hooks/recruitment-drive/use-recruitment-drive'
 import { useMemo } from 'react'
@@ -47,8 +46,7 @@ function RecruitmentDriveForm({ type, recruitmentDriveId }: Props) {
       name: '',
       startDate: undefined,
       endDate: undefined,
-      description: '',
-      isOpening: false
+      description: ''
     }
   })
 
@@ -61,7 +59,6 @@ function RecruitmentDriveForm({ type, recruitmentDriveId }: Props) {
     form.setValue('description', recruitmentDrive.description || '')
     form.setValue('startDate', new Date(recruitmentDrive.startDate))
     form.setValue('endDate', new Date(recruitmentDrive.endDate))
-    form.setValue('isOpening', recruitmentDrive.isOpening)
   })
 
   const disabling = useMemo(() => isPending || isLoading, [isPending, isLoading])
@@ -87,7 +84,7 @@ function RecruitmentDriveForm({ type, recruitmentDriveId }: Props) {
             pageSize: 5,
             search: '',
             sort: '-createdAt',
-            status: 'all'
+            status: 'All'
           }
         })
       },
@@ -224,25 +221,6 @@ function RecruitmentDriveForm({ type, recruitmentDriveId }: Props) {
                     />
                   </PopoverContent>
                 </Popover>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name='isOpening'
-            render={({ field }) => (
-              <FormItem className='flex flex-col'>
-                <div className='flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4'>
-                  <FormControl>
-                    <Checkbox checked={field.value} onCheckedChange={field.onChange} disabled={disabling} />
-                  </FormControl>
-                  <div className='space-y-1 leading-none'>
-                    <FormLabel>Open this recruitment drive</FormLabel>
-                    <FormDescription>Please note that there is only one recruitment at a time.</FormDescription>
-                  </div>
-                </div>
                 <FormMessage />
               </FormItem>
             )}

@@ -9,12 +9,12 @@ import { Plus } from 'lucide-react'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import DialogDeleteJob from '@/components/jobs/dialog-delete-job'
 import DropdownSettingJob from '@/components/jobs/dropdown-setting-job'
-import { Badge } from '@/components/ui/badge'
 import Paginator from '@/components/shared/paginator'
 import SearchForm from '@/components/shared/search-form'
 import { Button } from '@/components/ui/button'
 import TableRowsSkeleton from '@/components/shared/table-rows-skeleton'
 import { useEffect } from 'react'
+import JobBadge from '@/components/jobs/job-badge'
 
 export const Route = createFileRoute('/_employee-layout/jobs/')({
   component: JobsPage,
@@ -85,13 +85,13 @@ function JobsPage() {
                       <NameSortIcon />
                     </div>
                   </TableHead>
+                  <TableHead className='h-10 select-none'>Status</TableHead>
                   <TableHead onClick={handleSortByCreatedAt} className='h-10 w-fit cursor-pointer'>
                     <div className='flex items-center justify-center'>
                       <p className='select-none'>Created At</p>
                       <CreatedAtSortIcon />
                     </div>
                   </TableHead>
-                  <TableHead className='h-10 select-none text-center'>Status</TableHead>
                   <TableHead className='h-10 select-none text-nowrap rounded-r-lg text-end'>Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -105,22 +105,12 @@ function JobsPage() {
                       <img alt='job' src={job.icon} className='size-8 rounded-md object-cover' />
                       <p>{job.name}</p>
                     </TableCell>
-
-                    <TableCell className='text-center'>{toDate(job.createdAt)}</TableCell>
-
-                    <TableCell className='text-center'>
-                      {job.isOpening ? (
-                        <Badge className='text-sm font-extrabold' variant='success'>
-                          Opening
-                        </Badge>
-                      ) : (
-                        <Badge className='text-sm font-extrabold' variant='danger'>
-                          Closed
-                        </Badge>
-                      )}
+                    <TableCell>
+                      <JobBadge status={job.status} />
                     </TableCell>
+                    <TableCell className='text-center'>{toDate(job.createdAt)}</TableCell>
                     <TableCell className='flex justify-end'>
-                      <DropdownSettingJob jobId={job.id} jobCode={job.code} isOpening={job.isOpening} />
+                      <DropdownSettingJob jobId={job.id} jobCode={job.code} status={job.status} />
                       <DialogDeleteJob jobId={job.id} />
                     </TableCell>
                   </TableRow>

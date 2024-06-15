@@ -24,30 +24,38 @@ export const employeeRoutes = [
 export const jobTabs = [
   {
     label: 'All',
-    status: 'all'
+    status: 'All'
   },
   {
-    label: 'Opening',
-    status: 'opening'
+    label: 'Open',
+    status: 'Open'
   },
   {
     label: 'Closed',
-    status: 'closed'
+    status: 'Closed'
+  },
+  {
+    label: 'Upcoming',
+    status: 'Upcoming'
   }
 ] as const
 
 export const recruitmentDriveTabs = [
   {
     label: 'All',
-    status: 'all'
+    status: 'All'
   },
   {
-    label: 'Opening',
-    status: 'opening'
+    label: 'Open',
+    status: 'Open'
   },
   {
     label: 'Closed',
-    status: 'closed'
+    status: 'Closed'
+  },
+  {
+    label: 'Upcoming',
+    status: 'Upcoming'
   }
 ] as const
 

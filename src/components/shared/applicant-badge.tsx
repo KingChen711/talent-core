@@ -30,7 +30,7 @@ function ApplicantBadge({ status }: Props) {
 
   return (
     <>
-      <Badge className='text-sm font-extrabold' variant={variant}>
+      <Badge className='flex w-[105px] justify-center text-sm font-extrabold' variant={variant}>
         {status}
       </Badge>
     </>
