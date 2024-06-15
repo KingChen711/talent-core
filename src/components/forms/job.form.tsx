@@ -92,7 +92,7 @@ function JobForm({ type, jobId }: Props) {
             pageNumber: 1,
             pageSize: jobsPageSize,
             search: '',
-            status: 'all',
+            status: 'All',
             sort: '-createdAt'
           }
         })

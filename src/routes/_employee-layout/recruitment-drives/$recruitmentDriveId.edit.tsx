@@ -20,7 +20,7 @@ function UpdateRecruitmentDrivePage() {
               pageNumber: 1,
               pageSize: 5,
               search: '',
-              status: 'all',
+              status: 'All',
               sort: '-createdAt'
             })}
             className='flex items-center gap-x-1'

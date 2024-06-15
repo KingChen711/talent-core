@@ -396,3 +396,143 @@ export const routeTree = rootRoute.addChildren({
 })
 
 /* prettier-ignore-end */
+
+/* ROUTE_MANIFEST_START
+{
+  "routes": {
+    "__root__": {
+      "filePath": "__root.tsx",
+      "children": [
+        "/_auth-layout",
+        "/_employee-layout",
+        "/_main-layout"
+      ]
+    },
+    "/_auth-layout": {
+      "filePath": "_auth-layout.tsx",
+      "children": [
+        "/_auth-layout/sign-in",
+        "/_auth-layout/sign-up"
+      ]
+    },
+    "/_employee-layout": {
+      "filePath": "_employee-layout.tsx",
+      "children": [
+        "/_employee-layout/dashboard",
+        "/_employee-layout/applicants/$applicantId",
+        "/_employee-layout/jobs/create",
+        "/_employee-layout/recruitment-drives/create",
+        "/_employee-layout/test-exams/create",
+        "/_employee-layout/jobs/",
+        "/_employee-layout/recruitment-drives/",
+        "/_employee-layout/test-exams/",
+        "/_employee-layout/jobs/$jobCode/add-test-exams",
+        "/_employee-layout/jobs/$jobCode/test-exams",
+        "/_employee-layout/jobs/$jobId/edit",
+        "/_employee-layout/recruitment-drives/$recruitmentDriveCode/add-jobs",
+        "/_employee-layout/recruitment-drives/$recruitmentDriveCode/detail",
+        "/_employee-layout/recruitment-drives/$recruitmentDriveId/edit",
+        "/_employee-layout/test-exams/$testExamCode/add-jobs",
+        "/_employee-layout/test-exams/$testExamCode/jobs",
+        "/_employee-layout/test-exams/$testExamId/edit",
+        "/_employee-layout/test-exams/$testExamId/test-sessions",
+        "/_employee-layout/recruitment-drives/$recruitmentDriveCode/jobs/$jobCode/add-candidate"
+      ]
+    },
+    "/_main-layout": {
+      "filePath": "_main-layout.tsx",
+      "children": [
+        "/_main-layout/"
+      ]
+    },
+    "/_auth-layout/sign-in": {
+      "filePath": "_auth-layout/sign-in.tsx",
+      "parent": "/_auth-layout"
+    },
+    "/_auth-layout/sign-up": {
+      "filePath": "_auth-layout/sign-up.tsx",
+      "parent": "/_auth-layout"
+    },
+    "/_employee-layout/dashboard": {
+      "filePath": "_employee-layout/dashboard.tsx",
+      "parent": "/_employee-layout"
+    },
+    "/_main-layout/": {
+      "filePath": "_main-layout/index.tsx",
+      "parent": "/_main-layout"
+    },
+    "/_employee-layout/applicants/$applicantId": {
+      "filePath": "_employee-layout/applicants/$applicantId.tsx",
+      "parent": "/_employee-layout"
+    },
+    "/_employee-layout/jobs/create": {
+      "filePath": "_employee-layout/jobs/create.tsx",
+      "parent": "/_employee-layout"
+    },
+    "/_employee-layout/recruitment-drives/create": {
+      "filePath": "_employee-layout/recruitment-drives/create.tsx",
+      "parent": "/_employee-layout"
+    },
+    "/_employee-layout/test-exams/create": {
+      "filePath": "_employee-layout/test-exams/create.tsx",
+      "parent": "/_employee-layout"
+    },
+    "/_employee-layout/jobs/": {
+      "filePath": "_employee-layout/jobs/index.tsx",
+      "parent": "/_employee-layout"
+    },
+    "/_employee-layout/recruitment-drives/": {
+      "filePath": "_employee-layout/recruitment-drives/index.tsx",
+      "parent": "/_employee-layout"
+    },
+    "/_employee-layout/test-exams/": {
+      "filePath": "_employee-layout/test-exams/index.tsx",
+      "parent": "/_employee-layout"
+    },
+    "/_employee-layout/jobs/$jobCode/add-test-exams": {
+      "filePath": "_employee-layout/jobs/$jobCode.add-test-exams.tsx",
+      "parent": "/_employee-layout"
+    },
+    "/_employee-layout/jobs/$jobCode/test-exams": {
+      "filePath": "_employee-layout/jobs/$jobCode.test-exams.tsx",
+      "parent": "/_employee-layout"
+    },
+    "/_employee-layout/jobs/$jobId/edit": {
+      "filePath": "_employee-layout/jobs/$jobId.edit.tsx",
+      "parent": "/_employee-layout"
+    },
+    "/_employee-layout/recruitment-drives/$recruitmentDriveCode/add-jobs": {
+      "filePath": "_employee-layout/recruitment-drives/$recruitmentDriveCode.add-jobs.tsx",
+      "parent": "/_employee-layout"
+    },
+    "/_employee-layout/recruitment-drives/$recruitmentDriveCode/detail": {
+      "filePath": "_employee-layout/recruitment-drives/$recruitmentDriveCode.detail.tsx",
+      "parent": "/_employee-layout"
+    },
+    "/_employee-layout/recruitment-drives/$recruitmentDriveId/edit": {
+      "filePath": "_employee-layout/recruitment-drives/$recruitmentDriveId.edit.tsx",
+      "parent": "/_employee-layout"
+    },
+    "/_employee-layout/test-exams/$testExamCode/add-jobs": {
+      "filePath": "_employee-layout/test-exams/$testExamCode.add-jobs.tsx",
+      "parent": "/_employee-layout"
+    },
+    "/_employee-layout/test-exams/$testExamCode/jobs": {
+      "filePath": "_employee-layout/test-exams/$testExamCode.jobs.tsx",
+      "parent": "/_employee-layout"
+    },
+    "/_employee-layout/test-exams/$testExamId/edit": {
+      "filePath": "_employee-layout/test-exams/$testExamId.edit.tsx",
+      "parent": "/_employee-layout"
+    },
+    "/_employee-layout/test-exams/$testExamId/test-sessions": {
+      "filePath": "_employee-layout/test-exams/$testExamId.test-sessions.tsx",
+      "parent": "/_employee-layout"
+    },
+    "/_employee-layout/recruitment-drives/$recruitmentDriveCode/jobs/$jobCode/add-candidate": {
+      "filePath": "_employee-layout/recruitment-drives/$recruitmentDriveCode.jobs.$jobCode.add-candidate.tsx",
+      "parent": "/_employee-layout"
+    }
+  }
+}
+ROUTE_MANIFEST_END */

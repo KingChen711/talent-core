@@ -30,8 +30,7 @@ export const getApplicantsSchema = z.object({
   status: z.enum(['All', 'Screening', 'Testing', 'Interviewing', 'Saved', 'Approve', 'Reject']).catch('All'),
   sort: z
     .enum(['createdAt', '-createdAt', 'candidateName', '-candidateName', 'appliedJob', '-appliedJob'])
-    .optional()
-    .default('-createdAt')
+    .catch('-createdAt')
 })
 
 export type TGetApplicantsSchema = z.infer<typeof getApplicantsSchema>

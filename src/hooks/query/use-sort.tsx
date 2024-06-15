@@ -3,7 +3,17 @@ import { ChevronsDown, ChevronsUp, ChevronsUpDown } from 'lucide-react'
 import { useCallback } from 'react'
 
 type Props = {
-  key: string
+  key:
+    | 'code'
+    | 'name'
+    | 'createdAt'
+    | 'startDate'
+    | 'endDate'
+    | 'conditionPoint'
+    | 'duration'
+    | 'appliedJob'
+    | 'candidateName'
+
   sortParams: string | undefined
 }
 
