@@ -13,6 +13,8 @@ import { Loader2 } from 'lucide-react'
 import { toast } from '../ui/use-toast'
 import { useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
+import { isBaseError } from '@/lib/utils'
+import { StatusCodes } from 'http-status-codes'
 
 type Props = {
   testExamId: string
@@ -32,6 +34,21 @@ function DialogDeleteTestExam({ testExamId }: Props) {
         })
         queryClient.invalidateQueries({ queryKey: ['test-exams'] })
         setOpen(false)
+      },
+      onError: (error) => {
+        if (!isBaseError(error) || error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR) {
+          toast({
+            title: `Test exam has been deleted failure`,
+            description: 'Some thing went wrong.',
+            variant: 'danger'
+          })
+          return
+        }
+        toast({
+          title: `Test exam has been deleted failure`,
+          description: error.response?.data.message,
+          variant: 'danger'
+        })
       }
     })
   }

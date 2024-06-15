@@ -7,6 +7,8 @@ import { Label } from '@/components/ui/label'
 import { toast } from '@/components/ui/use-toast'
 import useApplicant from '@/hooks/applicant/use-applicant'
 import useCompleteInterview from '@/hooks/applicant/use-complete-interview'
+import useRejectApplicant from '@/hooks/applicant/use-reject-applicant'
+import useSaveApplicant from '@/hooks/applicant/use-save-applicant'
 import { isBaseError, toDate, toDateTime } from '@/lib/utils'
 import { useQueryClient } from '@tanstack/react-query'
 import { createFileRoute, useRouter } from '@tanstack/react-router'
@@ -23,6 +25,8 @@ function ApplicantDetailPage() {
   const { data, isLoading } = useApplicant(applicantId)
 
   const { mutate: completeInterview, isPending: completingInterview } = useCompleteInterview()
+  const { mutate: saveApplicant, isPending: savingApplicant } = useSaveApplicant()
+  const { mutate: rejectApplicant, isPending: rejectingApplicant } = useRejectApplicant()
 
   // TODO: Skeleton
   if (isLoading) {
@@ -55,6 +59,64 @@ function ApplicantDetailPage() {
         }
         toast({
           title: `Complete interview failure`,
+          description: error.response?.data.message,
+          variant: 'danger'
+        })
+      }
+    })
+  }
+
+  const handleSaveApplicant = async () => {
+    saveApplicant(applicantId, {
+      onSuccess: () => {
+        toast({
+          title: `Save applicant successfully`,
+          variant: 'success'
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['applicants', applicantId]
+        })
+      },
+      onError: (error) => {
+        if (!isBaseError(error) || error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR) {
+          toast({
+            title: `Save applicant failure`,
+            description: 'Some thing went wrong.',
+            variant: 'danger'
+          })
+          return
+        }
+        toast({
+          title: `Save applicant failure`,
+          description: error.response?.data.message,
+          variant: 'danger'
+        })
+      }
+    })
+  }
+
+  const handleRejectApplicant = async () => {
+    rejectApplicant(applicantId, {
+      onSuccess: () => {
+        toast({
+          title: `Reject applicant successfully`,
+          variant: 'success'
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['applicants', applicantId]
+        })
+      },
+      onError: (error) => {
+        if (!isBaseError(error) || error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR) {
+          toast({
+            title: `Reject applicant failure`,
+            description: 'Some thing went wrong.',
+            variant: 'danger'
+          })
+          return
+        }
+        toast({
+          title: `Reject applicant failure`,
           description: error.response?.data.message,
           variant: 'danger'
         })
@@ -148,6 +210,19 @@ function ApplicantDetailPage() {
 
       {data.status === 'Interviewing' && data.interviewSession?.status === 'Completed' && (
         <DialogApproveApplicant applicantId={applicantId} />
+      )}
+
+      {(data.status === 'Screening' ||
+        (data.status === 'Interviewing' && data?.interviewSession?.status === 'Completed')) && (
+        <Button onClick={handleSaveApplicant} disabled={savingApplicant}>
+          Save this applicant
+        </Button>
+      )}
+
+      {data.status === 'Approve' && (
+        <Button onClick={handleRejectApplicant} disabled={rejectingApplicant}>
+          Reject this applicant
+        </Button>
       )}
     </div>
   )

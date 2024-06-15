@@ -106,10 +106,10 @@ function DialogApproveApplicant({ applicantId }: Props) {
 
                 <FormField
                   control={form.control}
-                  name='guide'
+                  name='location'
                   render={({ field }) => (
                     <FormItem className='flex flex-col items-start'>
-                      <FormLabel>Guide for candidate to receive job</FormLabel>
+                      <FormLabel>Guide for candidate to take location receive job</FormLabel>
                       <FormControl>
                         <Textarea
                           disabled={isPending}
