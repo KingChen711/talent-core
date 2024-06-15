@@ -1,8 +1,9 @@
 import { TOpenJobSchema } from '@/lib/validation/job.validation'
-import { talentCoreApi } from '@/services/talent-core-api'
 import { useAuth } from '@clerk/clerk-react'
 import { JobDetail } from '@prisma/client'
 import { useMutation } from '@tanstack/react-query'
+
+import { talentCoreApi } from '@/services/talent-core-api'
 
 function useOpenJob() {
   const { getToken } = useAuth()

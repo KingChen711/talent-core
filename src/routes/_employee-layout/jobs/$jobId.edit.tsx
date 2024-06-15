@@ -1,7 +1,8 @@
-import JobForm from '@/components/forms/job.form'
-import { Button } from '@/components/ui/button'
 import { jobsPageSize } from '@/constants'
 import { Link, createFileRoute } from '@tanstack/react-router'
+
+import JobForm from '@/components/forms/job.form'
+import { Button } from '@/components/ui/button'
 
 export const Route = createFileRoute('/_employee-layout/jobs/$jobId/edit')({
   component: EditJobPage

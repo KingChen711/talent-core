@@ -1,4 +1,5 @@
 import { ApplicantStatus } from '@prisma/client'
+
 import { Badge } from '../ui/badge'
 
 type Props = {

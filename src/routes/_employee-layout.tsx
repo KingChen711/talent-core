@@ -1,8 +1,9 @@
+import { useAuthContext } from '@/contexts/auth-provider'
+import { Outlet, createFileRoute, useNavigate } from '@tanstack/react-router'
+
 import LeftSideBar from '@/components/left-side-bar'
 import LogoLoading from '@/components/logo-loading'
 import NavBar from '@/components/navbar'
-import { useAuthContext } from '@/contexts/auth-provider'
-import { Outlet, createFileRoute, useNavigate } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_employee-layout')({
   component: EmployeeLayout

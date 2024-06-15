@@ -1,14 +1,16 @@
-import useSearchCandidateProfile from '@/hooks/user/use-search-candidate-profile'
 import { isBaseError } from '@/lib/utils'
 import { TSearchCandidateEmailSchema, searchCandidateEmailSchema } from '@/lib/validation/applicant.validation'
+import { UserWithRole } from '@/types'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { StatusCodes } from 'http-status-codes'
 import { useForm } from 'react-hook-form'
-import { toast } from '../ui/use-toast'
+
+import useSearchCandidateProfile from '@/hooks/user/use-search-candidate-profile'
+
+import { Button } from '../ui/button'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { Input } from '../ui/input'
-import { Button } from '../ui/button'
-import { UserWithRole } from '@/types'
+import { toast } from '../ui/use-toast'
 
 type SearchCandidateFormProps = {
   hasSearched: boolean

@@ -1,8 +1,9 @@
-import { Input } from '../ui/input'
+import { useDebounce } from '@reactuses/core'
 import { useNavigate } from '@tanstack/react-router'
 import { Search } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { useDebounce } from '@reactuses/core'
+
+import { Input } from '../ui/input'
 
 type Props = {
   search: string

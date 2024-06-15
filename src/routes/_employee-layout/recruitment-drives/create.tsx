@@ -1,6 +1,7 @@
+import { Link, createFileRoute } from '@tanstack/react-router'
+
 import RecruitmentDriveForm from '@/components/forms/recruitment-drive.form'
 import { Button } from '@/components/ui/button'
-import { Link, createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_employee-layout/recruitment-drives/create')({
   component: CreateRecruitmentDrivePage

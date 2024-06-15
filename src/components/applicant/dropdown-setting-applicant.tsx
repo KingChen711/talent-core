@@ -1,13 +1,15 @@
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu'
-import { Button } from '../ui/button'
-import { Link } from '@tanstack/react-router'
 import { ApplicantStatus } from '@prisma/client'
+import { Link } from '@tanstack/react-router'
+
+import { Button } from '@/components/ui/button'
+
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu'
 
 // Screening => Testing, Saved
 // Testing => Interviewing, Saved
 // Interviewing => Approved, Saved
 // Approved => Reject
-// Saved => Cannot change
+// Saved,Reject => Cannot change
 
 type Props = {
   applicantId: string

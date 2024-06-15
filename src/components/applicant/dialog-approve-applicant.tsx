@@ -1,10 +1,16 @@
-import { StatusCodes } from 'http-status-codes'
 import { isBaseError } from '@/lib/utils'
-import { useForm } from 'react-hook-form'
+import { TApproveApplicantSchema, approveApplicantSchema } from '@/lib/validation/applicant.validation'
 import { zodResolver } from '@hookform/resolvers/zod'
-import useApproveApplicant from '@/hooks/applicant/use-approve-applicant'
 import { useQueryClient } from '@tanstack/react-query'
+import { StatusCodes } from 'http-status-codes'
+import { Loader2 } from 'lucide-react'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
 
+import useApproveApplicant from '@/hooks/applicant/use-approve-applicant'
+
+import { Button } from '@/components/ui/button'
+import { DateTimePicker } from '@/components/ui/date-time-picker'
 import {
   Dialog,
   DialogClose,
@@ -15,13 +21,8 @@ import {
   DialogTrigger
 } from '@/components/ui/dialog'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Button } from '@/components/ui/button'
+import { Textarea } from '@/components/ui/textarea'
 import { toast } from '@/components/ui/use-toast'
-import { TApproveApplicantSchema, approveApplicantSchema } from '@/lib/validation/applicant.validation'
-import { DateTimePicker } from '@/components/ui/date-time-picker'
-import { Loader2 } from 'lucide-react'
-import { useState } from 'react'
-import { Textarea } from '../ui/textarea'
 
 type Props = {
   applicantId: string

@@ -1,11 +1,21 @@
-import useRecruitmentDriveDetail, { JobDetails } from '@/hooks/recruitment-drive/use-recruitment-drive-detail'
+import { applicantTabs } from '@/constants'
 import { cn, toDate } from '@/lib/utils'
+import { getApplicantsSchema } from '@/lib/validation/applicant.validation'
 import { Link, createFileRoute } from '@tanstack/react-router'
 import { Plus } from 'lucide-react'
 
+import useSort from '@/hooks/query/use-sort'
+import useRecruitmentDriveApplicants from '@/hooks/recruitment-drive/use-recruitment-drive-applicants'
+import useRecruitmentDriveDetail, { JobDetails } from '@/hooks/recruitment-drive/use-recruitment-drive-detail'
+
+import DropdownSettingApplicant from '@/components/applicant/dropdown-setting-applicant'
 import JobDetailCard from '@/components/jobs/job-detail-card'
-import NoResult from '@/components/shared/no-result'
 import RecruitmentDriveBadge from '@/components/recruitment-drive/recruitment-drive-badge'
+import ApplicantBadge from '@/components/shared/applicant-badge'
+import NoResult from '@/components/shared/no-result'
+import Paginator from '@/components/shared/paginator'
+import SearchForm from '@/components/shared/search-form'
+import TableRowsSkeleton from '@/components/shared/table-rows-skeleton'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -16,16 +26,7 @@ import {
   DialogTrigger
 } from '@/components/ui/dialog'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { applicantTabs } from '@/constants'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { getApplicantsSchema } from '@/lib/validation/applicant.validation'
-import TableRowsSkeleton from '@/components/shared/table-rows-skeleton'
-import useSort from '@/hooks/query/use-sort'
-import SearchForm from '@/components/shared/search-form'
-import useRecruitmentDriveApplicants from '@/hooks/recruitment-drive/use-recruitment-drive-applicants'
-import ApplicantBadge from '@/components/shared/applicant-badge'
-import Paginator from '@/components/shared/paginator'
-import DropdownSettingApplicant from '@/components/applicant/dropdown-setting-applicant'
 
 export const Route = createFileRoute('/_employee-layout/recruitment-drives/$recruitmentDriveCode/detail')({
   component: RecruitmentDriveDetailPage,

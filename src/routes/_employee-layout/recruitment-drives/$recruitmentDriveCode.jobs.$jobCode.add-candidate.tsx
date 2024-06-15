@@ -1,9 +1,10 @@
-import ApplicantForm, { InitialApplicantFormStates } from '@/components/forms/applicant.form'
-import SearchCandidateForm from '@/components/forms/search-candidate-profile-form'
-import { Button } from '@/components/ui/button'
 import { UserWithRole } from '@/types'
 import { createFileRoute, useRouter } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
+
+import ApplicantForm, { InitialApplicantFormStates } from '@/components/forms/applicant.form'
+import SearchCandidateForm from '@/components/forms/search-candidate-profile-form'
+import { Button } from '@/components/ui/button'
 
 export const Route = createFileRoute(
   '/_employee-layout/recruitment-drives/$recruitmentDriveCode/jobs/$jobCode/add-candidate'

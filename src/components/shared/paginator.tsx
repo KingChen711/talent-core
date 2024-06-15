@@ -1,7 +1,9 @@
-import ReactPaginate from 'react-paginate'
 import { useNavigate } from '@tanstack/react-router'
-import { PagingMetaData } from '../../types/index'
+import ReactPaginate from 'react-paginate'
+
 import { buttonVariants } from '../../components/ui/button'
+import { PagingMetaData } from '../../types/index'
+
 import { cn } from '../../lib/utils'
 
 type Props = {

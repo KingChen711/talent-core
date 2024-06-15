@@ -1,8 +1,9 @@
-import { ClerkLoaded, ClerkLoading, SignedIn, SignedOut, UserButton } from '@clerk/clerk-react'
-import { Button } from '../ui/button'
-import { Link } from '@tanstack/react-router'
 import MobileNavbar from './mobile-nav'
+import { ClerkLoaded, ClerkLoading, SignedIn, SignedOut, UserButton } from '@clerk/clerk-react'
+import { Link } from '@tanstack/react-router'
+
 import { ThemeToggle } from '../theme-toggle'
+import { Button } from '../ui/button'
 
 // TODO: Loading clerk
 function Actions() {

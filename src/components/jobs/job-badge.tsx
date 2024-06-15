@@ -1,4 +1,5 @@
 import { JobStatus } from '@/hooks/job/use-jobs'
+
 import { Badge } from '../ui/badge'
 
 type Props = {

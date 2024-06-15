@@ -1,9 +1,10 @@
-import { talentCoreApi } from '@/services/talent-core-api'
+import { TGetApplicantsSchema } from '@/lib/validation/applicant.validation'
+import { PagingMetaData } from '@/types'
 import { useAuth } from '@clerk/clerk-react'
 import { Applicant, Job, JobDetail } from '@prisma/client'
 import { useQuery } from '@tanstack/react-query'
-import { TGetApplicantsSchema } from '@/lib/validation/applicant.validation'
-import { PagingMetaData } from '@/types'
+
+import { talentCoreApi } from '@/services/talent-core-api'
 
 type Applicants = (Applicant & {
   jobDetail: JobDetail & {

@@ -1,3 +1,12 @@
+import { isBaseError } from '@/lib/utils'
+import { useQueryClient } from '@tanstack/react-query'
+import { StatusCodes } from 'http-status-codes'
+import { Loader2 } from 'lucide-react'
+import { useState } from 'react'
+
+import useDeleteRecruitmentDrive from '../../hooks/recruitment-drive/use-delete-recruitment-drive'
+
+import { Button } from '../ui/button'
 import {
   Dialog,
   DialogClose,
@@ -7,14 +16,7 @@ import {
   DialogTitle,
   DialogTrigger
 } from '../ui/dialog'
-import useDeleteRecruitmentDrive from '../../hooks/recruitment-drive/use-delete-recruitment-drive'
-import { Button } from '../ui/button'
-import { Loader2 } from 'lucide-react'
 import { toast } from '../ui/use-toast'
-import { useQueryClient } from '@tanstack/react-query'
-import { useState } from 'react'
-import { isBaseError } from '@/lib/utils'
-import { StatusCodes } from 'http-status-codes'
 
 type Props = {
   recruitmentDriveId: string

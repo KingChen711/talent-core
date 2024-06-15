@@ -1,19 +1,21 @@
-import { Gender } from '@prisma/client'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
+import { cn, isBaseError } from '@/lib/utils'
 import { TCreateApplicantSchema, createApplicantSchema } from '@/lib/validation/applicant.validation'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Input } from '../ui/input'
-import { Button, buttonVariants } from '../ui/button'
-import { useForm } from 'react-hook-form'
-import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
-import { cn, isBaseError } from '@/lib/utils'
-import useCreateApplicant from '@/hooks/applicant/use-create-applicant'
-import { Loader2 } from 'lucide-react'
-import { toast } from '../ui/use-toast'
+import { Gender } from '@prisma/client'
 import { useNavigate } from '@tanstack/react-router'
 import { StatusCodes } from 'http-status-codes'
+import { Loader2 } from 'lucide-react'
 import { useState } from 'react'
-import { Textarea } from '../ui/textarea'
+import { useForm } from 'react-hook-form'
+
+import useCreateApplicant from '@/hooks/applicant/use-create-applicant'
+
+import { Button, buttonVariants } from '@/components/ui/button'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { Textarea } from '@/components/ui/textarea'
+import { toast } from '@/components/ui/use-toast'
 
 export type InitialApplicantFormStates = {
   email: string

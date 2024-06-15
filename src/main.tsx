@@ -1,12 +1,13 @@
-import ReactDOM from 'react-dom/client'
-import './index.css'
-import { ClerkProvider } from '@clerk/clerk-react'
-import { RouterProvider, createRouter } from '@tanstack/react-router'
-import { routeTree } from './routeTree.gen'
-import { dark } from '@clerk/themes'
-import { ThemeProvider, useTheme } from './contexts/theme-provider'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import AuthProvider from './contexts/auth-provider'
+import { ThemeProvider, useTheme } from './contexts/theme-provider'
+import { routeTree } from './routeTree.gen'
+import { ClerkProvider } from '@clerk/clerk-react'
+import { dark } from '@clerk/themes'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { RouterProvider, createRouter } from '@tanstack/react-router'
+import ReactDOM from 'react-dom/client'
+
+import './index.css'
 
 const queryClient = new QueryClient()
 

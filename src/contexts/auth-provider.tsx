@@ -1,8 +1,9 @@
-import { User } from '@prisma/client'
-import React, { createContext, useContext, useMemo } from 'react'
-import { UserWithRole, type Role as TRole } from '@/types'
-import { useQuery } from '@tanstack/react-query'
+import { type Role as TRole, UserWithRole } from '@/types'
 import { useAuth } from '@clerk/clerk-react'
+import { User } from '@prisma/client'
+import { useQuery } from '@tanstack/react-query'
+import React, { createContext, useContext, useMemo } from 'react'
+
 import { talentCoreApi } from '@/services/talent-core-api'
 
 type AuthProviderProps = {

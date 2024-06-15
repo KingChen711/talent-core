@@ -1,4 +1,4 @@
-import { User, Role as TRole } from '@prisma/client'
+import { Role as TRole, User } from '@prisma/client'
 
 export type Role = 'Guest' | 'Candidate' | 'Employee'
 

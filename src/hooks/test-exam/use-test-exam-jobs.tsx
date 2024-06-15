@@ -1,7 +1,8 @@
-import { talentCoreApi } from '@/services/talent-core-api'
 import { useAuth } from '@clerk/clerk-react'
 import { Job } from '@prisma/client'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
+
+import { talentCoreApi } from '@/services/talent-core-api'
 
 type Jobs = (Job & { isOpening: boolean })[]
 
