@@ -106,10 +106,10 @@ function DialogScheduleInterview({ applicantId }: Props) {
 
                 <FormField
                   control={form.control}
-                  name='guide'
+                  name='location'
                   render={({ field }) => (
                     <FormItem className='flex flex-col items-start'>
-                      <FormLabel>Guide for candidate to take interview</FormLabel>
+                      <FormLabel>Guide for candidate to take interview location</FormLabel>
                       <FormControl>
                         <Textarea
                           disabled={isPending}

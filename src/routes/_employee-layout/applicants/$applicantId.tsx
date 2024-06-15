@@ -133,7 +133,7 @@ function ApplicantDetailPage() {
           Interview Session:
           <div>status: {data.interviewSession.status}</div>
           <div>interview date: {toDateTime(data.interviewSession.interviewDate)}</div>
-          <div>guide: {data.interviewSession.guide}</div>
+          <div>location: {data.interviewSession.location}</div>
           {data.interviewSession.status === 'Processing' && (
             <Button onClick={handleCompleteInterview} disabled={completingInterview}>
               Completed the interview
