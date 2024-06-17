@@ -1,4 +1,4 @@
-import { isBaseError, toDate } from '@/lib/utils'
+import { isBaseError } from '@/lib/utils'
 import { ApplicationStatus, ReceiveJobSession } from '@prisma/client'
 import { useQueryClient } from '@tanstack/react-query'
 import { StatusCodes } from 'http-status-codes'
@@ -50,6 +50,9 @@ function HiredStage({ status, applicationId, receiveJobSession, jobName }: Props
     })
   }
 
+  if (status === 'Saved') return null
+  if (status === 'Reject') return null
+
   return (
     <div className='z-10 flex items-center gap-x-2'>
       <div className='flex items-center gap-x-2'>
@@ -80,7 +83,7 @@ function HiredStage({ status, applicationId, receiveJobSession, jobName }: Props
               <DialogRejectApplication disable={confirmingHired} applicationId={applicationId} />
             </div>
           ) : (
-            <p className='font-medium'>{`Candidate has been confirmed to hired for ${jobName} position.`}</p>
+            <p className='font-medium'>{`The candidate has been confirmed to be hired for the ${jobName} position.`}</p>
           )}
         </div>
       )}

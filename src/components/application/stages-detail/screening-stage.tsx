@@ -29,7 +29,7 @@ function ScreeningStage({ createdAt, status, jobName }: Props) {
         </div>
       </div>
       <div className='line-clamp-2 w-full rounded-lg bg-border p-4 font-medium'>
-        Candidate has applied for {jobName} position in {toDateTime(createdAt)}.
+        The candidate applied for the {jobName} position in {toDateTime(createdAt)}.
       </div>
     </div>
   )

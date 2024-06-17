@@ -1,10 +1,7 @@
 import { toDate, toDateTime } from '@/lib/utils'
 import { ApplicationStatus, InterviewStatus, ReceiveJobSession } from '@prisma/client'
 
-import { Button } from '@/components/ui/button'
-
 import DialogApproveApplication from '../dialog-approve-application'
-import DialogRejectApplication from '../dialog-reject-application'
 import DialogSaveApplication from '../dialog-save-application'
 
 type Props = {
@@ -15,6 +12,8 @@ type Props = {
 }
 
 function ApproveStage({ status, applicationId, receiveJobSession, interviewSessionStatus }: Props) {
+  if (status === 'Saved') return null
+
   return (
     <div className='z-10 flex items-center gap-x-2'>
       <div className='flex items-center gap-x-2'>

@@ -1,6 +1,8 @@
 import ApproveStage from './approve-stage'
 import HiredStage from './hired-stage'
 import InterviewingStage from './interviewing-stage'
+import RejectStage from './reject-stage'
+import SavedStage from './saved-stage'
 import ScreeningStage from './screening-stage'
 import TestingStage from './testing-stage'
 import { ApplicationStatus } from '@prisma/client'
@@ -51,6 +53,14 @@ function StagesDetail({ application }: Props) {
         receiveJobSession={application.receiveJobSession}
         status={applicationStatus}
       />
+
+      <SavedStage
+        status={applicationStatus}
+        hasTestSession={!!application.testSession?.testDate}
+        hasInterviewSession={!!application.interviewSession?.interviewDate}
+      />
+
+      <RejectStage jobName={application.jobDetail.job.name} status={applicationStatus} />
     </div>
   )
 }

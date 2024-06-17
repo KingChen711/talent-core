@@ -52,6 +52,8 @@ function InterviewingStage({ status, applicationId, testSessionStatus, interview
     })
   }
 
+  if (status === 'Saved' && !interviewSession?.interviewDate) return null
+
   return (
     <div className='z-10 flex items-center gap-x-2'>
       <div className='flex items-center gap-x-2'>

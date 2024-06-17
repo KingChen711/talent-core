@@ -22,6 +22,8 @@ type Props = {
 }
 
 function TestingStage({ status, applicationId, jobCode, testSession }: Props) {
+  if (status === 'Saved' && !testSession?.testDate) return null
+
   return (
     <div className='z-10 flex items-center gap-x-2'>
       <div className='flex items-center gap-x-2'>
