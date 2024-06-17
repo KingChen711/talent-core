@@ -1,4 +1,4 @@
-import { Gender } from '@prisma/client'
+import { ApplicationStatus, Gender } from '@prisma/client'
 import { z } from 'zod'
 
 export const createApplicationSchema = z.object({
@@ -67,3 +67,15 @@ export const approveApplicationSchema = z.object({
 })
 
 export type TApproveApplicationSchema = z.infer<typeof approveApplicationSchema>
+
+export const getMyApplicationsSchemaSchema = z.object({
+  pageNumber: z.coerce.number().catch(1),
+  pageSize: z.coerce.number().catch(10),
+  search: z.string().catch(''),
+  status: z.enum(['All', 'Screening', 'Testing', 'Interviewing', 'Saved', 'Approve', 'Reject']).catch('All'),
+  sort: z
+    .enum(['createdAt', '-createdAt', 'appliedJob', '-appliedJob', 'recruitmentDrive', '-recruitmentDrive'])
+    .catch('-createdAt')
+})
+
+export type TGetMyApplicationsSchemaSchema = z.infer<typeof getMyApplicationsSchemaSchema>

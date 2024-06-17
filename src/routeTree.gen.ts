@@ -22,6 +22,7 @@ import { Route as MainLayoutMyApplicationsIndexImport } from './routes/_main-lay
 import { Route as EmployeeLayoutTestExamsIndexImport } from './routes/_employee-layout/test-exams/index'
 import { Route as EmployeeLayoutRecruitmentDrivesIndexImport } from './routes/_employee-layout/recruitment-drives/index'
 import { Route as EmployeeLayoutJobsIndexImport } from './routes/_employee-layout/jobs/index'
+import { Route as MainLayoutMyApplicationsApplicationIdImport } from './routes/_main-layout/my-applications/$applicationId'
 import { Route as EmployeeLayoutTestExamsCreateImport } from './routes/_employee-layout/test-exams/create'
 import { Route as EmployeeLayoutRecruitmentDrivesCreateImport } from './routes/_employee-layout/recruitment-drives/create'
 import { Route as EmployeeLayoutJobsCreateImport } from './routes/_employee-layout/jobs/create'
@@ -97,6 +98,12 @@ const EmployeeLayoutJobsIndexRoute = EmployeeLayoutJobsIndexImport.update({
   path: '/jobs/',
   getParentRoute: () => EmployeeLayoutRoute,
 } as any)
+
+const MainLayoutMyApplicationsApplicationIdRoute =
+  MainLayoutMyApplicationsApplicationIdImport.update({
+    path: '/my-applications/$applicationId',
+    getParentRoute: () => MainLayoutRoute,
+  } as any)
 
 const EmployeeLayoutTestExamsCreateRoute =
   EmployeeLayoutTestExamsCreateImport.update({
@@ -270,6 +277,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EmployeeLayoutTestExamsCreateImport
       parentRoute: typeof EmployeeLayoutImport
     }
+    '/_main-layout/my-applications/$applicationId': {
+      id: '/_main-layout/my-applications/$applicationId'
+      path: '/my-applications/$applicationId'
+      fullPath: '/my-applications/$applicationId'
+      preLoaderRoute: typeof MainLayoutMyApplicationsApplicationIdImport
+      parentRoute: typeof MainLayoutImport
+    }
     '/_employee-layout/jobs/': {
       id: '/_employee-layout/jobs/'
       path: '/jobs'
@@ -408,6 +422,7 @@ export const routeTree = rootRoute.addChildren({
   }),
   MainLayoutRoute: MainLayoutRoute.addChildren({
     MainLayoutIndexRoute,
+    MainLayoutMyApplicationsApplicationIdRoute,
     MainLayoutMyApplicationsIndexRoute,
   }),
 })
@@ -460,6 +475,7 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_main-layout.tsx",
       "children": [
         "/_main-layout/",
+        "/_main-layout/my-applications/$applicationId",
         "/_main-layout/my-applications/"
       ]
     },
@@ -494,6 +510,10 @@ export const routeTree = rootRoute.addChildren({
     "/_employee-layout/test-exams/create": {
       "filePath": "_employee-layout/test-exams/create.tsx",
       "parent": "/_employee-layout"
+    },
+    "/_main-layout/my-applications/$applicationId": {
+      "filePath": "_main-layout/my-applications/$applicationId.tsx",
+      "parent": "/_main-layout"
     },
     "/_employee-layout/jobs/": {
       "filePath": "_employee-layout/jobs/index.tsx",

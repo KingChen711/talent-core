@@ -30,7 +30,7 @@ function RecruitmentDrivesPage() {
   const { Icon: CodeSortIcon, sorter: handleSortByCode } = useSort({ key: 'code', sortParams: sort })
   const { Icon: CreatedAtSortIcon, sorter: handleSortByCreatedAt } = useSort({ key: 'createdAt', sortParams: sort })
 
-  const { data, isPending } = useRecruitmentDrives({ pageNumber, pageSize, search, status, sort })
+  const { data, isLoading } = useRecruitmentDrives({ pageNumber, pageSize, search, status, sort })
 
   return (
     <section className='flex flex-col'>
@@ -106,7 +106,7 @@ function RecruitmentDrivesPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {isPending && <TableRowsSkeleton colSpan={7} pageSize={pageSize} />}
+                {isLoading && <TableRowsSkeleton colSpan={7} pageSize={pageSize} />}
 
                 {data?.items.map((recruitmentDrive) => (
                   <TableRow key={recruitmentDrive.id}>
@@ -133,7 +133,7 @@ function RecruitmentDrivesPage() {
           </div>
         </div>
 
-        {!isPending && data?.items.length === 0 && (
+        {!isLoading && data?.items.length === 0 && (
           <div className='mt-36 text-center text-xl font-bold'>Not found any Recruitment Drives.</div>
         )}
       </div>

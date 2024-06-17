@@ -13,6 +13,7 @@ type Props = {
     | 'duration'
     | 'appliedJob'
     | 'candidateName'
+    | 'recruitmentDrive'
 
   sortParams: string | undefined
 }
