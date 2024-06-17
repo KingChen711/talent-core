@@ -1,24 +1,13 @@
-import { cn, isBaseError, toDate, toDateTime } from '@/lib/utils'
-import { ApplicationStatus } from '@prisma/client'
-import { useQueryClient } from '@tanstack/react-query'
+import { toDate } from '@/lib/utils'
 import { createFileRoute, useRouter } from '@tanstack/react-router'
-import { StatusCodes } from 'http-status-codes'
 import { MailIcon } from 'lucide-react'
 
 import useApplication from '@/hooks/application/use-application'
-import useCompleteInterview from '@/hooks/application/use-complete-interview'
-import useRejectApplication from '@/hooks/application/use-reject-application'
-import useSaveApplication from '@/hooks/application/use-save-application'
 
-import DialogApproveApplication from '@/components/application/dialog-approve-application'
-import DialogScheduleInterview from '@/components/application/dialog-schedule-interview'
-import DialogScheduleTestExam from '@/components/application/dialog-schedule-test-exam'
 import StagesDetail from '@/components/application/stages-detail'
 import ApplicationBadge from '@/components/shared/application-badge'
 import NoResult from '@/components/shared/no-result'
 import { Button } from '@/components/ui/button'
-import { Label } from '@/components/ui/label'
-import { toast } from '@/components/ui/use-toast'
 
 export const Route = createFileRoute('/_employee-layout/applications/$applicationId')({
   component: ApplicationDetailPage
@@ -26,7 +15,7 @@ export const Route = createFileRoute('/_employee-layout/applications/$applicatio
 
 function ApplicationDetailPage() {
   const router = useRouter()
-  const queryClient = useQueryClient()
+
   const { applicationId } = Route.useParams()
   const { data, isLoading } = useApplication(applicationId)
 
@@ -38,8 +27,6 @@ function ApplicationDetailPage() {
   if (!data) {
     return <NoResult title='Not found application' description='' />
   }
-
-  const applicationStatus: ApplicationStatus = data.status
 
   return (
     <div className='flex flex-col'>

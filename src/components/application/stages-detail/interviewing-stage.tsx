@@ -108,10 +108,17 @@ function InterviewingStage({ status, applicationId, testSessionStatus, interview
           </div>
 
           {interviewSession.status === 'Processing' && (
-            <div className='col-span-12 mt-4'>
-              <Button className='w-full' onClick={handleCompleteInterview} disabled={completingInterview}>
+            <div className='col-span-12 mt-4 flex gap-x-4'>
+              <Button className='w-full flex-1' onClick={handleCompleteInterview} disabled={completingInterview}>
                 Completed the interview
               </Button>
+              <DialogScheduleInterview
+                applicationId={applicationId}
+                editMode
+                interviewDate={new Date(interviewSession.interviewDate)}
+                location={interviewSession.location}
+                method={interviewSession.method}
+              />
             </div>
           )}
         </div>

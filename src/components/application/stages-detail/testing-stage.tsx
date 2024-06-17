@@ -3,7 +3,6 @@ import { ApplicationStatus, TestExam, TestSession } from '@prisma/client'
 
 import TestSessionBadge from '@/components/shared/test-session-badge'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 
 import DialogSaveApplication from '../dialog-save-application'
 import DialogScheduleTestExam from '../dialog-schedule-test-exam'
@@ -94,7 +93,13 @@ function TestingStage({ status, applicationId, jobCode, testSession }: Props) {
 
           {testSession.status === 'Processing' && new Date(testSession.testDate).getTime() >= Date.now() && (
             <div className='col-span-12 mt-4'>
-              <Button className='w-full'>Edit Test Date</Button>
+              <DialogScheduleTestExam
+                editMode
+                applicationId={applicationId}
+                jobCode={jobCode}
+                testDate={new Date(testSession.testDate)}
+                testExamCode={testSession.testExamCode}
+              />
             </div>
           )}
         </div>

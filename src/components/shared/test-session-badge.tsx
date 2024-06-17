@@ -1,4 +1,3 @@
-import { cn } from '@/lib/utils'
 import { TestSessionStatus } from '@prisma/client'
 
 import { Badge } from '../ui/badge'

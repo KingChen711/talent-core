@@ -4,9 +4,10 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useQueryClient } from '@tanstack/react-query'
 import { StatusCodes } from 'http-status-codes'
 import { Loader2 } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
+import useEditTestSession from '@/hooks/application/use-edit-test-session'
 import useScheduleTestExam from '@/hooks/application/use-schedule-test-exam'
 import useJobTestExams from '@/hooks/job/use-job-test-exams'
 
@@ -30,51 +31,68 @@ import { toast } from '@/components/ui/use-toast'
 type Props = {
   applicationId: string
   jobCode: string
+  editMode?: boolean
+  testDate?: Date
+  testExamCode?: string
 }
 
-function DialogScheduleTestExam({ applicationId, jobCode }: Props) {
+function DialogScheduleTestExam({ applicationId, jobCode, editMode = false, testDate, testExamCode }: Props) {
   const queryClient = useQueryClient()
   const [open, setOpen] = useState(false)
 
   const { data: testExams, isLoading: isLoadingTestExams } = useJobTestExams(jobCode)
 
-  const { mutate, isPending } = useScheduleTestExam()
+  const { mutate: create, isPending: creating } = useScheduleTestExam()
+  const { mutate: edit, isPending: editing } = useEditTestSession()
+
+  const isPending = useMemo(() => creating || editing, [creating, editing])
 
   const form = useForm<TScheduleTestExamSchema>({
-    resolver: zodResolver(scheduleTestExamSchema)
+    resolver: zodResolver(scheduleTestExamSchema),
+    defaultValues: {
+      testDate,
+      testExamCode
+    }
   })
 
+  useEffect(() => {
+    console.log(form.getValues('testDate'))
+  }, [form])
+
   const onSubmit = async (values: TScheduleTestExamSchema) => {
-    mutate(
-      { applicationId, data: values },
-      {
-        onSuccess: () => {
-          toast({
-            title: `Schedule test exam successfully`,
-            variant: 'success'
-          })
-          queryClient.invalidateQueries({
-            queryKey: ['applications', applicationId]
-          })
-          setOpen(false)
-        },
-        onError: (error) => {
-          if (!isBaseError(error) || error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR) {
-            toast({
-              title: `Schedule test exam failure`,
-              description: 'Some thing went wrong.',
-              variant: 'danger'
-            })
-            return
-          }
+    const mutateOptions = {
+      onSuccess: () => {
+        toast({
+          title: `Schedule test exam successfully`,
+          variant: 'success'
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['applications', applicationId]
+        })
+        setOpen(false)
+      },
+      onError: (error: unknown) => {
+        if (!isBaseError(error) || error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR) {
           toast({
             title: `Schedule test exam failure`,
-            description: error.response?.data.message,
+            description: 'Some thing went wrong.',
             variant: 'danger'
           })
+          return
         }
+        toast({
+          title: `Schedule test exam failure`,
+          description: error.response?.data.message,
+          variant: 'danger'
+        })
       }
-    )
+    }
+
+    if (editMode) {
+      edit({ applicationId, data: values }, mutateOptions)
+    } else {
+      create({ applicationId, data: values }, mutateOptions)
+    }
   }
 
   const handleOpenChange = (value: boolean) => {
@@ -85,7 +103,9 @@ function DialogScheduleTestExam({ applicationId, jobCode }: Props) {
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button className='w-44'>Schedule Testing</Button>
+        <Button className={cn('w-44', editMode && 'w-full')}>
+          {editMode ? 'Edit Test Session' : 'Schedule Testing'}
+        </Button>
       </DialogTrigger>
       <DialogContent className='w-96'>
         <DialogHeader>

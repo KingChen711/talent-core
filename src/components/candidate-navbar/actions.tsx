@@ -28,7 +28,20 @@ function Actions() {
           )}
           {role === 'Candidate' && (
             <Button variant='ghost' className='text-gradient px-2 text-base font-bold' asChild>
-              <Link to='/my-applications'>My Applications</Link>
+              <Link
+                to='/my-applications'
+                search={() => {
+                  return {
+                    pageNumber: 1,
+                    pageSize: 5,
+                    search: '',
+                    sort: '-createdAt',
+                    status: 'All'
+                  }
+                }}
+              >
+                My Applications
+              </Link>
             </Button>
           )}
           <UserButton />

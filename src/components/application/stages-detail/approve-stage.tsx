@@ -57,6 +57,17 @@ function ApproveStage({ status, applicationId, receiveJobSession, interviewSessi
               Receive Job Date: <span className='font-normal'>{toDateTime(receiveJobSession.receiveJobDate)}</span>
             </p>
           </div>
+
+          {!receiveJobSession.isConfirmed && (
+            <div className='col-span-12 mt-4'>
+              <DialogApproveApplication
+                applicationId={applicationId}
+                editMode
+                location={receiveJobSession.location}
+                receiveJobDate={new Date(receiveJobSession.receiveJobDate)}
+              />
+            </div>
+          )}
         </div>
       )}
     </div>

@@ -1,12 +1,14 @@
-import { isBaseError } from '@/lib/utils'
+import { cn, isBaseError } from '@/lib/utils'
 import { TScheduleInterviewSchema, scheduleInterviewSchema } from '@/lib/validation/application.validation'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Method } from '@prisma/client'
 import { useQueryClient } from '@tanstack/react-query'
 import { StatusCodes } from 'http-status-codes'
 import { Loader2 } from 'lucide-react'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
+import useEditInterviewSession from '@/hooks/application/use-edit-interview-session'
 import useScheduleInterview from '@/hooks/application/use-schedule-interview'
 
 import { Button } from '@/components/ui/button'
@@ -28,49 +30,64 @@ import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
 
 type Props = {
   applicationId: string
+  editMode?: boolean
+  interviewDate?: Date
+  location?: string
+  method?: Method
 }
 
-function DialogScheduleInterview({ applicationId }: Props) {
+function DialogScheduleInterview({ applicationId, editMode, interviewDate, location, method }: Props) {
   const queryClient = useQueryClient()
   const [open, setOpen] = useState(false)
 
-  const { mutate, isPending } = useScheduleInterview()
+  const { mutate: create, isPending: creating } = useScheduleInterview()
+  const { mutate: edit, isPending: editing } = useEditInterviewSession()
+
+  const isPending = useMemo(() => creating || editing, [creating, editing])
 
   const form = useForm<TScheduleInterviewSchema>({
-    resolver: zodResolver(scheduleInterviewSchema)
+    resolver: zodResolver(scheduleInterviewSchema),
+    defaultValues: {
+      interviewDate,
+      location,
+      method
+    }
   })
 
   const onSubmit = async (values: TScheduleInterviewSchema) => {
-    mutate(
-      { applicationId, data: values },
-      {
-        onSuccess: () => {
-          toast({
-            title: `Schedule interview successfully`,
-            variant: 'success'
-          })
-          queryClient.invalidateQueries({
-            queryKey: ['applications', applicationId]
-          })
-          setOpen(false)
-        },
-        onError: (error) => {
-          if (!isBaseError(error) || error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR) {
-            toast({
-              title: `Schedule interview failure`,
-              description: 'Some thing went wrong.',
-              variant: 'danger'
-            })
-            return
-          }
+    const mutateOptions = {
+      onSuccess: () => {
+        toast({
+          title: `Schedule interview successfully`,
+          variant: 'success'
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['applications', applicationId]
+        })
+        setOpen(false)
+      },
+      onError: (error: unknown) => {
+        if (!isBaseError(error) || error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR) {
           toast({
             title: `Schedule interview failure`,
-            description: error.response?.data.message,
+            description: 'Some thing went wrong.',
             variant: 'danger'
           })
+          return
         }
+        toast({
+          title: `Schedule interview failure`,
+          description: error.response?.data.message,
+          variant: 'danger'
+        })
       }
-    )
+    }
+
+    if (editMode) {
+      edit({ applicationId, data: values }, mutateOptions)
+    } else {
+      create({ applicationId, data: values }, mutateOptions)
+    }
   }
 
   const handleOpenChange = (value: boolean) => {
@@ -81,7 +98,9 @@ function DialogScheduleInterview({ applicationId }: Props) {
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button>Schedule interview</Button>
+        <Button className={cn(editMode && 'flex-1')}>
+          {editMode ? 'Edit Interview Session' : 'Schedule interview'}
+        </Button>
       </DialogTrigger>
       <DialogContent className='w-[500px] max-w-[96%]'>
         <DialogHeader>

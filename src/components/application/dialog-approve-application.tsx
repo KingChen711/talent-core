@@ -1,13 +1,14 @@
-import { isBaseError } from '@/lib/utils'
+import { cn, isBaseError } from '@/lib/utils'
 import { TApproveApplicationSchema, approveApplicationSchema } from '@/lib/validation/application.validation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useQueryClient } from '@tanstack/react-query'
 import { StatusCodes } from 'http-status-codes'
 import { Loader2 } from 'lucide-react'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import useApproveApplication from '@/hooks/application/use-approve-application'
+import useEditReceiveJobSession from '@/hooks/application/use-edit-receive-job-sesstion'
 
 import { Button } from '@/components/ui/button'
 import { DateTimePicker } from '@/components/ui/date-time-picker'
@@ -26,49 +27,62 @@ import { toast } from '@/components/ui/use-toast'
 
 type Props = {
   applicationId: string
+  editMode?: boolean
+  location?: string
+  receiveJobDate?: Date
 }
 
-function DialogApproveApplication({ applicationId }: Props) {
+function DialogApproveApplication({ applicationId, editMode = false, location, receiveJobDate }: Props) {
   const queryClient = useQueryClient()
   const [open, setOpen] = useState(false)
 
-  const { mutate, isPending } = useApproveApplication()
+  const { mutate: create, isPending: creating } = useApproveApplication()
+  const { mutate: edit, isPending: editing } = useEditReceiveJobSession()
+
+  const isPending = useMemo(() => creating || editing, [creating, editing])
 
   const form = useForm<TApproveApplicationSchema>({
-    resolver: zodResolver(approveApplicationSchema)
+    resolver: zodResolver(approveApplicationSchema),
+    defaultValues: {
+      location,
+      receiveJobDate
+    }
   })
 
   const onSubmit = async (values: TApproveApplicationSchema) => {
-    mutate(
-      { applicationId, data: values },
-      {
-        onSuccess: () => {
-          toast({
-            title: `Approve application successfully`,
-            variant: 'success'
-          })
-          queryClient.invalidateQueries({
-            queryKey: ['applications', applicationId]
-          })
-          setOpen(false)
-        },
-        onError: (error) => {
-          if (!isBaseError(error) || error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR) {
-            toast({
-              title: `Approve application failure`,
-              description: 'Some thing went wrong.',
-              variant: 'danger'
-            })
-            return
-          }
+    const mutateOptions = {
+      onSuccess: () => {
+        toast({
+          title: `Approve application successfully`,
+          variant: 'success'
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['applications', applicationId]
+        })
+        setOpen(false)
+      },
+      onError: (error: unknown) => {
+        if (!isBaseError(error) || error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR) {
           toast({
             title: `Approve application failure`,
-            description: error.response?.data.message,
+            description: 'Some thing went wrong.',
             variant: 'danger'
           })
+          return
         }
+        toast({
+          title: `Approve application failure`,
+          description: error.response?.data.message,
+          variant: 'danger'
+        })
       }
-    )
+    }
+
+    if (editMode) {
+      edit({ applicationId, data: values }, mutateOptions)
+    } else {
+      create({ applicationId, data: values }, mutateOptions)
+    }
   }
 
   const handleOpenChange = (value: boolean) => {
@@ -79,7 +93,9 @@ function DialogApproveApplication({ applicationId }: Props) {
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button>Approve application</Button>
+        <Button className={cn(editMode && 'w-full')}>
+          {editMode ? 'Edit Receive Job Session' : 'Approve application'}
+        </Button>
       </DialogTrigger>
       <DialogContent className='w-[500px] max-w-[96%]'>
         <DialogHeader>
