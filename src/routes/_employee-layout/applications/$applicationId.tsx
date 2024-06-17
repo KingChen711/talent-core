@@ -30,10 +30,6 @@ function ApplicationDetailPage() {
   const { applicationId } = Route.useParams()
   const { data, isLoading } = useApplication(applicationId)
 
-  const { mutate: completeInterview, isPending: completingInterview } = useCompleteInterview()
-  const { mutate: saveApplication, isPending: savingApplication } = useSaveApplication()
-  const { mutate: rejectApplication, isPending: rejectingApplication } = useRejectApplication()
-
   // TODO: Skeleton
   if (isLoading) {
     return <div>Skeleton</div>
@@ -41,93 +37,6 @@ function ApplicationDetailPage() {
 
   if (!data) {
     return <NoResult title='Not found application' description='' />
-  }
-
-  const handleCompleteInterview = async () => {
-    completeInterview(applicationId, {
-      onSuccess: () => {
-        toast({
-          title: `Complete interview successfully`,
-          variant: 'success'
-        })
-        queryClient.invalidateQueries({
-          queryKey: ['applications', applicationId]
-        })
-      },
-      onError: (error) => {
-        if (!isBaseError(error) || error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR) {
-          toast({
-            title: `Complete interview failure`,
-            description: 'Some thing went wrong.',
-            variant: 'danger'
-          })
-          return
-        }
-        toast({
-          title: `Complete interview failure`,
-          description: error.response?.data.message,
-          variant: 'danger'
-        })
-      }
-    })
-  }
-
-  const handleSaveApplication = async () => {
-    saveApplication(applicationId, {
-      onSuccess: () => {
-        toast({
-          title: `Save application successfully`,
-          variant: 'success'
-        })
-        queryClient.invalidateQueries({
-          queryKey: ['applications', applicationId]
-        })
-      },
-      onError: (error) => {
-        if (!isBaseError(error) || error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR) {
-          toast({
-            title: `Save application failure`,
-            description: 'Some thing went wrong.',
-            variant: 'danger'
-          })
-          return
-        }
-        toast({
-          title: `Save application failure`,
-          description: error.response?.data.message,
-          variant: 'danger'
-        })
-      }
-    })
-  }
-
-  const handleRejectApplication = async () => {
-    rejectApplication(applicationId, {
-      onSuccess: () => {
-        toast({
-          title: `Reject application successfully`,
-          variant: 'success'
-        })
-        queryClient.invalidateQueries({
-          queryKey: ['applications', applicationId]
-        })
-      },
-      onError: (error) => {
-        if (!isBaseError(error) || error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR) {
-          toast({
-            title: `Reject application failure`,
-            description: 'Some thing went wrong.',
-            variant: 'danger'
-          })
-          return
-        }
-        toast({
-          title: `Reject application failure`,
-          description: error.response?.data.message,
-          variant: 'danger'
-        })
-      }
-    })
   }
 
   const applicationStatus: ApplicationStatus = data.status
@@ -199,41 +108,6 @@ function ApplicationDetailPage() {
 
         <div className='col-span-3 bg-card'></div>
       </div>
-
-      {!data.testSession && data.status === 'Screening' && (
-        <DialogScheduleTestExam applicationId={applicationId} jobCode={data.jobDetail.job.code} />
-      )}
-
-      {data.interviewSession && (
-        <div className='mt-8'>
-          Interview Session:
-          <div>status: {data.interviewSession.status}</div>
-          <div>interview date: {toDateTime(data.interviewSession.interviewDate)}</div>
-          <div>location: {data.interviewSession.location}</div>
-          {data.interviewSession.status === 'Processing' && (
-            <Button onClick={handleCompleteInterview} disabled={completingInterview}>
-              Completed the interview
-            </Button>
-          )}
-        </div>
-      )}
-
-      {data.status === 'Interviewing' && data.interviewSession?.status === 'Completed' && (
-        <DialogApproveApplication applicationId={applicationId} />
-      )}
-
-      {(data.status === 'Screening' ||
-        (data.status === 'Interviewing' && data?.interviewSession?.status === 'Completed')) && (
-        <Button onClick={handleSaveApplication} disabled={savingApplication}>
-          Save this application
-        </Button>
-      )}
-
-      {data.status === 'Approve' && (
-        <Button onClick={handleRejectApplication} disabled={rejectingApplication}>
-          Reject this application
-        </Button>
-      )}
     </div>
   )
 }

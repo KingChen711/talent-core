@@ -55,18 +55,20 @@ function TestingStage({ status, applicationId, jobCode, testSession }: Props) {
       )}
 
       {testSession && testSession.testDate && (
-        <div className='grid w-full grid-cols-12 gap-x-4 rounded-lg bg-border p-4'>
-          <div className='col-span-6'>
-            <div className='flex flex-col gap-y-1'>
-              <p className='font-bold'>{testSession.testExam.name}</p>
-              <p className='text-sm text-muted-foreground'>{testSession.testExam.code}</p>
-            </div>
+        <div className='grid w-full grid-cols-12 gap-x-4 rounded-lg bg-border p-4 text-sm'>
+          <div className='col-span-6  space-y-2'>
+            <p className='font-bold'>
+              Name: <span className='font-normal'>{testSession.testExam.name}</span>
+            </p>
+            <p className='font-bold'>
+              Code: <span className='font-normal'>{testSession.testExam.code}</span>
+            </p>
 
-            <div className='z-10 mt-3 flex flex-wrap gap-x-2'>
-              <Badge className='pointer-events-none w-fit bg-[#d1d1d1] py-1 text-sm font-normal text-card-foreground dark:bg-card dark:text-white'>
+            <div className='z-10 flex flex-wrap gap-x-2'>
+              <Badge className='pointer-events-none w-fit bg-[#d1d1d1] py-1 font-normal text-card-foreground dark:bg-card dark:text-white'>
                 {testSession.testExam.countQuestions} questions
               </Badge>
-              <Badge className='pointer-events-none w-fit bg-[#d1d1d1] py-1 text-sm font-normal text-card-foreground dark:bg-card dark:text-white'>
+              <Badge className='pointer-events-none w-fit bg-[#d1d1d1] py-1 font-normal text-card-foreground dark:bg-card dark:text-white'>
                 {testSession.testExam.duration} minutes
               </Badge>
             </div>

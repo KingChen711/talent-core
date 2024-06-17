@@ -1,24 +1,25 @@
-import { toDate } from '@/lib/utils'
-import { ApplicationStatus, InterviewSession, TestSessionStatus } from '@prisma/client'
+import { toDate, toDateTime } from '@/lib/utils'
+import { ApplicationStatus, InterviewStatus, ReceiveJobSession } from '@prisma/client'
 
-import DialogScheduleInterview from '../dialog-schedule-interview'
+import { Button } from '@/components/ui/button'
+
+import DialogApproveApplication from '../dialog-approve-application'
+import DialogRejectApplication from '../dialog-reject-application'
+import DialogSaveApplication from '../dialog-save-application'
 
 type Props = {
   status: ApplicationStatus
   applicationId: string
-  testSessionStatus: TestSessionStatus | undefined
+  receiveJobSession: ReceiveJobSession | null
+  interviewSessionStatus: InterviewStatus | undefined
 }
 
-function ApproveStage({ status, applicationId, testSessionStatus }: Props) {
+function ApproveStage({ status, applicationId, receiveJobSession, interviewSessionStatus }: Props) {
   return (
     <div className='z-10 flex items-center gap-x-2'>
       <div className='flex items-center gap-x-2'>
         {['Screening', 'Testing', 'Interviewing'].includes(status) ? (
           <div className='flex size-10 shrink-0 items-center justify-center rounded-full bg-border'>4</div>
-        ) : status === 'Approve' ? (
-          <div className='flex size-10 shrink-0 items-center justify-center rounded-full bg-warning'>
-            <img alt='progress' src='/icons/hourglass.svg' className='size-5' />
-          </div>
         ) : (
           <div className='flex size-10 shrink-0 items-center justify-center rounded-full bg-success'>
             <img alt='progress' src='/icons/check.svg' className='size-5' />
@@ -27,8 +28,38 @@ function ApproveStage({ status, applicationId, testSessionStatus }: Props) {
 
         <div className='flex w-28 shrink-0 flex-col gap-y-1'>
           <div className='line-clamp-1 flex flex-col font-bold leading-none'>Approve</div>
+          {receiveJobSession?.receiveJobDate && (
+            <div className='line-clamp-1 text-xs leading-none text-muted-foreground'>
+              {toDate(receiveJobSession.receiveJobDate)}
+            </div>
+          )}
         </div>
       </div>
+
+      {status === 'Interviewing' && interviewSessionStatus === 'Completed' && (
+        <div className='flex gap-x-4'>
+          <DialogApproveApplication applicationId={applicationId} />
+          <DialogSaveApplication applicationId={applicationId} />
+        </div>
+      )}
+
+      {receiveJobSession?.receiveJobDate && (
+        <div className='grid w-full grid-cols-12 gap-x-4 rounded-lg bg-border p-4 text-sm'>
+          <div className='col-span-6'>
+            <div className='col-span-6 space-y-2'>
+              <p className='font-bold'>
+                Location: <span className='font-normal'>{receiveJobSession.location}</span>
+              </p>
+            </div>
+          </div>
+
+          <div className='col-span-6 space-y-2'>
+            <p className='font-bold'>
+              Receive Job Date: <span className='font-normal'>{toDateTime(receiveJobSession.receiveJobDate)}</span>
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

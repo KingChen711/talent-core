@@ -1,5 +1,15 @@
 import { useAuth } from '@clerk/clerk-react'
-import { Application, Candidate, InterviewSession, Job, JobDetail, TestExam, TestSession, User } from '@prisma/client'
+import {
+  Application,
+  Candidate,
+  InterviewSession,
+  Job,
+  JobDetail,
+  ReceiveJobSession,
+  TestExam,
+  TestSession,
+  User
+} from '@prisma/client'
 import { useQuery } from '@tanstack/react-query'
 
 import { talentCoreApi } from '@/services/talent-core-api'
@@ -10,6 +20,7 @@ export type ApplicationDetail = Application & {
   }
   testSession: (TestSession & { testExam: TestExam & { countQuestions: number } }) | null
   interviewSession: InterviewSession | null
+  receiveJobSession: ReceiveJobSession | null
   candidate: Candidate & { user: User }
 }
 

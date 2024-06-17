@@ -24,6 +24,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from '@/components/ui/use-toast'
 
+import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
+
 type Props = {
   applicationId: string
 }
@@ -86,7 +88,7 @@ function DialogScheduleInterview({ applicationId }: Props) {
           <DialogTitle className='mb-4 text-center'>Schedule Interview</DialogTitle>
           <DialogDescription asChild>
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
+              <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
                 <FormField
                   control={form.control}
                   name='interviewDate'
@@ -100,6 +102,37 @@ function DialogScheduleInterview({ applicationId }: Props) {
                         granularity='minute'
                         hourCycle={24}
                       />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name='method'
+                  render={({ field }) => (
+                    <FormItem className='space-y-3'>
+                      <FormLabel>Interview method</FormLabel>
+                      <FormControl>
+                        <RadioGroup
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                          className='flex flex-col space-y-1'
+                        >
+                          <FormItem className='flex items-center space-x-3 space-y-0'>
+                            <FormControl>
+                              <RadioGroupItem value='Offline' />
+                            </FormControl>
+                            <FormLabel className='font-normal'>Offline</FormLabel>
+                          </FormItem>
+                          <FormItem className='flex items-center space-x-3 space-y-0'>
+                            <FormControl>
+                              <RadioGroupItem value='Online' />
+                            </FormControl>
+                            <FormLabel className='font-normal'>Online</FormLabel>
+                          </FormItem>
+                        </RadioGroup>
+                      </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}

@@ -52,7 +52,8 @@ export const scheduleInterviewSchema = z.object({
     const oneDaysLater = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1)
     return data.getTime() >= oneDaysLater.getTime()
   }, 'Interview date must be after today at least 1 day'),
-  location: z.string()
+  location: z.string(),
+  method: z.enum(['Online', 'Offline'])
 })
 
 export type TScheduleInterviewSchema = z.infer<typeof scheduleInterviewSchema>

@@ -1,4 +1,5 @@
 import ApproveStage from './approve-stage'
+import HiredStage from './hired-stage'
 import InterviewingStage from './interviewing-stage'
 import ScreeningStage from './screening-stage'
 import TestingStage from './testing-stage'
@@ -38,8 +39,16 @@ function StagesDetail({ application }: Props) {
       />
 
       <ApproveStage
+        interviewSessionStatus={application.interviewSession?.status}
         applicationId={application.id}
-        testSessionStatus={application.testSession?.status}
+        receiveJobSession={application.receiveJobSession}
+        status={applicationStatus}
+      />
+
+      <HiredStage
+        jobName={application.jobDetail.job.name}
+        applicationId={application.id}
+        receiveJobSession={application.receiveJobSession}
         status={applicationStatus}
       />
     </div>
