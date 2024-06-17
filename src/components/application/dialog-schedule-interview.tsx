@@ -114,7 +114,9 @@ function DialogScheduleInterview({ applicationId }: Props) {
                       <FormControl>
                         <Textarea
                           disabled={isPending}
-                          placeholder='Example: Room Boston, Talent Core company...'
+                          placeholder={
+                            'Ex: Room Boston, Talent Core company \nEx: https://meet.google.com/tbx-ggqt-iei'
+                          }
                           {...field}
                         />
                       </FormControl>

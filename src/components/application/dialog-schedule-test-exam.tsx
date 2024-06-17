@@ -85,11 +85,11 @@ function DialogScheduleTestExam({ applicationId, jobCode }: Props) {
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button>Schedule test exam</Button>
+        <Button className='w-44'>Schedule Testing</Button>
       </DialogTrigger>
       <DialogContent className='w-96'>
         <DialogHeader>
-          <DialogTitle className='mb-4 text-center'>Schedule Test Exam</DialogTitle>
+          <DialogTitle className='mb-4 text-center'>Schedule Testing</DialogTitle>
           <DialogDescription asChild>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>

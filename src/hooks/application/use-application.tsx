@@ -1,15 +1,16 @@
 import { useAuth } from '@clerk/clerk-react'
-import { Application, InterviewSession, Job, JobDetail, TestSession } from '@prisma/client'
+import { Application, Candidate, InterviewSession, Job, JobDetail, TestExam, TestSession, User } from '@prisma/client'
 import { useQuery } from '@tanstack/react-query'
 
 import { talentCoreApi } from '@/services/talent-core-api'
 
-type ApplicationDetail = Application & {
+export type ApplicationDetail = Application & {
   jobDetail: JobDetail & {
     job: Job
   }
-  testSession: TestSession | null
+  testSession: (TestSession & { testExam: TestExam & { countQuestions: number } }) | null
   interviewSession: InterviewSession | null
+  candidate: Candidate & { user: User }
 }
 
 function useApplication(applicationId: string) {
