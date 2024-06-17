@@ -1,5 +1,5 @@
 import { isBaseError } from '@/lib/utils'
-import { TApproveApplicantSchema, approveApplicantSchema } from '@/lib/validation/applicant.validation'
+import { TApproveApplicationSchema, approveApplicationSchema } from '@/lib/validation/application.validation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useQueryClient } from '@tanstack/react-query'
 import { StatusCodes } from 'http-status-codes'
@@ -7,7 +7,7 @@ import { Loader2 } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-import useApproveApplicant from '@/hooks/applicant/use-approve-applicant'
+import useApproveApplication from '@/hooks/application/use-approve-application'
 
 import { Button } from '@/components/ui/button'
 import { DateTimePicker } from '@/components/ui/date-time-picker'
@@ -25,44 +25,44 @@ import { Textarea } from '@/components/ui/textarea'
 import { toast } from '@/components/ui/use-toast'
 
 type Props = {
-  applicantId: string
+  applicationId: string
 }
 
-function DialogApproveApplicant({ applicantId }: Props) {
+function DialogApproveApplication({ applicationId }: Props) {
   const queryClient = useQueryClient()
   const [open, setOpen] = useState(false)
 
-  const { mutate, isPending } = useApproveApplicant()
+  const { mutate, isPending } = useApproveApplication()
 
-  const form = useForm<TApproveApplicantSchema>({
-    resolver: zodResolver(approveApplicantSchema)
+  const form = useForm<TApproveApplicationSchema>({
+    resolver: zodResolver(approveApplicationSchema)
   })
 
-  const onSubmit = async (values: TApproveApplicantSchema) => {
+  const onSubmit = async (values: TApproveApplicationSchema) => {
     mutate(
-      { applicantId, data: values },
+      { applicationId, data: values },
       {
         onSuccess: () => {
           toast({
-            title: `Approve applicant successfully`,
+            title: `Approve application successfully`,
             variant: 'success'
           })
           queryClient.invalidateQueries({
-            queryKey: ['applicants', applicantId]
+            queryKey: ['applications', applicationId]
           })
           setOpen(false)
         },
         onError: (error) => {
           if (!isBaseError(error) || error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR) {
             toast({
-              title: `Approve applicant failure`,
+              title: `Approve application failure`,
               description: 'Some thing went wrong.',
               variant: 'danger'
             })
             return
           }
           toast({
-            title: `Approve applicant failure`,
+            title: `Approve application failure`,
             description: error.response?.data.message,
             variant: 'danger'
           })
@@ -79,11 +79,11 @@ function DialogApproveApplicant({ applicantId }: Props) {
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button>Approve applicant</Button>
+        <Button>Approve application</Button>
       </DialogTrigger>
       <DialogContent className='w-[500px] max-w-[96%]'>
         <DialogHeader>
-          <DialogTitle className='mb-4 text-center'>Approve applicant</DialogTitle>
+          <DialogTitle className='mb-4 text-center'>Approve application</DialogTitle>
           <DialogDescription asChild>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
@@ -143,4 +143,4 @@ function DialogApproveApplicant({ applicantId }: Props) {
   )
 }
 
-export default DialogApproveApplicant
+export default DialogApproveApplication

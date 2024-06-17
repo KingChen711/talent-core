@@ -2,7 +2,7 @@ import { UserWithRole } from '@/types'
 import { createFileRoute, useRouter } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
 
-import ApplicantForm, { InitialApplicantFormStates } from '@/components/forms/applicant.form'
+import ApplicationForm, { InitialApplicationFormStates } from '@/components/forms/application.form'
 import SearchCandidateForm from '@/components/forms/search-candidate-profile-form'
 import { Button } from '@/components/ui/button'
 
@@ -12,7 +12,7 @@ export const Route = createFileRoute(
   component: RecruitmentDriveAddCandidatePage
 })
 
-const initialApplicantFormStates = {
+const initialApplicationFormStates = {
   bornYear: undefined,
   email: '',
   fullName: '',
@@ -24,11 +24,11 @@ function RecruitmentDriveAddCandidatePage() {
   const router = useRouter()
   const { recruitmentDriveCode, jobCode } = Route.useParams()
   const [hasSearched, setHasSearched] = useState(false)
-  const [initialStates, setInitialStates] = useState<InitialApplicantFormStates>(initialApplicantFormStates)
+  const [initialStates, setInitialStates] = useState<InitialApplicationFormStates>(initialApplicationFormStates)
 
   useEffect(() => {
     if (!hasSearched) {
-      setInitialStates(initialApplicantFormStates)
+      setInitialStates(initialApplicationFormStates)
     }
   }, [hasSearched])
 
@@ -71,7 +71,7 @@ function RecruitmentDriveAddCandidatePage() {
       />
 
       {hasSearched && (
-        <ApplicantForm initialStates={initialStates} jobCode={jobCode} recruitmentDriveCode={recruitmentDriveCode} />
+        <ApplicationForm initialStates={initialStates} jobCode={jobCode} recruitmentDriveCode={recruitmentDriveCode} />
       )}
     </div>
   )

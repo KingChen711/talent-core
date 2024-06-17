@@ -3,13 +3,13 @@ import { useMutation } from '@tanstack/react-query'
 
 import { talentCoreApi } from '../../services/talent-core-api'
 
-function useSaveApplicant() {
+function useRejectApplication() {
   const { getToken } = useAuth()
 
   return useMutation({
-    mutationFn: async (applicantId: string) =>
+    mutationFn: async (applicationId: string) =>
       talentCoreApi.patch(
-        `/api/applicants/${applicantId}/save`,
+        `/api/applications/${applicationId}/reject`,
         {},
         {
           headers: {
@@ -21,4 +21,4 @@ function useSaveApplicant() {
   })
 }
 
-export default useSaveApplicant
+export default useRejectApplication

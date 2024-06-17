@@ -1,5 +1,5 @@
 import { isBaseError } from '@/lib/utils'
-import { TScheduleInterviewSchema, scheduleInterviewSchema } from '@/lib/validation/applicant.validation'
+import { TScheduleInterviewSchema, scheduleInterviewSchema } from '@/lib/validation/application.validation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useQueryClient } from '@tanstack/react-query'
 import { StatusCodes } from 'http-status-codes'
@@ -7,7 +7,7 @@ import { Loader2 } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-import useScheduleInterview from '@/hooks/applicant/use-schedule-interview'
+import useScheduleInterview from '@/hooks/application/use-schedule-interview'
 
 import { Button } from '@/components/ui/button'
 import { DateTimePicker } from '@/components/ui/date-time-picker'
@@ -25,10 +25,10 @@ import { Textarea } from '@/components/ui/textarea'
 import { toast } from '@/components/ui/use-toast'
 
 type Props = {
-  applicantId: string
+  applicationId: string
 }
 
-function DialogScheduleInterview({ applicantId }: Props) {
+function DialogScheduleInterview({ applicationId }: Props) {
   const queryClient = useQueryClient()
   const [open, setOpen] = useState(false)
 
@@ -40,7 +40,7 @@ function DialogScheduleInterview({ applicantId }: Props) {
 
   const onSubmit = async (values: TScheduleInterviewSchema) => {
     mutate(
-      { applicantId, data: values },
+      { applicationId, data: values },
       {
         onSuccess: () => {
           toast({
@@ -48,7 +48,7 @@ function DialogScheduleInterview({ applicantId }: Props) {
             variant: 'success'
           })
           queryClient.invalidateQueries({
-            queryKey: ['applicants', applicantId]
+            queryKey: ['applications', applicationId]
           })
           setOpen(false)
         },

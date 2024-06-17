@@ -1,5 +1,5 @@
 import { cn, isBaseError } from '@/lib/utils'
-import { TScheduleTestExamSchema, scheduleTestExamSchema } from '@/lib/validation/applicant.validation'
+import { TScheduleTestExamSchema, scheduleTestExamSchema } from '@/lib/validation/application.validation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useQueryClient } from '@tanstack/react-query'
 import { StatusCodes } from 'http-status-codes'
@@ -7,7 +7,7 @@ import { Loader2 } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-import useScheduleTestExam from '@/hooks/applicant/use-schedule-test-exam'
+import useScheduleTestExam from '@/hooks/application/use-schedule-test-exam'
 import useJobTestExams from '@/hooks/job/use-job-test-exams'
 
 import { Badge } from '@/components/ui/badge'
@@ -28,11 +28,11 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { toast } from '@/components/ui/use-toast'
 
 type Props = {
-  applicantId: string
+  applicationId: string
   jobCode: string
 }
 
-function DialogScheduleTestExam({ applicantId, jobCode }: Props) {
+function DialogScheduleTestExam({ applicationId, jobCode }: Props) {
   const queryClient = useQueryClient()
   const [open, setOpen] = useState(false)
 
@@ -46,7 +46,7 @@ function DialogScheduleTestExam({ applicantId, jobCode }: Props) {
 
   const onSubmit = async (values: TScheduleTestExamSchema) => {
     mutate(
-      { applicantId, data: values },
+      { applicationId, data: values },
       {
         onSuccess: () => {
           toast({
@@ -54,7 +54,7 @@ function DialogScheduleTestExam({ applicantId, jobCode }: Props) {
             variant: 'success'
           })
           queryClient.invalidateQueries({
-            queryKey: ['applicants', applicantId]
+            queryKey: ['applications', applicationId]
           })
           setOpen(false)
         },

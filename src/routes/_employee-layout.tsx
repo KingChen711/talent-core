@@ -1,9 +1,9 @@
 import { useAuthContext } from '@/contexts/auth-provider'
 import { Outlet, createFileRoute, useNavigate } from '@tanstack/react-router'
 
+import EmployeeNavBar from '@/components/employee-navbar'
 import LeftSideBar from '@/components/left-side-bar'
 import LogoLoading from '@/components/logo-loading'
-import NavBar from '@/components/navbar'
 
 export const Route = createFileRoute('/_employee-layout')({
   component: EmployeeLayout
@@ -37,7 +37,7 @@ function EmployeeLayout() {
 
   return (
     <main className='relative'>
-      <NavBar />
+      <EmployeeNavBar />
       <div className='flex'>
         <LeftSideBar />
         <section className='flex min-h-screen flex-1 flex-col px-6 pb-6 pt-28 max-md:pb-14 sm:px-8'>

@@ -13,7 +13,7 @@ function MobileNavbar() {
       </SheetTrigger>
       <SheetContent side='left' className='border-none pl-0'>
         <div className='pl-8'>
-          <Logo />
+          <Logo mobile />
         </div>
 
         <SheetClose asChild>

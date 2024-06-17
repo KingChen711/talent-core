@@ -12,9 +12,7 @@ import { useForm } from 'react-hook-form'
 import useJob from '@/hooks/job/use-job'
 import useMutateJob from '@/hooks/job/use-mutate-job'
 
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion'
 import { Button } from '../ui/button'
-import { Checkbox } from '../ui/checkbox'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { Input } from '../ui/input'
 import { Textarea } from '../ui/textarea'
@@ -45,9 +43,7 @@ function JobForm({ type, jobId }: Props) {
       name: '',
       description: '',
       color: type === 'create' ? getRandomHexColor() : undefined,
-      icon: type === 'create' ? defaultJobIcon : undefined,
-      openInCurrentRecruitment: false,
-      quantityInCurrentRecruitment: 1
+      icon: type === 'create' ? defaultJobIcon : undefined
     }
   })
 
@@ -60,7 +56,6 @@ function JobForm({ type, jobId }: Props) {
     form.setValue('description', job.description || '')
     form.setValue('color', job.color)
     form.setValue('icon', job.icon)
-    form.setValue('openInCurrentRecruitment', job.isOpening)
   })
 
   const disabling = useMemo(() => isPending || isLoading, [isPending, isLoading])
@@ -74,10 +69,7 @@ function JobForm({ type, jobId }: Props) {
     formData.append('color', values.color)
     formData.append('image', file as any)
 
-    if (type === 'create') {
-      formData.append('openInCurrentRecruitment', JSON.stringify(values.openInCurrentRecruitment))
-      formData.append('quantityInCurrentRecruitment', JSON.stringify(values.quantityInCurrentRecruitment))
-    } else {
+    if (type === 'update') {
       formData.append('id', jobId)
     }
 
@@ -196,66 +188,6 @@ function JobForm({ type, jobId }: Props) {
             </FormItem>
           )}
         />
-
-        {type === 'create' && (
-          <FormField
-            control={form.control}
-            name='openInCurrentRecruitment'
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <>
-                    <Accordion value={String(field.value)} type='single' collapsible>
-                      <AccordionItem value='true' className='cursor-default'>
-                        <AccordionTrigger showChevronDown={false} className='cursor-default'>
-                          <div className='flex items-center gap-x-4'>
-                            <Checkbox
-                              disabled={disabling}
-                              id='openInCurrentRecruitment'
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
-                              className='size-6'
-                            />
-                            <FormLabel
-                              htmlFor='openInCurrentRecruitment'
-                              className='flex items-center gap-x-4 no-underline'
-                            >
-                              Add this job to current recruitment drive
-                            </FormLabel>
-                          </div>
-                        </AccordionTrigger>
-                        <AccordionContent className='px-1'>
-                          <FormField
-                            control={form.control}
-                            name='quantityInCurrentRecruitment'
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel className='text-base'>Number of candidates needed</FormLabel>
-                                <FormControl>
-                                  <div className='flex flex-col gap-y-4'>
-                                    <Input
-                                      {...field}
-                                      disabled={disabling}
-                                      value={field.value}
-                                      onChange={(e) => field.onChange(e.target.value)}
-                                      type='number'
-                                      placeholder='Number of candidates needed...'
-                                    />
-                                  </div>
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                        </AccordionContent>
-                      </AccordionItem>
-                    </Accordion>
-                  </>
-                </FormControl>
-              </FormItem>
-            )}
-          />
-        )}
 
         <div className='flex gap-x-20'>
           <FormField

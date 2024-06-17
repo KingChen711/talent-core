@@ -1,7 +1,7 @@
 import { Gender } from '@prisma/client'
 import { z } from 'zod'
 
-export const createApplicantSchema = z.object({
+export const createApplicationSchema = z.object({
   email: z.string().email(),
   fullName: z.string().min(2),
   phone: z.string().regex(/^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$/),
@@ -11,10 +11,10 @@ export const createApplicantSchema = z.object({
   personalIntroduction: z.string().optional()
 })
 
-export type TCreateApplicantSchema = z.infer<typeof createApplicantSchema>
+export type TCreateApplicationSchema = z.infer<typeof createApplicationSchema>
 
-export type TCreateApplicantErrors = {
-  [key in keyof TCreateApplicantSchema]: string
+export type TCreateApplicationErrors = {
+  [key in keyof TCreateApplicationSchema]: string
 }
 
 export const searchCandidateEmailSchema = z.object({
@@ -23,7 +23,7 @@ export const searchCandidateEmailSchema = z.object({
 
 export type TSearchCandidateEmailSchema = z.infer<typeof searchCandidateEmailSchema>
 
-export const getApplicantsSchema = z.object({
+export const getApplicationsSchema = z.object({
   pageNumber: z.number().catch(1),
   pageSize: z.number().catch(5),
   search: z.string().catch(''),
@@ -33,7 +33,7 @@ export const getApplicantsSchema = z.object({
     .catch('-createdAt')
 })
 
-export type TGetApplicantsSchema = z.infer<typeof getApplicantsSchema>
+export type TGetApplicationsSchema = z.infer<typeof getApplicationsSchema>
 
 export const scheduleTestExamSchema = z.object({
   testDate: z.coerce.date().refine((data) => {
@@ -57,7 +57,7 @@ export const scheduleInterviewSchema = z.object({
 
 export type TScheduleInterviewSchema = z.infer<typeof scheduleInterviewSchema>
 
-export const approveApplicantSchema = z.object({
+export const approveApplicationSchema = z.object({
   receiveJobDate: z.coerce.date().refine((data) => {
     const now = new Date()
     const threeDaysLater = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 3)
@@ -66,4 +66,4 @@ export const approveApplicantSchema = z.object({
   location: z.string()
 })
 
-export type TApproveApplicantSchema = z.infer<typeof approveApplicantSchema>
+export type TApproveApplicationSchema = z.infer<typeof approveApplicationSchema>

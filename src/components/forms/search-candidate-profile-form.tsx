@@ -1,5 +1,5 @@
 import { isBaseError } from '@/lib/utils'
-import { TSearchCandidateEmailSchema, searchCandidateEmailSchema } from '@/lib/validation/applicant.validation'
+import { TSearchCandidateEmailSchema, searchCandidateEmailSchema } from '@/lib/validation/application.validation'
 import { UserWithRole } from '@/types'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { StatusCodes } from 'http-status-codes'
@@ -46,7 +46,7 @@ function SearchCandidateForm({
         if (!res.data.bornYear || !res.data.phone || !res.data.gender) {
           toast({
             title: `This candidate is exist in system.`,
-            description: 'But some information missing, complete them to create applicant',
+            description: 'But some information missing, complete them to create application',
             variant: 'warning'
           })
         }
@@ -65,7 +65,7 @@ function SearchCandidateForm({
         if (error.response?.status === StatusCodes.NOT_FOUND) {
           toast({
             title: `This email is not exist in system`,
-            description: "Let's complete all candidate information to create an applicant",
+            description: "Let's complete all candidate information to create an application",
             variant: 'warning'
           })
 

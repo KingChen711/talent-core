@@ -6,9 +6,9 @@ import { talentCoreApi } from '@/services/talent-core-api'
 
 export type JobDetails = (JobDetail & {
   job: Job
-  countApplicantsLastWeek: number
-  countApplicantsApproved: number
-  countApplicants: number
+  countApplicationsLastWeek: number
+  countApplicationsApproved: number
+  countApplications: number
 })[]
 
 type RecruitmentDriveDetail = RecruitmentDrive & {

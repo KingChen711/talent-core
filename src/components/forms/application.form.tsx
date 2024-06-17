@@ -1,5 +1,5 @@
 import { cn, isBaseError } from '@/lib/utils'
-import { TCreateApplicantSchema, createApplicantSchema } from '@/lib/validation/applicant.validation'
+import { TCreateApplicationSchema, createApplicationSchema } from '@/lib/validation/application.validation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Gender } from '@prisma/client'
 import { useNavigate } from '@tanstack/react-router'
@@ -8,7 +8,7 @@ import { Loader2 } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-import useCreateApplicant from '@/hooks/applicant/use-create-applicant'
+import useCreateApplication from '@/hooks/application/use-create-application'
 
 import { Button, buttonVariants } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
@@ -17,7 +17,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from '@/components/ui/use-toast'
 
-export type InitialApplicantFormStates = {
+export type InitialApplicationFormStates = {
   email: string
   fullName: string
   phone: string | undefined
@@ -28,18 +28,18 @@ export type InitialApplicantFormStates = {
 type Props = {
   jobCode: string
   recruitmentDriveCode: string
-  initialStates: InitialApplicantFormStates
+  initialStates: InitialApplicationFormStates
 }
 
-function ApplicantForm({ jobCode, recruitmentDriveCode, initialStates }: Props) {
+function ApplicationForm({ jobCode, recruitmentDriveCode, initialStates }: Props) {
   const navigate = useNavigate()
 
   const [file, setFile] = useState<File | null>(null)
 
-  const { mutate, isPending } = useCreateApplicant()
+  const { mutate, isPending } = useCreateApplication()
 
-  const form = useForm<TCreateApplicantSchema>({
-    resolver: zodResolver(createApplicantSchema),
+  const form = useForm<TCreateApplicationSchema>({
+    resolver: zodResolver(createApplicationSchema),
     defaultValues: initialStates
   })
 
@@ -88,7 +88,7 @@ function ApplicantForm({ jobCode, recruitmentDriveCode, initialStates }: Props) 
     }
   }
 
-  const onSubmit = async (values: TCreateApplicantSchema) => {
+  const onSubmit = async (values: TCreateApplicationSchema) => {
     const formData = new FormData()
 
     formData.append('email', values.email)
@@ -276,4 +276,4 @@ function ApplicantForm({ jobCode, recruitmentDriveCode, initialStates }: Props) 
   )
 }
 
-export default ApplicantForm
+export default ApplicationForm

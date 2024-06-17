@@ -3,10 +3,10 @@ import { useMutation } from '@tanstack/react-query'
 
 import { talentCoreApi } from '../../services/talent-core-api'
 
-import { TScheduleTestExamSchema } from '../../lib/validation/applicant.validation'
+import { TScheduleTestExamSchema } from '../../lib/validation/application.validation'
 
 type MutateType = {
-  applicantId: string
+  applicationId: string
   data: TScheduleTestExamSchema
 }
 
@@ -14,8 +14,8 @@ function useScheduleTestExam() {
   const { getToken } = useAuth()
 
   return useMutation({
-    mutationFn: async ({ applicantId, data }: MutateType) =>
-      talentCoreApi.patch(`/api/applicants/${applicantId}/schedule-test-exam`, data, {
+    mutationFn: async ({ applicationId, data }: MutateType) =>
+      talentCoreApi.patch(`/api/applications/${applicationId}/schedule-test-exam`, data, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${await getToken()}`

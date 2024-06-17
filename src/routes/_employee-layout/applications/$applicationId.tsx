@@ -3,32 +3,32 @@ import { useQueryClient } from '@tanstack/react-query'
 import { createFileRoute, useRouter } from '@tanstack/react-router'
 import { StatusCodes } from 'http-status-codes'
 
-import useApplicant from '@/hooks/applicant/use-applicant'
-import useCompleteInterview from '@/hooks/applicant/use-complete-interview'
-import useRejectApplicant from '@/hooks/applicant/use-reject-applicant'
-import useSaveApplicant from '@/hooks/applicant/use-save-applicant'
+import useApplication from '@/hooks/application/use-application'
+import useCompleteInterview from '@/hooks/application/use-complete-interview'
+import useRejectApplication from '@/hooks/application/use-reject-application'
+import useSaveApplication from '@/hooks/application/use-save-application'
 
-import DialogApproveApplicant from '@/components/applicant/dialog-approve-applicant'
-import DialogScheduleInterview from '@/components/applicant/dialog-schedule-interview'
-import DialogScheduleTestExam from '@/components/applicant/dialog-schedule-test-exam'
+import DialogApproveApplication from '@/components/application/dialog-approve-application'
+import DialogScheduleInterview from '@/components/application/dialog-schedule-interview'
+import DialogScheduleTestExam from '@/components/application/dialog-schedule-test-exam'
 import NoResult from '@/components/shared/no-result'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { toast } from '@/components/ui/use-toast'
 
-export const Route = createFileRoute('/_employee-layout/applicants/$applicantId')({
-  component: ApplicantDetailPage
+export const Route = createFileRoute('/_employee-layout/applications/$applicationId')({
+  component: ApplicationDetailPage
 })
 
-function ApplicantDetailPage() {
+function ApplicationDetailPage() {
   const router = useRouter()
   const queryClient = useQueryClient()
-  const { applicantId } = Route.useParams()
-  const { data, isLoading } = useApplicant(applicantId)
+  const { applicationId } = Route.useParams()
+  const { data, isLoading } = useApplication(applicationId)
 
   const { mutate: completeInterview, isPending: completingInterview } = useCompleteInterview()
-  const { mutate: saveApplicant, isPending: savingApplicant } = useSaveApplicant()
-  const { mutate: rejectApplicant, isPending: rejectingApplicant } = useRejectApplicant()
+  const { mutate: saveApplication, isPending: savingApplication } = useSaveApplication()
+  const { mutate: rejectApplication, isPending: rejectingApplication } = useRejectApplication()
 
   // TODO: Skeleton
   if (isLoading) {
@@ -36,18 +36,18 @@ function ApplicantDetailPage() {
   }
 
   if (!data) {
-    return <NoResult title='Not found applicant' description='' />
+    return <NoResult title='Not found application' description='' />
   }
 
   const handleCompleteInterview = async () => {
-    completeInterview(applicantId, {
+    completeInterview(applicationId, {
       onSuccess: () => {
         toast({
           title: `Complete interview successfully`,
           variant: 'success'
         })
         queryClient.invalidateQueries({
-          queryKey: ['applicants', applicantId]
+          queryKey: ['applications', applicationId]
         })
       },
       onError: (error) => {
@@ -68,28 +68,28 @@ function ApplicantDetailPage() {
     })
   }
 
-  const handleSaveApplicant = async () => {
-    saveApplicant(applicantId, {
+  const handleSaveApplication = async () => {
+    saveApplication(applicationId, {
       onSuccess: () => {
         toast({
-          title: `Save applicant successfully`,
+          title: `Save application successfully`,
           variant: 'success'
         })
         queryClient.invalidateQueries({
-          queryKey: ['applicants', applicantId]
+          queryKey: ['applications', applicationId]
         })
       },
       onError: (error) => {
         if (!isBaseError(error) || error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR) {
           toast({
-            title: `Save applicant failure`,
+            title: `Save application failure`,
             description: 'Some thing went wrong.',
             variant: 'danger'
           })
           return
         }
         toast({
-          title: `Save applicant failure`,
+          title: `Save application failure`,
           description: error.response?.data.message,
           variant: 'danger'
         })
@@ -97,28 +97,28 @@ function ApplicantDetailPage() {
     })
   }
 
-  const handleRejectApplicant = async () => {
-    rejectApplicant(applicantId, {
+  const handleRejectApplication = async () => {
+    rejectApplication(applicationId, {
       onSuccess: () => {
         toast({
-          title: `Reject applicant successfully`,
+          title: `Reject application successfully`,
           variant: 'success'
         })
         queryClient.invalidateQueries({
-          queryKey: ['applicants', applicantId]
+          queryKey: ['applications', applicationId]
         })
       },
       onError: (error) => {
         if (!isBaseError(error) || error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR) {
           toast({
-            title: `Reject applicant failure`,
+            title: `Reject application failure`,
             description: 'Some thing went wrong.',
             variant: 'danger'
           })
           return
         }
         toast({
-          title: `Reject applicant failure`,
+          title: `Reject application failure`,
           description: error.response?.data.message,
           variant: 'danger'
         })
@@ -129,7 +129,7 @@ function ApplicantDetailPage() {
   return (
     <div className='flex flex-col'>
       <div className='flex items-center justify-between'>
-        <div className='mb-5 text-2xl font-semibold'>Applicant Detail</div>
+        <div className='mb-5 text-2xl font-semibold'>Application Detail</div>
         <Button variant='secondary' onClick={() => router.history.back()}>
           <img className='size-5' src='/icons/actions/back.svg' />
           Back
@@ -189,7 +189,7 @@ function ApplicantDetailPage() {
       )}
 
       {!data.testSession && data.status === 'Screening' && (
-        <DialogScheduleTestExam applicantId={applicantId} jobCode={data.jobDetail.job.code} />
+        <DialogScheduleTestExam applicationId={applicationId} jobCode={data.jobDetail.job.code} />
       )}
 
       {data.interviewSession && (
@@ -207,27 +207,27 @@ function ApplicantDetailPage() {
       )}
 
       {data.testSession?.status === 'Pass' && data.status === 'Testing' && (
-        <DialogScheduleInterview applicantId={applicantId} />
+        <DialogScheduleInterview applicationId={applicationId} />
       )}
 
       {data.status === 'Interviewing' && data.interviewSession?.status === 'Completed' && (
-        <DialogApproveApplicant applicantId={applicantId} />
+        <DialogApproveApplication applicationId={applicationId} />
       )}
 
       {(data.status === 'Screening' ||
         (data.status === 'Interviewing' && data?.interviewSession?.status === 'Completed')) && (
-        <Button onClick={handleSaveApplicant} disabled={savingApplicant}>
-          Save this applicant
+        <Button onClick={handleSaveApplication} disabled={savingApplication}>
+          Save this application
         </Button>
       )}
 
       {data.status === 'Approve' && (
-        <Button onClick={handleRejectApplicant} disabled={rejectingApplicant}>
-          Reject this applicant
+        <Button onClick={handleRejectApplication} disabled={rejectingApplication}>
+          Reject this application
         </Button>
       )}
     </div>
   )
 }
 
-export default ApplicantDetailPage
+export default ApplicationDetailPage

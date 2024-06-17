@@ -1,17 +1,17 @@
-import { applicantTabs } from '@/constants'
+import { applicationTabs } from '@/constants'
 import { cn, toDate } from '@/lib/utils'
-import { getApplicantsSchema } from '@/lib/validation/applicant.validation'
+import { getApplicationsSchema } from '@/lib/validation/application.validation'
 import { Link, createFileRoute } from '@tanstack/react-router'
 import { Plus } from 'lucide-react'
 
 import useSort from '@/hooks/query/use-sort'
-import useRecruitmentDriveApplicants from '@/hooks/recruitment-drive/use-recruitment-drive-applicants'
+import useRecruitmentDriveApplications from '@/hooks/recruitment-drive/use-recruitment-drive-applications'
 import useRecruitmentDriveDetail, { JobDetails } from '@/hooks/recruitment-drive/use-recruitment-drive-detail'
 
-import DropdownSettingApplicant from '@/components/applicant/dropdown-setting-applicant'
+import DropdownSettingApplication from '@/components/application/dropdown-setting-application'
 import JobDetailCard from '@/components/jobs/job-detail-card'
 import RecruitmentDriveBadge from '@/components/recruitment-drive/recruitment-drive-badge'
-import ApplicantBadge from '@/components/shared/applicant-badge'
+import ApplicationBadge from '@/components/shared/application-badge'
 import NoResult from '@/components/shared/no-result'
 import Paginator from '@/components/shared/paginator'
 import SearchForm from '@/components/shared/search-form'
@@ -30,7 +30,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 
 export const Route = createFileRoute('/_employee-layout/recruitment-drives/$recruitmentDriveCode/detail')({
   component: RecruitmentDriveDetailPage,
-  validateSearch: (search) => getApplicantsSchema.parse(search)
+  validateSearch: (search) => getApplicationsSchema.parse(search)
 })
 
 function RecruitmentDriveDetailPage() {
@@ -41,7 +41,7 @@ function RecruitmentDriveDetailPage() {
   const { data: recruitmentDrive, isLoading: isLoadingRecruitmentDrive } =
     useRecruitmentDriveDetail(recruitmentDriveCode)
 
-  const { data, isPending: isLoadingApplicants } = useRecruitmentDriveApplicants(recruitmentDriveCode, {
+  const { data, isPending: isLoadingApplications } = useRecruitmentDriveApplications(recruitmentDriveCode, {
     pageNumber,
     pageSize,
     search,
@@ -111,9 +111,9 @@ function RecruitmentDriveDetailPage() {
                 icon={jd.job.icon}
                 quantity={jd.quantity}
                 createdAt={jd.createdAt}
-                countApplicants={jd.countApplicants}
-                countApplicantsApproved={jd.countApplicantsApproved}
-                countApplicantsLastWeek={jd.countApplicantsLastWeek}
+                countApplications={jd.countApplications}
+                countApplicationsApproved={jd.countApplicationsApproved}
+                countApplicationsLastWeek={jd.countApplicationsLastWeek}
               />
             ))}
           </div>
@@ -131,7 +131,7 @@ function RecruitmentDriveDetailPage() {
 
       <div className='my-5 rounded-2xl bg-card p-4'>
         <div className='mb-4 flex flex-wrap gap-x-8 gap-y-3 border-b'>
-          {applicantTabs.map((tab) => {
+          {applicationTabs.map((tab) => {
             console.log(status)
 
             const active = status === tab.status
@@ -181,31 +181,31 @@ function RecruitmentDriveDetailPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {isLoadingApplicants && <TableRowsSkeleton colSpan={10} pageSize={pageSize} />}
+                {isLoadingApplications && <TableRowsSkeleton colSpan={10} pageSize={pageSize} />}
 
-                {data?.items?.map((applicant) => {
+                {data?.items?.map((application) => {
                   return (
-                    <TableRow key={applicant.id}>
-                      <TableCell>{applicant.fullName}</TableCell>
+                    <TableRow key={application.id}>
+                      <TableCell>{application.fullName}</TableCell>
                       <TableCell>
                         <div className='flex items-center gap-x-3 font-semibold'>
                           <img
                             alt='job'
-                            src={applicant.jobDetail.job.icon}
+                            src={application.jobDetail.job.icon}
                             className='size-8 rounded-full object-cover'
                           />
-                          <p>{applicant.jobDetail.job.name}</p>
+                          <p>{application.jobDetail.job.name}</p>
                         </div>
                       </TableCell>
 
-                      <TableCell>{toDate(applicant.createdAt)}</TableCell>
+                      <TableCell>{toDate(application.createdAt)}</TableCell>
                       <TableCell className='text-center'>
                         <div className='flex size-full items-center justify-center'>
-                          <ApplicantBadge status={applicant.status} />
+                          <ApplicationBadge status={application.status} />
                         </div>
                       </TableCell>
                       <TableCell className='text-end'>
-                        <DropdownSettingApplicant applicantId={applicant.id} status={applicant.status} />
+                        <DropdownSettingApplication applicationId={application.id} status={application.status} />
                       </TableCell>
                     </TableRow>
                   )
@@ -215,7 +215,7 @@ function RecruitmentDriveDetailPage() {
           </div>
         </div>
 
-        {!isLoadingApplicants && data?.items.length === 0 && (
+        {!isLoadingApplications && data?.items.length === 0 && (
           <div className='mt-36 text-center text-xl font-bold'>Not found any Recruitment Drives.</div>
         )}
       </div>
@@ -259,9 +259,9 @@ function DialogSelectJobForAddCandidate({ jobDetails, recruitmentDriveCode }: Di
                       icon={jd.job.icon}
                       quantity={jd.quantity}
                       createdAt={jd.createdAt}
-                      countApplicants={jd.countApplicants}
-                      countApplicantsApproved={jd.countApplicantsApproved}
-                      countApplicantsLastWeek={jd.countApplicantsLastWeek}
+                      countApplications={jd.countApplications}
+                      countApplicationsApproved={jd.countApplicationsApproved}
+                      countApplicationsLastWeek={jd.countApplicationsLastWeek}
                       showNavigate={false}
                     />
                   </Link>

@@ -7,9 +7,9 @@ function useCompleteInterview() {
   const { getToken } = useAuth()
 
   return useMutation({
-    mutationFn: async (applicantId: string) =>
+    mutationFn: async (applicationId: string) =>
       talentCoreApi.patch(
-        `/api/applicants/${applicantId}/complete-interview`,
+        `/api/applications/${applicationId}/complete-interview`,
         {},
         {
           headers: {
