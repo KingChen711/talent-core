@@ -100,3 +100,23 @@ export function toDaysAgo(date: Date): string {
     return `Posted ${daysDifference} days ago`
   }
 }
+
+function blobToURL(blob: any): Promise<string> {
+  return new Promise((resolve) => {
+    const reader = new FileReader()
+    reader.readAsDataURL(blob)
+    reader.onloadend = function () {
+      const base64data = reader.result
+      resolve(base64data as string)
+    }
+  })
+}
+
+export async function getFile(fileUrl: string) {
+  const arrayBuffer = await fetch(fileUrl)
+  const blob = await arrayBuffer.blob()
+  const base64 = await blobToURL(blob)
+  const fileType = base64.split(':')[1].split(';')[0]
+
+  return { base64, fileType }
+}

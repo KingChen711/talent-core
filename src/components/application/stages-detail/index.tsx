@@ -15,7 +15,7 @@ type Props = {
 
 function StagesDetail({ application }: Props) {
   const applicationStatus: ApplicationStatus = application.status
-  // const applicationStatus: ApplicationStatus = 'Screening'
+
   return (
     <div className='relative flex flex-col gap-y-6'>
       <div className='absolute left-5 z-0 h-full w-0 -translate-x-1/2 border-2 border-dashed border-muted-foreground' />
