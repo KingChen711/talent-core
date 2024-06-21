@@ -9,7 +9,7 @@ import InterviewSessionBadge from '@/components/shared/interview-session-badge'
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
 
-import DialogScheduleInterview from '../dialog-schedule-interview'
+import DialogScheduleInterview from '../../application/dialog-schedule-interview'
 
 type Props = {
   isCandidateView: boolean
@@ -54,8 +54,6 @@ function InterviewingStage({ status, applicationId, testSessionStatus, interview
   }
 
   if (status === 'Saved' && !interviewSession?.interviewDate) return null
-
-  console.log({ isCandidateView })
 
   return (
     <div className='z-10 flex items-center gap-x-2'>

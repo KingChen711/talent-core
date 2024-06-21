@@ -1,8 +1,8 @@
 import { toDate, toDateTime } from '@/lib/utils'
 import { ApplicationStatus, InterviewStatus, ReceiveJobSession } from '@prisma/client'
 
-import DialogApproveApplication from '../dialog-approve-application'
-import DialogSaveApplication from '../dialog-save-application'
+import DialogApproveApplication from '../../application/dialog-approve-application'
+import DialogSaveApplication from '../../application/dialog-save-application'
 
 type Props = {
   status: ApplicationStatus

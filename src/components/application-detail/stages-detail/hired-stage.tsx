@@ -8,7 +8,7 @@ import useConfirmHired from '@/hooks/application/use-confirm-hired'
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
 
-import DialogRejectApplication from '../dialog-reject-application'
+import DialogRejectApplication from '../../application/dialog-reject-application'
 
 type Props = {
   jobName: string
