@@ -80,14 +80,3 @@ export const getMyApplicationsSchema = z.object({
 })
 
 export type TGetMyApplicationsSchema = z.infer<typeof getMyApplicationsSchema>
-
-export const requestChangeTestDate = z.object({
-  wishDate: z.coerce.date().refine((data) => {
-    const now = new Date()
-    const oneDaysLater = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1)
-    return data.getTime() >= oneDaysLater.getTime()
-  }, 'Wish date must be after today at least 1 day'),
-  reason: z.string()
-})
-
-export type TRequestChangeTestDate = z.infer<typeof requestChangeTestDate>

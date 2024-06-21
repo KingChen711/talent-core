@@ -14,20 +14,6 @@ function CandidateRequests({ isCandidateView = false, application }: Props) {
           testSessionWish={application.testSession.testSessionWish}
         />
       )}
-      {application.testSession?.testSessionWish && (
-        <WishChangeTestDate
-          isCandidateView={isCandidateView}
-          applicationId={application.id}
-          testSessionWish={application.testSession.testSessionWish}
-        />
-      )}
-      {application.testSession?.testSessionWish && (
-        <WishChangeTestDate
-          isCandidateView={isCandidateView}
-          applicationId={application.id}
-          testSessionWish={application.testSession.testSessionWish}
-        />
-      )}
     </div>
   )
 }

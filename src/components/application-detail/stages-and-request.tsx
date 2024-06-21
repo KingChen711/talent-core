@@ -1,6 +1,6 @@
 import CandidateRequests from './candidate-requests'
 import StagesDetail from './stages-detail'
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { ApplicationDetail } from '@/hooks/application/use-application'
 

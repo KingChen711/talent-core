@@ -1,5 +1,4 @@
 import { createFileRoute, useRouter } from '@tanstack/react-router'
-import { useEffect, useRef } from 'react'
 
 import useApplication from '@/hooks/application/use-application'
 

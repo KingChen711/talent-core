@@ -1,5 +1,5 @@
 import { isBaseError } from '@/lib/utils'
-import { TRequestChangeTestDate, requestChangeTestDate } from '@/lib/validation/application.validation'
+import { TRequestChangeTestDate, requestChangeTestDate } from '@/lib/validation/wish.validation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useQueryClient } from '@tanstack/react-query'
 import { StatusCodes } from 'http-status-codes'

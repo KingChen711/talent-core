@@ -1,6 +1,11 @@
-import { toDateTime } from '@/lib/utils'
+import { isBaseError, toDateTime } from '@/lib/utils'
 import { TestSessionWish } from '@prisma/client'
-import React from 'react'
+import { useQueryClient } from '@tanstack/react-query'
+import { StatusCodes } from 'http-status-codes'
+
+import useUpdateWish from '@/hooks/wish/use-update-wish'
+
+import { toast } from '@/components/ui/use-toast'
 
 import WishBadge from '../../shared/wish-bade'
 import { Button } from '../../ui/button'
@@ -12,6 +17,47 @@ type Props = {
 }
 
 function WishChangeTestDate({ applicationId, isCandidateView, testSessionWish }: Props) {
+  const queryClient = useQueryClient()
+  const { mutate, isPending } = useUpdateWish()
+
+  const handleUpdateWish = (isApprove: boolean) => {
+    mutate(
+      {
+        applicationId,
+        data: {
+          isApprove,
+          type: 'TestSessionWish'
+        }
+      },
+      {
+        onSuccess: () => {
+          toast({
+            title: `${isApprove ? 'Approve' : 'Reject'} request change test date successfully`,
+            variant: 'success'
+          })
+          queryClient.invalidateQueries({
+            queryKey: ['applications', applicationId]
+          })
+        },
+        onError: (error: unknown) => {
+          if (!isBaseError(error) || error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR) {
+            toast({
+              title: `${isApprove ? 'Approve' : 'Reject'} request change test date failure`,
+              description: 'Some thing went wrong.',
+              variant: 'danger'
+            })
+            return
+          }
+          toast({
+            title: `${isApprove ? 'Approve' : 'Reject'} request change test date failure`,
+            description: error.response?.data.message,
+            variant: 'danger'
+          })
+        }
+      }
+    )
+  }
+
   return (
     <div className='flex w-full flex-col gap-y-3 rounded-lg bg-border p-3'>
       <div className='font-bold'>Request Change Test Date</div>
@@ -28,13 +74,19 @@ function WishChangeTestDate({ applicationId, isCandidateView, testSessionWish }:
         <WishBadge status={testSessionWish.status} />
       </div>
 
-      {!isCandidateView && (
+      {!isCandidateView && testSessionWish.status === 'Processing' && (
         <div className='mt-1 flex flex-wrap gap-x-2'>
-          <Button className='flex-1' size='sm'>
+          <Button onClick={() => handleUpdateWish(true)} disabled={isPending} className='flex-1' size='sm'>
             Approve
           </Button>
           <div className='bg-gradient flex flex-1 items-center justify-center rounded-md p-px'>
-            <Button variant='secondary' className='group w-full rounded-md bg-card hover:bg-card' size='sm'>
+            <Button
+              onClick={() => handleUpdateWish(false)}
+              disabled={isPending}
+              variant='secondary'
+              className='group w-full rounded-md bg-card hover:bg-card'
+              size='sm'
+            >
               <p className='group-hover:text-gradient'>Reject</p>
             </Button>
           </div>
