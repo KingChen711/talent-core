@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 export const updateWishSchema = z.object({
   isApprove: z.coerce.boolean(),
-  type: z.enum(['TestSessionWish', 'InterviewSessionWish', 'ReceiveJobWish'])
+  type: z.enum(['TestSessionWish', 'InterviewSessionWish', 'ReceiveJobSessionWish'])
 })
 
 export type TUpdateWishSchema = z.infer<typeof updateWishSchema>

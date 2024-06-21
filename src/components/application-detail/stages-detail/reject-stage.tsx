@@ -4,9 +4,10 @@ import { XIcon } from 'lucide-react'
 type Props = {
   jobName: string
   status: ApplicationStatus
+  isCandidateView: boolean
 }
 
-function RejectStage({ jobName, status }: Props) {
+function RejectStage({ jobName, status, isCandidateView }: Props) {
   if (status !== 'Reject') return null
 
   return (
@@ -22,7 +23,7 @@ function RejectStage({ jobName, status }: Props) {
       </div>
 
       <div className='w-full rounded-lg bg-border p-4 font-medium'>
-        The candidate has been rejected to be hired for {jobName} position.
+        {isCandidateView ? 'You' : 'The candidate'} has been rejected to be hired for {jobName} position.
       </div>
     </div>
   )

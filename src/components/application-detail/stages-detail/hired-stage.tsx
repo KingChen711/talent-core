@@ -18,7 +18,7 @@ type Props = {
   isCandidateView: boolean
 }
 
-function HiredStage({ status, applicationId, receiveJobSession, isCandidateView }: Props) {
+function HiredStage({ status, applicationId, receiveJobSession, isCandidateView, jobName }: Props) {
   const queryClient = useQueryClient()
   const { mutate: confirmHired, isPending: confirmingHired } = useConfirmHired()
 
@@ -74,26 +74,28 @@ function HiredStage({ status, applicationId, receiveJobSession, isCandidateView 
         </div>
       </div>
 
-      {receiveJobSession?.receiveJobDate && (
+      {receiveJobSession && !receiveJobSession.isConfirmed && (
         <div className='w-full rounded-lg'>
-          {!receiveJobSession.isConfirmed && (
-            <div className='flex gap-x-4'>
-              {!isCandidateView && (
-                <Button onClick={handleConfirmHired} disabled={confirmingHired}>
-                  Confirm Hired
-                </Button>
-              )}
-              <DialogRejectApplication
-                isCandidateView={isCandidateView}
-                disable={confirmingHired}
-                applicationId={applicationId}
-              />
-            </div>
-          )}
+          <div className='flex gap-x-4'>
+            {!isCandidateView && (
+              <Button onClick={handleConfirmHired} disabled={confirmingHired}>
+                Confirm Hired
+              </Button>
+            )}
+            <DialogRejectApplication
+              isCandidateView={isCandidateView}
+              disable={confirmingHired}
+              applicationId={applicationId}
+            />
+          </div>
         </div>
       )}
 
-      {/* <p className='font-medium'>{`The candidate has been confirmed to be hired for the ${jobName} position.`}</p> */}
+      {receiveJobSession?.isConfirmed && (
+        <div className='col-span-12 rounded-lg bg-border p-4'>
+          <p className='font-medium'>{`${isCandidateView ? 'You' : 'The candidate'} has been confirmed to be hired for the ${jobName} position.`}</p>
+        </div>
+      )}
     </div>
   )
 }

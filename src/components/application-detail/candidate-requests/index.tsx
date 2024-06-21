@@ -7,28 +7,36 @@ import { ApplicationDetail } from '@/hooks/application/use-application'
 type Props = { application: ApplicationDetail; isCandidateView?: boolean }
 
 function CandidateRequests({ isCandidateView = false, application }: Props) {
+  const testSessionWish = application.testSession?.testSessionWish
+  const interviewSessionWish = application.interviewSession?.interviewSessionWish
+  const receiveJobSessionWish = application.receiveJobSession?.receiveJobSessionWish
+
+  if (!testSessionWish && !interviewSessionWish && !receiveJobSessionWish) {
+    return <div>Not found any requests</div>
+  }
+
   return (
     <div className='flex max-h-full flex-col gap-y-4 overflow-y-auto'>
-      {application.testSession?.testSessionWish && (
+      {testSessionWish && (
         <WishChangeTestDate
           isCandidateView={isCandidateView}
           applicationId={application.id}
-          testSessionWish={application.testSession.testSessionWish}
+          testSessionWish={testSessionWish}
         />
       )}
-      {application.interviewSession?.interviewSessionWish && (
+      {interviewSessionWish && (
         <WishChangeInterviewDate
           isCandidateView={isCandidateView}
           applicationId={application.id}
-          interviewSessionWish={application.interviewSession.interviewSessionWish}
+          interviewSessionWish={interviewSessionWish}
         />
       )}
 
-      {application.receiveJobSession?.receiveJobWish && (
+      {receiveJobSessionWish && (
         <WishChangeReceiveJobDate
           isCandidateView={isCandidateView}
           applicationId={application.id}
-          receiveJobWish={application.receiveJobSession.receiveJobWish}
+          receiveJobSessionWish={receiveJobSessionWish}
         />
       )}
     </div>

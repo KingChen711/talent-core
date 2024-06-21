@@ -1,5 +1,5 @@
 import { isBaseError, toDateTime } from '@/lib/utils'
-import { ReceiveJobWish } from '@prisma/client'
+import { ReceiveJobSessionWish } from '@prisma/client'
 import { useQueryClient } from '@tanstack/react-query'
 import { StatusCodes } from 'http-status-codes'
 
@@ -13,10 +13,10 @@ import { Button } from '../../ui/button'
 type Props = {
   isCandidateView: boolean
   applicationId: string
-  receiveJobWish: ReceiveJobWish
+  receiveJobSessionWish: ReceiveJobSessionWish
 }
 
-function WishChangeReceiveJobDate({ applicationId, isCandidateView, receiveJobWish }: Props) {
+function WishChangeReceiveJobDate({ applicationId, isCandidateView, receiveJobSessionWish }: Props) {
   const queryClient = useQueryClient()
   const { mutate, isPending } = useUpdateWish()
 
@@ -26,7 +26,7 @@ function WishChangeReceiveJobDate({ applicationId, isCandidateView, receiveJobWi
         applicationId,
         data: {
           isApprove,
-          type: 'ReceiveJobWish'
+          type: 'ReceiveJobSessionWish'
         }
       },
       {
@@ -63,18 +63,18 @@ function WishChangeReceiveJobDate({ applicationId, isCandidateView, receiveJobWi
       <div className='font-bold'>Request Change Receive Job Date</div>
       <div className='flex flex-col gap-y-1 text-sm font-bold'>
         <p>Wish Date:</p>
-        <p className='font-normal'>{toDateTime(receiveJobWish.wishTime)}</p>
+        <p className='font-normal'>{toDateTime(receiveJobSessionWish.wishTime)}</p>
       </div>
       <div className='flex flex-col gap-y-1 text-sm font-bold'>
         <p>Reason:</p>
-        <p className='font-normal'>{receiveJobWish.content}</p>
+        <p className='font-normal'>{receiveJobSessionWish.content}</p>
       </div>
       <div className='flex flex-wrap gap-1 text-sm font-bold'>
         <p>Status:</p>
-        <WishBadge status={receiveJobWish.status} />
+        <WishBadge status={receiveJobSessionWish.status} />
       </div>
 
-      {!isCandidateView && receiveJobWish.status === 'Processing' && (
+      {!isCandidateView && receiveJobSessionWish.status === 'Processing' && (
         <div className='mt-1 flex flex-wrap gap-x-2'>
           <Button onClick={() => handleUpdateWish(true)} disabled={isPending} className='flex-1' size='sm'>
             Approve

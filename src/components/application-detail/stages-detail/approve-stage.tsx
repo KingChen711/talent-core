@@ -1,5 +1,5 @@
 import { toDate, toDateTime } from '@/lib/utils'
-import { ApplicationStatus, InterviewStatus, ReceiveJobSession, ReceiveJobWish } from '@prisma/client'
+import { ApplicationStatus, InterviewStatus, ReceiveJobSession, ReceiveJobSessionWish } from '@prisma/client'
 
 import DialogRequestChangeReceiveJobDate from '@/components/wish/dialog-request-change-receive-job-date'
 
@@ -9,7 +9,7 @@ import DialogSaveApplication from '../../application/dialog-save-application'
 type Props = {
   status: ApplicationStatus
   applicationId: string
-  receiveJobSession: (ReceiveJobSession & { receiveJobWish: ReceiveJobWish | null }) | null
+  receiveJobSession: (ReceiveJobSession & { receiveJobSessionWish: ReceiveJobSessionWish | null }) | null
   interviewSessionStatus: InterviewStatus | undefined
   isCandidateView: boolean
 }
@@ -61,7 +61,7 @@ function ApproveStage({ status, applicationId, receiveJobSession, interviewSessi
             </p>
           </div>
 
-          {!isCandidateView && !receiveJobSession.isConfirmed && (
+          {!isCandidateView && status === 'Approve' && !receiveJobSession.isConfirmed && (
             <div className='col-span-12 mt-4'>
               <DialogApproveApplication
                 applicationId={applicationId}
@@ -72,11 +72,14 @@ function ApproveStage({ status, applicationId, receiveJobSession, interviewSessi
             </div>
           )}
 
-          {isCandidateView && !receiveJobSession.isConfirmed && !receiveJobSession.receiveJobWish && (
-            <div className='col-span-12 mt-4 flex flex-wrap gap-4'>
-              <DialogRequestChangeReceiveJobDate applicationId={applicationId} />
-            </div>
-          )}
+          {isCandidateView &&
+            status === 'Approve' &&
+            !receiveJobSession.isConfirmed &&
+            !receiveJobSession.receiveJobSessionWish && (
+              <div className='col-span-12 mt-4 flex flex-wrap gap-4'>
+                <DialogRequestChangeReceiveJobDate applicationId={applicationId} />
+              </div>
+            )}
         </div>
       )}
     </div>

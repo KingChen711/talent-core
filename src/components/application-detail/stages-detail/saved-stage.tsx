@@ -5,10 +5,13 @@ type Props = {
   hasTestSession: boolean
   hasInterviewSession: boolean
   status: ApplicationStatus
+  isCandidateView: boolean
 }
 
-function SavedStage({ hasTestSession, status, hasInterviewSession }: Props) {
+function SavedStage({ hasTestSession, status, hasInterviewSession, isCandidateView }: Props) {
   if (status !== 'Saved') return null
+
+  const subject = isCandidateView ? 'You' : 'The candidate'
 
   return (
     <div className='z-10 flex items-center gap-x-2'>
@@ -23,13 +26,11 @@ function SavedStage({ hasTestSession, status, hasInterviewSession }: Props) {
       </div>
 
       {!hasTestSession ? (
-        <div className='w-full rounded-lg bg-border p-4 font-medium'>The candidate has failed the screening stage.</div>
+        <div className='w-full rounded-lg bg-border p-4 font-medium'>{subject} has failed the screening stage.</div>
       ) : !hasInterviewSession ? (
-        <div className='w-full rounded-lg bg-border p-4 font-medium'>The candidate has failed the testing stage.</div>
+        <div className='w-full rounded-lg bg-border p-4 font-medium'>{subject} has failed the testing stage.</div>
       ) : (
-        <div className='w-full rounded-lg bg-border p-4 font-medium'>
-          The candidate has failed the interviewing stage.
-        </div>
+        <div className='w-full rounded-lg bg-border p-4 font-medium'>{subject} has failed the interviewing stage.</div>
       )}
     </div>
   )

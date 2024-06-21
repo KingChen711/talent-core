@@ -61,12 +61,17 @@ const StagesDetail = React.forwardRef<HTMLDivElement, Props>(({ application, isC
       />
 
       <SavedStage
+        isCandidateView={isCandidateView}
         status={applicationStatus}
         hasTestSession={!!application.testSession?.testDate}
         hasInterviewSession={!!application.interviewSession?.interviewDate}
       />
 
-      <RejectStage jobName={application.jobDetail.job.name} status={applicationStatus} />
+      <RejectStage
+        isCandidateView={isCandidateView}
+        jobName={application.jobDetail.job.name}
+        status={applicationStatus}
+      />
     </div>
   )
 })

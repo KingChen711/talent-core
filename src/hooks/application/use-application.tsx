@@ -7,7 +7,7 @@ import {
   Job,
   JobDetail,
   ReceiveJobSession,
-  ReceiveJobWish,
+  ReceiveJobSessionWish,
   TestExam,
   TestSession,
   TestSessionWish,
@@ -34,7 +34,7 @@ export type ApplicationDetail = Application & {
         interviewSessionWish: InterviewSessionWish | null
       })
     | null
-  receiveJobSession: (ReceiveJobSession & { receiveJobWish: ReceiveJobWish | null }) | null
+  receiveJobSession: (ReceiveJobSession & { receiveJobSessionWish: ReceiveJobSessionWish | null }) | null
   candidate: Candidate & { user: User }
 }
 
