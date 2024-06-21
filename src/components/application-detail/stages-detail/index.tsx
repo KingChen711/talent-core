@@ -45,6 +45,7 @@ const StagesDetail = React.forwardRef<HTMLDivElement, Props>(({ application, isC
       />
 
       <ApproveStage
+        isCandidateView={isCandidateView}
         interviewSessionStatus={application.interviewSession?.status}
         applicationId={application.id}
         receiveJobSession={application.receiveJobSession}
@@ -52,6 +53,7 @@ const StagesDetail = React.forwardRef<HTMLDivElement, Props>(({ application, isC
       />
 
       <HiredStage
+        isCandidateView={isCandidateView}
         jobName={application.jobDetail.job.name}
         applicationId={application.id}
         receiveJobSession={application.receiveJobSession}

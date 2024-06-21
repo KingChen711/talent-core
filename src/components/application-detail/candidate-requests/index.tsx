@@ -1,4 +1,5 @@
 import WishChangeInterviewDate from './wish-change-interview-date'
+import WishChangeReceiveJobDate from './wish-change-receive-job-date'
 import WishChangeTestDate from './wish-change-test-date'
 
 import { ApplicationDetail } from '@/hooks/application/use-application'
@@ -20,6 +21,14 @@ function CandidateRequests({ isCandidateView = false, application }: Props) {
           isCandidateView={isCandidateView}
           applicationId={application.id}
           interviewSessionWish={application.interviewSession.interviewSessionWish}
+        />
+      )}
+
+      {application.receiveJobSession?.receiveJobWish && (
+        <WishChangeReceiveJobDate
+          isCandidateView={isCandidateView}
+          applicationId={application.id}
+          receiveJobWish={application.receiveJobSession.receiveJobWish}
         />
       )}
     </div>

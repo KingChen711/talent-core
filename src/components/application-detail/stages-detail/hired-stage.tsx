@@ -15,9 +15,10 @@ type Props = {
   status: ApplicationStatus
   applicationId: string
   receiveJobSession: ReceiveJobSession | null
+  isCandidateView: boolean
 }
 
-function HiredStage({ status, applicationId, receiveJobSession, jobName }: Props) {
+function HiredStage({ status, applicationId, receiveJobSession, isCandidateView }: Props) {
   const queryClient = useQueryClient()
   const { mutate: confirmHired, isPending: confirmingHired } = useConfirmHired()
 
@@ -74,19 +75,25 @@ function HiredStage({ status, applicationId, receiveJobSession, jobName }: Props
       </div>
 
       {receiveJobSession?.receiveJobDate && (
-        <div className='w-full rounded-lg bg-border p-4'>
-          {!receiveJobSession.isConfirmed ? (
-            <div className='flex justify-center gap-x-4'>
-              <Button onClick={handleConfirmHired} disabled={confirmingHired} className='basis-1/2'>
-                Confirm Hired
-              </Button>
-              <DialogRejectApplication disable={confirmingHired} applicationId={applicationId} />
+        <div className='w-full rounded-lg'>
+          {!receiveJobSession.isConfirmed && (
+            <div className='flex gap-x-4'>
+              {!isCandidateView && (
+                <Button onClick={handleConfirmHired} disabled={confirmingHired}>
+                  Confirm Hired
+                </Button>
+              )}
+              <DialogRejectApplication
+                isCandidateView={isCandidateView}
+                disable={confirmingHired}
+                applicationId={applicationId}
+              />
             </div>
-          ) : (
-            <p className='font-medium'>{`The candidate has been confirmed to be hired for the ${jobName} position.`}</p>
           )}
         </div>
       )}
+
+      {/* <p className='font-medium'>{`The candidate has been confirmed to be hired for the ${jobName} position.`}</p> */}
     </div>
   )
 }

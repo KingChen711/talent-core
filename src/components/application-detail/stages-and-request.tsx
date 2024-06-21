@@ -21,7 +21,7 @@ function StagesAndRequests({ isCandidateView = false, application }: Props) {
 
   return (
     <>
-      <div ref={stagesSection} className='col-span-9 rounded-lg bg-card p-6'>
+      <div ref={stagesSection} className='col-span-8 rounded-lg bg-card p-6'>
         <h3 className='mb-5 text-xl font-semibold'>Stages detail</h3>
 
         <StagesDetail isCandidateView={isCandidateView} application={application} />
@@ -30,7 +30,7 @@ function StagesAndRequests({ isCandidateView = false, application }: Props) {
       {stagesSectionLoaded && (
         <div
           style={{ maxHeight: `${stagesSection.current?.clientHeight}px` }}
-          className='col-span-3 flex flex-col gap-y-4 rounded-lg bg-card px-4 py-6'
+          className='col-span-4 flex flex-col gap-y-4 rounded-lg bg-card px-4 py-6'
         >
           <h3 className='text-xl font-semibold'>{isCandidateView ? 'Your requests' : 'Candidate requests'}</h3>
 

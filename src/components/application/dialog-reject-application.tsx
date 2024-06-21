@@ -17,9 +17,9 @@ import {
 } from '../ui/dialog'
 import { toast } from '../ui/use-toast'
 
-type Props = { applicationId: string; disable?: boolean }
+type Props = { applicationId: string; disable?: boolean; isCandidateView: boolean }
 
-function DialogRejectApplication({ applicationId, disable }: Props) {
+function DialogRejectApplication({ applicationId, disable, isCandidateView }: Props) {
   const queryClient = useQueryClient()
   const { mutate: rejectApplication, isPending: rejectingApplication } = useRejectApplication()
 
@@ -55,15 +55,19 @@ function DialogRejectApplication({ applicationId, disable }: Props) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <div className='bg-gradient flex basis-1/2 items-center justify-center rounded-md p-px'>
+        <div className='bg-gradient flex items-center justify-center rounded-md p-px'>
           <Button disabled={disable} variant='outline' className='group w-full bg-card hover:bg-card'>
-            <p className='group-hover:text-gradient font-bold'>Reject This Application</p>
+            <p className='group-hover:text-gradient font-bold'>
+              {isCandidateView ? 'Reject this job' : 'Reject This Application'}
+            </p>
           </Button>
         </div>
       </DialogTrigger>
       <DialogContent className='w-[500px] max-w-[96%]'>
         <DialogHeader>
-          <DialogTitle className='mb-4 text-center'>Are you sure to reject application?</DialogTitle>
+          <DialogTitle className='mb-4 text-center'>
+            Are you sure to {isCandidateView ? 'reject this job' : 'reject this application'}?
+          </DialogTitle>
           <DialogDescription asChild>
             <div className='flex items-center justify-center gap-x-5'>
               <Button disabled={rejectingApplication} className='w-[100px]' onClick={handleRejectApplication}>

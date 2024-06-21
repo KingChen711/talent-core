@@ -1,5 +1,7 @@
 import { toDate, toDateTime } from '@/lib/utils'
-import { ApplicationStatus, InterviewStatus, ReceiveJobSession } from '@prisma/client'
+import { ApplicationStatus, InterviewStatus, ReceiveJobSession, ReceiveJobWish } from '@prisma/client'
+
+import DialogRequestChangeReceiveJobDate from '@/components/wish/dialog-request-change-receive-job-date'
 
 import DialogApproveApplication from '../../application/dialog-approve-application'
 import DialogSaveApplication from '../../application/dialog-save-application'
@@ -7,11 +9,12 @@ import DialogSaveApplication from '../../application/dialog-save-application'
 type Props = {
   status: ApplicationStatus
   applicationId: string
-  receiveJobSession: ReceiveJobSession | null
+  receiveJobSession: (ReceiveJobSession & { receiveJobWish: ReceiveJobWish | null }) | null
   interviewSessionStatus: InterviewStatus | undefined
+  isCandidateView: boolean
 }
 
-function ApproveStage({ status, applicationId, receiveJobSession, interviewSessionStatus }: Props) {
+function ApproveStage({ status, applicationId, receiveJobSession, interviewSessionStatus, isCandidateView }: Props) {
   if (status === 'Saved') return null
 
   return (
@@ -35,7 +38,7 @@ function ApproveStage({ status, applicationId, receiveJobSession, interviewSessi
         </div>
       </div>
 
-      {status === 'Interviewing' && interviewSessionStatus === 'Completed' && (
+      {!isCandidateView && status === 'Interviewing' && interviewSessionStatus === 'Completed' && (
         <div className='flex gap-x-4'>
           <DialogApproveApplication applicationId={applicationId} />
           <DialogSaveApplication applicationId={applicationId} />
@@ -58,7 +61,7 @@ function ApproveStage({ status, applicationId, receiveJobSession, interviewSessi
             </p>
           </div>
 
-          {!receiveJobSession.isConfirmed && (
+          {!isCandidateView && !receiveJobSession.isConfirmed && (
             <div className='col-span-12 mt-4'>
               <DialogApproveApplication
                 applicationId={applicationId}
@@ -66,6 +69,12 @@ function ApproveStage({ status, applicationId, receiveJobSession, interviewSessi
                 location={receiveJobSession.location}
                 receiveJobDate={new Date(receiveJobSession.receiveJobDate)}
               />
+            </div>
+          )}
+
+          {isCandidateView && !receiveJobSession.isConfirmed && !receiveJobSession.receiveJobWish && (
+            <div className='col-span-12 mt-4 flex flex-wrap gap-4'>
+              <DialogRequestChangeReceiveJobDate applicationId={applicationId} />
             </div>
           )}
         </div>
