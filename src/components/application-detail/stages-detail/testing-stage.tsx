@@ -5,9 +5,9 @@ import TestSessionBadge from '@/components/shared/test-session-badge'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 
-import DialogRequestChangeTestDate from '../../application/dialog-request-change-test-date'
 import DialogSaveApplication from '../../application/dialog-save-application'
 import DialogScheduleTestExam from '../../application/dialog-schedule-test-exam'
+import DialogRequestChangeTestDate from '../../wish/dialog-request-change-test-date'
 
 type Props = {
   isCandidateView: boolean

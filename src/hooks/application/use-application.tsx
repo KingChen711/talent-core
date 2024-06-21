@@ -3,6 +3,7 @@ import {
   Application,
   Candidate,
   InterviewSession,
+  InterviewSessionWish,
   Job,
   JobDetail,
   ReceiveJobSession,
@@ -27,7 +28,11 @@ export type ApplicationDetail = Application & {
         testSessionWish: TestSessionWish | null
       })
     | null
-  interviewSession: InterviewSession | null
+  interviewSession:
+    | (InterviewSession & {
+        interviewSessionWish: InterviewSessionWish | null
+      })
+    | null
   receiveJobSession: ReceiveJobSession | null
   candidate: Candidate & { user: User }
 }

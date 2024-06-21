@@ -1,3 +1,4 @@
+import WishChangeInterviewDate from './wish-change-interview-date'
 import WishChangeTestDate from './wish-change-test-date'
 
 import { ApplicationDetail } from '@/hooks/application/use-application'
@@ -12,6 +13,13 @@ function CandidateRequests({ isCandidateView = false, application }: Props) {
           isCandidateView={isCandidateView}
           applicationId={application.id}
           testSessionWish={application.testSession.testSessionWish}
+        />
+      )}
+      {application.interviewSession?.interviewSessionWish && (
+        <WishChangeInterviewDate
+          isCandidateView={isCandidateView}
+          applicationId={application.id}
+          interviewSessionWish={application.interviewSession.interviewSessionWish}
         />
       )}
     </div>

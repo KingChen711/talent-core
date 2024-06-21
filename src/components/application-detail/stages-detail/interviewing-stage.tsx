@@ -1,5 +1,5 @@
 import { isBaseError, toDate, toDateTime } from '@/lib/utils'
-import { ApplicationStatus, InterviewSession, TestSessionStatus } from '@prisma/client'
+import { ApplicationStatus, InterviewSession, InterviewSessionWish, TestSessionStatus } from '@prisma/client'
 import { useQueryClient } from '@tanstack/react-query'
 import { StatusCodes } from 'http-status-codes'
 
@@ -8,6 +8,7 @@ import useCompleteInterview from '@/hooks/application/use-complete-interview'
 import InterviewSessionBadge from '@/components/shared/interview-session-badge'
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
+import DialogRequestChangeInterviewDate from '@/components/wish/dialog-request-change-interview-date'
 
 import DialogScheduleInterview from '../../application/dialog-schedule-interview'
 
@@ -16,7 +17,7 @@ type Props = {
   status: ApplicationStatus
   applicationId: string
   testSessionStatus: TestSessionStatus | undefined
-  interviewSession: InterviewSession | null
+  interviewSession: (InterviewSession & { interviewSessionWish: InterviewSessionWish | null }) | null
 }
 
 function InterviewingStage({ status, applicationId, testSessionStatus, interviewSession, isCandidateView }: Props) {
@@ -120,6 +121,15 @@ function InterviewingStage({ status, applicationId, testSessionStatus, interview
                 location={interviewSession.location}
                 method={interviewSession.method}
               />
+            </div>
+          )}
+
+          {isCandidateView && interviewSession.status === 'Processing' && (
+            <div className='col-span-12 mt-4 flex flex-wrap gap-4'>
+              {!interviewSession.interviewSessionWish &&
+                new Date(interviewSession.interviewDate).getTime() > Date.now() && (
+                  <DialogRequestChangeInterviewDate applicationId={applicationId} />
+                )}
             </div>
           )}
         </div>
