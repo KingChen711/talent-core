@@ -1,6 +1,6 @@
 import { applicationTabs } from '@/constants'
 import { cn, toDate } from '@/lib/utils'
-import { getMyApplicationsSchemaSchema } from '@/lib/validation/application.validation'
+import { getMyApplicationsSchema } from '@/lib/validation/application.validation'
 import { Link, createFileRoute } from '@tanstack/react-router'
 
 import useMyApplications from '@/hooks/application/use-my-applications'
@@ -15,7 +15,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 
 export const Route = createFileRoute('/_main-layout/my-applications/')({
   component: MyApplications,
-  validateSearch: (search) => getMyApplicationsSchemaSchema.parse(search)
+  validateSearch: (search) => getMyApplicationsSchema.parse(search)
 })
 
 function MyApplications() {

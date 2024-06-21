@@ -5,9 +5,10 @@ type Props = {
   status: ApplicationStatus
   createdAt: Date
   jobName: string
+  isCandidateView: boolean
 }
 
-function ScreeningStage({ createdAt, status, jobName }: Props) {
+function ScreeningStage({ createdAt, status, jobName, isCandidateView }: Props) {
   return (
     <div className='z-10 flex items-center gap-x-2'>
       <div className='flex items-center gap-x-2'>
@@ -28,8 +29,8 @@ function ScreeningStage({ createdAt, status, jobName }: Props) {
           <div className='line-clamp-1 text-xs leading-none text-muted-foreground'>{toDate(createdAt)}</div>
         </div>
       </div>
-      <div className='line-clamp-2 w-full rounded-lg bg-border p-4 font-medium'>
-        The candidate applied for the {jobName} position in {toDateTime(createdAt)}.
+      <div className='w-full rounded-lg bg-border p-4 font-medium'>
+        {isCandidateView ? 'You' : 'The candidate'} applied for the {jobName} position in {toDateTime(createdAt)}.
       </div>
     </div>
   )

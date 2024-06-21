@@ -12,13 +12,14 @@ import { toast } from '@/components/ui/use-toast'
 import DialogScheduleInterview from '../dialog-schedule-interview'
 
 type Props = {
+  isCandidateView: boolean
   status: ApplicationStatus
   applicationId: string
   testSessionStatus: TestSessionStatus | undefined
   interviewSession: InterviewSession | null
 }
 
-function InterviewingStage({ status, applicationId, testSessionStatus, interviewSession }: Props) {
+function InterviewingStage({ status, applicationId, testSessionStatus, interviewSession, isCandidateView }: Props) {
   const queryClient = useQueryClient()
 
   const { mutate: completeInterview, isPending: completingInterview } = useCompleteInterview()
@@ -54,6 +55,8 @@ function InterviewingStage({ status, applicationId, testSessionStatus, interview
 
   if (status === 'Saved' && !interviewSession?.interviewDate) return null
 
+  console.log({ isCandidateView })
+
   return (
     <div className='z-10 flex items-center gap-x-2'>
       <div className='flex items-center gap-x-2'>
@@ -79,7 +82,7 @@ function InterviewingStage({ status, applicationId, testSessionStatus, interview
         </div>
       </div>
 
-      {testSessionStatus === 'Pass' && status === 'Testing' && (
+      {!isCandidateView && testSessionStatus === 'Pass' && status === 'Testing' && (
         <DialogScheduleInterview applicationId={applicationId} />
       )}
 
@@ -107,7 +110,7 @@ function InterviewingStage({ status, applicationId, testSessionStatus, interview
             </div>
           </div>
 
-          {interviewSession.status === 'Processing' && (
+          {!isCandidateView && interviewSession.status === 'Processing' && (
             <div className='col-span-12 mt-4 flex gap-x-4'>
               <Button className='w-full flex-1' onClick={handleCompleteInterview} disabled={completingInterview}>
                 Completed the interview

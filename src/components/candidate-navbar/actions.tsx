@@ -7,7 +7,7 @@ import { ThemeToggle } from '../theme-toggle'
 import { Button } from '../ui/button'
 
 function Actions() {
-  const { role } = useAuthContext()
+  const { role, isLoadingAuth } = useAuthContext()
 
   return (
     <div className='flex items-center gap-x-2'>
@@ -21,6 +21,7 @@ function Actions() {
           </Button>
         </SignedOut>
         <SignedIn>
+          {isLoadingAuth && <Loader2 className='mr-2 size-6 animate-spin' />}
           {role === 'Employee' && (
             <Button variant='ghost' className='text-gradient px-2 text-base font-bold' asChild>
               <Link to='/dashboard'>Dashboard</Link>

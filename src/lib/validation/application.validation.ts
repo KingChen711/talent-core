@@ -69,7 +69,7 @@ export const approveApplicationSchema = z.object({
 
 export type TApproveApplicationSchema = z.infer<typeof approveApplicationSchema>
 
-export const getMyApplicationsSchemaSchema = z.object({
+export const getMyApplicationsSchema = z.object({
   pageNumber: z.coerce.number().catch(1),
   pageSize: z.coerce.number().catch(10),
   search: z.string().catch(''),
@@ -79,4 +79,15 @@ export const getMyApplicationsSchemaSchema = z.object({
     .catch('-createdAt')
 })
 
-export type TGetMyApplicationsSchemaSchema = z.infer<typeof getMyApplicationsSchemaSchema>
+export type TGetMyApplicationsSchema = z.infer<typeof getMyApplicationsSchema>
+
+export const requestChangeTestDate = z.object({
+  wishDate: z.coerce.date().refine((data) => {
+    const now = new Date()
+    const oneDaysLater = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1)
+    return data.getTime() >= oneDaysLater.getTime()
+  }, 'Wish date must be after today at least 1 day'),
+  reason: z.string()
+})
+
+export type TRequestChangeTestDate = z.infer<typeof requestChangeTestDate>

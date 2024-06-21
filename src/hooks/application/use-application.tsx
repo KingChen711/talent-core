@@ -8,6 +8,7 @@ import {
   ReceiveJobSession,
   TestExam,
   TestSession,
+  TestSessionWish,
   User
 } from '@prisma/client'
 import { useQuery } from '@tanstack/react-query'
@@ -18,7 +19,14 @@ export type ApplicationDetail = Application & {
   jobDetail: JobDetail & {
     job: Job
   }
-  testSession: (TestSession & { testExam: TestExam & { countQuestions: number } }) | null
+  testSession:
+    | (TestSession & {
+        testExam: TestExam & {
+          countQuestions: number
+        }
+        testSessionWish: TestSessionWish | null
+      })
+    | null
   interviewSession: InterviewSession | null
   receiveJobSession: ReceiveJobSession | null
   candidate: Candidate & { user: User }

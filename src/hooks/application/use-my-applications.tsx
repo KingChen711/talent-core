@@ -1,4 +1,4 @@
-import { TGetMyApplicationsSchemaSchema } from '@/lib/validation/application.validation'
+import { TGetMyApplicationsSchema } from '@/lib/validation/application.validation'
 import { PagingMetaData } from '@/types'
 import { useAuth } from '@clerk/clerk-react'
 import { Application, Job, JobDetail, RecruitmentDrive } from '@prisma/client'
@@ -13,7 +13,7 @@ type MyApplications = (Application & {
   }
 })[]
 
-function useMyApplications(searchParams: TGetMyApplicationsSchemaSchema) {
+function useMyApplications(searchParams: TGetMyApplicationsSchema) {
   const { getToken } = useAuth()
 
   return useQuery({

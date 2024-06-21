@@ -11,9 +11,10 @@ import { ApplicationDetail } from '@/hooks/application/use-application'
 
 type Props = {
   application: ApplicationDetail
+  isCandidateView?: boolean
 }
 
-function StagesDetail({ application }: Props) {
+function StagesDetail({ application, isCandidateView = false }: Props) {
   const applicationStatus: ApplicationStatus = application.status
 
   return (
@@ -21,12 +22,14 @@ function StagesDetail({ application }: Props) {
       <div className='absolute left-5 z-0 h-full w-0 -translate-x-1/2 border-2 border-dashed border-muted-foreground' />
 
       <ScreeningStage
+        isCandidateView={isCandidateView}
         createdAt={application.createdAt}
         status={applicationStatus}
         jobName={application.jobDetail.job.name}
       />
 
       <TestingStage
+        isCandidateView={isCandidateView}
         testSession={application.testSession}
         applicationId={application.id}
         jobCode={application.jobDetail.job.code}
@@ -34,6 +37,7 @@ function StagesDetail({ application }: Props) {
       />
 
       <InterviewingStage
+        isCandidateView={isCandidateView}
         applicationId={application.id}
         testSessionStatus={application.testSession?.status}
         status={applicationStatus}
