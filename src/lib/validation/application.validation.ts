@@ -37,10 +37,9 @@ export type TGetApplicationsSchema = z.infer<typeof getApplicationsSchema>
 
 export const scheduleTestExamSchema = z.object({
   testDate: z.coerce.date().refine((data) => {
-    const now = new Date()
-    const oneDaysLater = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1)
-    return data.getTime() >= oneDaysLater.getTime()
-  }, 'Test date must be after today at least 1 day'),
+    const now = new Date().getTime()
+    return data.getTime() > now
+  }, 'Invalid date'),
   testExamCode: z.string()
 })
 
@@ -48,10 +47,9 @@ export type TScheduleTestExamSchema = z.infer<typeof scheduleTestExamSchema>
 
 export const scheduleInterviewSchema = z.object({
   interviewDate: z.coerce.date().refine((data) => {
-    const now = new Date()
-    const oneDaysLater = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1)
-    return data.getTime() >= oneDaysLater.getTime()
-  }, 'Interview date must be after today at least 1 day'),
+    const now = new Date().getTime()
+    return data.getTime() > now
+  }, 'Invalid date'),
   location: z.string(),
   method: z.enum(['Online', 'Offline'])
 })
@@ -60,10 +58,9 @@ export type TScheduleInterviewSchema = z.infer<typeof scheduleInterviewSchema>
 
 export const approveApplicationSchema = z.object({
   receiveJobDate: z.coerce.date().refine((data) => {
-    const now = new Date()
-    const oneDaysLater = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1)
-    return data.getTime() >= oneDaysLater.getTime()
-  }, 'Interview date must be after today at least 1 day'),
+    const now = new Date().getTime()
+    return data.getTime() > now
+  }, 'Invalid date'),
   location: z.string()
 })
 

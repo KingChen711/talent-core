@@ -215,7 +215,6 @@ function DialogScheduleTestExam({ applicationId, jobCode, editMode = false, test
 
 export default DialogScheduleTestExam
 
-// TODO: tách file riêng hộp gộp chung vs component này
 type TestExamCardProps = {
   name: string
   code: string
