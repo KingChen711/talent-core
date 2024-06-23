@@ -1,5 +1,7 @@
 import { toDate, toDateTime } from '@/lib/utils'
 import { ApplicationStatus, TestExam, TestSession, TestSessionWish } from '@prisma/client'
+import { Link } from '@tanstack/react-router'
+import { useMemo } from 'react'
 
 import TestSessionBadge from '@/components/shared/test-session-badge'
 import { Badge } from '@/components/ui/badge'
@@ -28,6 +30,14 @@ function TestingStage({ status, applicationId, jobCode, testSession, isCandidate
   if (status === 'Saved' && !testSession?.testDate) return null
 
   const hasPermissionViewFullInfor = !isCandidateView || (testSession && testSession.status !== 'Processing')
+
+  const validTimeToTakeTest = useMemo(() => {
+    if (!testSession) return false
+    const now = Date.now()
+    const testDate = new Date(testSession.testDate).getTime()
+    const expiredTestDate = testDate + testSession.testExam.duration * 1000 * 60
+    return now >= testDate && now <= expiredTestDate
+  }, [testSession])
 
   return (
     <div className='z-10 flex items-center gap-x-2'>
@@ -121,8 +131,8 @@ function TestingStage({ status, applicationId, jobCode, testSession, isCandidate
 
           {isCandidateView && testSession.status === 'Processing' && (
             <div className='col-span-12 mt-4 flex flex-wrap gap-4'>
-              <Button disabled={new Date(testSession.testDate).getTime() > Date.now()} className='flex-1'>
-                Take The Test
+              <Button disabled={!validTimeToTakeTest} className='flex-1'>
+                <Link to={`/take-the-test/${applicationId}`}>Take The Test</Link>
               </Button>
 
               {!testSession.testSessionWish && new Date(testSession.testDate).getTime() > Date.now() && (

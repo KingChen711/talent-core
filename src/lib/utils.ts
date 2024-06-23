@@ -120,3 +120,33 @@ export async function getFile(fileUrl: string) {
 
   return { base64, fileType }
 }
+
+export function convertRemainTime(expiredTimestamp: number): string {
+  // Convert the timestamp to a Date object
+  const expiredDate = new Date(expiredTimestamp)
+
+  // Get the current date
+  const currentDate = new Date()
+
+  // Calculate the time difference in milliseconds
+  const timeDifference = expiredDate.getTime() - currentDate.getTime()
+
+  // Handle case where the expired date is in the past
+  if (timeDifference <= 0) {
+    return '00:00:00'
+  }
+
+  // Convert milliseconds to hh:mm:ss
+  const totalSeconds = Math.floor(timeDifference / 1000)
+  const hours = Math.floor(totalSeconds / 3600)
+  const minutes = Math.floor((totalSeconds % 3600) / 60)
+  const seconds = totalSeconds % 60
+
+  // Format the output to ensure two digits for hours, minutes, and seconds
+  const formattedHours = String(hours).padStart(2, '0')
+  const formattedMinutes = String(minutes).padStart(2, '0')
+  const formattedSeconds = String(seconds).padStart(2, '0')
+
+  // Return the formatted time difference
+  return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`
+}
