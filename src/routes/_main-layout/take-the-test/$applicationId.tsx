@@ -1,13 +1,15 @@
 import { convertRemainTime, isBaseError } from '@/lib/utils'
+import { TAnswersSchema, answersSchema } from '@/lib/validation/test-exam.validation'
 import { useLocalStorage } from '@reactuses/core'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { StatusCodes } from 'http-status-codes'
 import { useEffect, useState } from 'react'
 
+import useSubmitTest from '@/hooks/test/use-submit-test'
 import useTakeTheTest from '@/hooks/test/use-take-the-test'
 
 import ParseQuestion from '@/components/shared/parse-question'
-import { Button } from '@/components/ui/button'
+import DialogSubmitTest from '@/components/test/dialog-submit-test'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { toast } from '@/components/ui/use-toast'
@@ -17,6 +19,7 @@ export const Route = createFileRoute('/_main-layout/take-the-test/$applicationId
 })
 
 function TakeTheTestPage() {
+  const navigate = useNavigate()
   const { applicationId } = Route.useParams()
 
   const { data, isLoading } = useTakeTheTest(applicationId, (error) => {
@@ -35,8 +38,22 @@ function TakeTheTestPage() {
     })
   })
 
+  const { mutate, isPending } = useSubmitTest()
+
   const [remainTimeText, setRemainTimeText] = useState('')
-  const [answers, setAnswers] = useLocalStorage<Record<string, string>>('answers', {})
+  const [answers, setAnswers] = useLocalStorage<TAnswersSchema>('answers', {})
+
+  useEffect(() => {
+    const checkAnswers = async () => {
+      try {
+        await answersSchema.parseAsync(answers)
+      } catch (error) {
+        setAnswers({})
+      }
+    }
+
+    checkAnswers()
+  }, [answers])
 
   useEffect(() => {
     if (data && data.testExamCode !== localStorage.getItem('test-exam')) {
@@ -53,8 +70,38 @@ function TakeTheTestPage() {
       const expiredTime = new Date(data.testDate).getTime() + data.testExam.duration * 1000 * 60
 
       if (expiredTime <= now) {
-        // TODO: submit test
         setRemainTimeText('00:00:00')
+
+        // auto submit when time end
+        mutate(
+          { applicationId, data: { answers: answers || {} } },
+          {
+            onSuccess: () => {
+              toast({
+                title: `Submit test success`,
+                variant: 'success'
+              })
+              return navigate({
+                to: `/my-applications/${applicationId}`
+              })
+            },
+            onError: (error) => {
+              if (!isBaseError(error) || error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR) {
+                toast({
+                  title: `Submit test failure`,
+                  description: 'Some thing went wrong.',
+                  variant: 'danger'
+                })
+                return
+              }
+              toast({
+                title: `Submit test failure`,
+                description: error.response?.data.message,
+                variant: 'danger'
+              })
+            }
+          }
+        )
       }
 
       setRemainTimeText(convertRemainTime(expiredTime))
@@ -80,12 +127,6 @@ function TakeTheTestPage() {
     setAnswers(clone)
   }
 
-  // TODO: useEffect handle invalid answers from local storage
-
-  useEffect(() => {
-    console.log(answers)
-  }, [answers])
-
   if (isLoading) return <div>Skeleton</div>
   if (!data) return <div>Not found</div>
 
@@ -106,27 +147,31 @@ function TakeTheTestPage() {
                 <div onClick={() => handleClearAnswer(i)} className='hover:text-gradient mb-4 ml-5 cursor-pointer'>
                   Clear answer
                 </div>
-                <RadioGroup onValueChange={(value) => handleSelectAnswer(i, value)} className='ml-5'>
+                <RadioGroup
+                  disabled={isPending}
+                  onValueChange={(value) => handleSelectAnswer(i, value)}
+                  className='ml-5'
+                >
                   <div className='flex items-center space-x-2'>
-                    <RadioGroupItem checked={answers?.[i] === 'A'} value='A' id={`${i}-A`} />
+                    <RadioGroupItem disabled={isPending} checked={answers?.[i] === 'A'} value='A' id={`${i}-A`} />
                     <Label className='cursor-pointer' htmlFor={`${i}-A`}>
                       A. {q.options[0].content}
                     </Label>
                   </div>
                   <div className='flex items-center space-x-2'>
-                    <RadioGroupItem checked={answers?.[i] === 'B'} value='B' id={`${i}-B`} />
+                    <RadioGroupItem disabled={isPending} checked={answers?.[i] === 'B'} value='B' id={`${i}-B`} />
                     <Label className='cursor-pointer' htmlFor={`${i}-B`}>
                       B. {q.options[1].content}
                     </Label>
                   </div>
                   <div className='flex items-center space-x-2'>
-                    <RadioGroupItem checked={answers?.[i] === 'C'} value='C' id={`${i}-C`} />
+                    <RadioGroupItem disabled={isPending} checked={answers?.[i] === 'C'} value='C' id={`${i}-C`} />
                     <Label className='cursor-pointer' htmlFor={`${i}-C`}>
                       C. {q.options[2].content}
                     </Label>
                   </div>
                   <div className='flex items-center space-x-2'>
-                    <RadioGroupItem checked={answers?.[i] === 'D'} value='D' id={`${i}-D`} />
+                    <RadioGroupItem disabled={isPending} checked={answers?.[i] === 'D'} value='D' id={`${i}-D`} />
                     <Label className='cursor-pointer' htmlFor={`${i}-D`}>
                       D. {q.options[3].content}
                     </Label>
@@ -136,7 +181,7 @@ function TakeTheTestPage() {
             )
           })}
 
-          <Button className='mx-auto mb-6 mt-8 w-fit'>Submit and Finish</Button>
+          <DialogSubmitTest answers={answers} applicationId={applicationId} isPending={isPending} mutate={mutate} />
         </div>
         <div className='relative col-span-3'>
           <div className='sticky flex h-fit flex-wrap gap-3'>

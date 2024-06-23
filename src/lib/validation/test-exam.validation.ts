@@ -71,3 +71,12 @@ export type TMutationTestExamSchema = z.infer<typeof mutationTestExamSchema>
 export type TMutateTestExamErrors = {
   [key in keyof TMutationTestExamSchema]: string
 }
+
+const questionIndexSchema = z.string().refine((val) => /^[0-9]+$/.test(val), {
+  message: 'Key must be a string representing a non-negative integer'
+})
+
+const optionIndexSchema = z.enum(['A', 'B', 'C', 'D'])
+
+export const answersSchema = z.record(questionIndexSchema, optionIndexSchema)
+export type TAnswersSchema = z.infer<typeof answersSchema>
