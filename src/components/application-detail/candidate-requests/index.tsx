@@ -44,3 +44,17 @@ function CandidateRequests({ isCandidateView = false, application }: Props) {
 }
 
 export default CandidateRequests
+
+export function CandidateRequestsSkeleton() {
+  return (
+    <div className='flex max-h-full flex-col gap-y-4 overflow-y-auto'>
+      <WishSkeleton />
+      <WishSkeleton />
+      <WishSkeleton />
+    </div>
+  )
+}
+
+export function WishSkeleton() {
+  return <div className='flex h-40 w-full flex-col gap-y-3 rounded-lg bg-muted p-3'></div>
+}

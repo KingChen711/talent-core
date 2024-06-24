@@ -1,5 +1,5 @@
-import CandidateRequests from './candidate-requests'
-import StagesDetail from './stages-detail'
+import CandidateRequests, { CandidateRequestsSkeleton } from './candidate-requests'
+import StagesDetail, { StagesDetailSkeleton } from './stages-detail'
 import { useEffect, useRef, useState } from 'react'
 
 import { ApplicationDetail } from '@/hooks/application/use-application'
@@ -42,3 +42,21 @@ function StagesAndRequests({ isCandidateView = false, application }: Props) {
 }
 
 export default StagesAndRequests
+
+export function StagesAndRequestsSkeleton({ isCandidateView = false }: { isCandidateView?: boolean }) {
+  return (
+    <>
+      <div className='col-span-8 rounded-lg bg-card p-6'>
+        <h3 className='mb-5 text-xl font-semibold'>Stages detail</h3>
+
+        <StagesDetailSkeleton />
+      </div>
+
+      <div className='col-span-4 flex flex-col gap-y-4 rounded-lg bg-card px-4 py-6'>
+        <h3 className='text-xl font-semibold'>{isCandidateView ? 'Your requests' : 'Candidate requests'}</h3>
+
+        <CandidateRequestsSkeleton />
+      </div>
+    </>
+  )
+}

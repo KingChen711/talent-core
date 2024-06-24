@@ -9,6 +9,8 @@ import React from 'react'
 
 import { ApplicationDetail } from '@/hooks/application/use-application'
 
+import { Skeleton } from '@/components/ui/skeleton'
+
 type Props = {
   application: ApplicationDetail
   isCandidateView?: boolean
@@ -79,3 +81,31 @@ const StagesDetail = React.forwardRef<HTMLDivElement, Props>(({ application, isC
 StagesDetail.displayName = 'StagesDetail'
 
 export default StagesDetail
+
+export function StagesDetailSkeleton() {
+  return (
+    <div className='relative flex flex-col gap-y-6'>
+      <div className='absolute left-5 z-0 h-full w-0 -translate-x-1/2 border-2 border-dashed border-muted-foreground' />
+      <StageSkeleton />
+      <StageSkeleton />
+      <StageSkeleton />
+      <StageSkeleton />
+      <StageSkeleton />
+    </div>
+  )
+}
+
+export function StageSkeleton() {
+  return (
+    <div className='z-10 flex items-center gap-x-2'>
+      <div className='flex items-center gap-x-2'>
+        <Skeleton className='size-10 shrink-0 rounded-full bg-muted'></Skeleton>
+        <div className='flex w-28 shrink-0 flex-col gap-y-1'>
+          <Skeleton className='h-4 w-24'></Skeleton>
+          <Skeleton className='h-3 w-24'></Skeleton>
+        </div>
+      </div>
+      <Skeleton className='h-20 w-full bg-muted'></Skeleton>
+    </div>
+  )
+}

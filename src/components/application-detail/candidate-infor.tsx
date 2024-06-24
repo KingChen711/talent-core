@@ -6,6 +6,7 @@ import { ApplicationDetail } from '@/hooks/application/use-application'
 
 import DialogSendMail from '../email/dialog-send-mail'
 import ApplicationBadge from '../shared/application-badge'
+import { Skeleton } from '../ui/skeleton'
 
 type Props = {
   application: ApplicationDetail
@@ -62,3 +63,48 @@ function CandidateInfor({ application, isCandidateView = false }: Props) {
 }
 
 export default CandidateInfor
+
+export function CandidateInforSkeleton() {
+  return (
+    <>
+      <div className='col-span-3 flex h-[306px] flex-col items-center justify-center rounded-lg bg-card p-6'>
+        <Skeleton className='mb-6 size-24 rounded-full' />
+        <Skeleton className='h-7 w-36'></Skeleton>
+        <Skeleton className='mt-2 h-5 w-36'></Skeleton>
+        <Skeleton className='mt-2 h-5 w-36'></Skeleton>
+        <Skeleton className='mt-5 h-10 w-full'></Skeleton>
+      </div>
+      <div className='col-span-9 grid grid-cols-12 gap-2 rounded-lg bg-card p-6'>
+        <div className='col-span-4 flex flex-col gap-y-1'>
+          <Skeleton className='mb-1 h-6 w-28'></Skeleton>
+          <Skeleton className='h-6 w-28'></Skeleton>
+        </div>
+        <div className='col-span-4 flex flex-col gap-y-1'>
+          <Skeleton className='mb-1 h-6 w-28'></Skeleton>
+          <Skeleton className='h-6 w-28'></Skeleton>
+        </div>
+        <div className='col-span-4 flex flex-col gap-y-1'>
+          <Skeleton className='mb-1 h-6 w-28'></Skeleton>
+          <Skeleton className='h-6 w-28'></Skeleton>
+        </div>
+        <div className='col-span-4 flex flex-col gap-y-1'>
+          <Skeleton className='mb-1 h-6 w-28'></Skeleton>
+          <Skeleton className='h-6 w-28'></Skeleton>
+        </div>
+        <div className='col-span-4 flex flex-col gap-y-1'>
+          <Skeleton className='mb-1 h-6 w-28'></Skeleton>
+          <Skeleton className='h-6 w-28'></Skeleton>
+        </div>
+        <div className='col-span-4 flex flex-col gap-y-1'>
+          <Skeleton className='mb-1 h-6 w-28'></Skeleton>
+          <Skeleton className='h-6 w-28'></Skeleton>
+        </div>
+        <div className='col-span-12 flex flex-col gap-y-1'>
+          <Skeleton className='mb-1 h-6 w-36'></Skeleton>
+          <Skeleton className='mb-1 h-6 w-full'></Skeleton>
+          <Skeleton className='h-6 w-full'></Skeleton>
+        </div>
+      </div>
+    </>
+  )
+}
