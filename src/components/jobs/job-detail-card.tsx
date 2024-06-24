@@ -1,6 +1,7 @@
 import { toDaysAgo } from '@/lib/utils'
 
 import { Badge } from '../ui/badge'
+import { Skeleton } from '../ui/skeleton'
 
 type Props = {
   color: string
@@ -76,3 +77,7 @@ function JobDetailCard({
 }
 
 export default JobDetailCard
+
+export function JobDetailCardSkeleton() {
+  return <Skeleton className='h-[174px] w-72 shrink-0 rounded-2xl bg-card'></Skeleton>
+}

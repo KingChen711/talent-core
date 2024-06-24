@@ -9,7 +9,7 @@ import useRecruitmentDriveApplications from '@/hooks/recruitment-drive/use-recru
 import useRecruitmentDriveDetail, { JobDetails } from '@/hooks/recruitment-drive/use-recruitment-drive-detail'
 
 import DropdownSettingApplication from '@/components/application/dropdown-setting-application'
-import JobDetailCard from '@/components/jobs/job-detail-card'
+import JobDetailCard, { JobDetailCardSkeleton } from '@/components/jobs/job-detail-card'
 import RecruitmentDriveBadge from '@/components/recruitment-drive/recruitment-drive-badge'
 import ApplicationBadge from '@/components/shared/application-badge'
 import NoResult from '@/components/shared/no-result'
@@ -26,6 +26,7 @@ import {
   DialogTrigger
 } from '@/components/ui/dialog'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { Skeleton } from '@/components/ui/skeleton'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 
 export const Route = createFileRoute('/_employee-layout/recruitment-drives/$recruitmentDriveCode/detail')({
@@ -59,7 +60,7 @@ function RecruitmentDriveDetailPage() {
     sortParams: sort
   })
 
-  if (isLoadingRecruitmentDrive) return <div>Skeleton</div>
+  if (isLoadingRecruitmentDrive) return <LoadingPage />
 
   if (!recruitmentDrive) {
     return (
@@ -74,7 +75,7 @@ function RecruitmentDriveDetailPage() {
 
   return (
     <section>
-      <div className='mb-5 space-y-1'>
+      <div className='mb-3 space-y-1'>
         <div className='flex items-center gap-x-2'>
           <h2 className='text-2xl font-semibold'>{recruitmentDrive.name}</h2>
           <RecruitmentDriveBadge status={recruitmentDrive.status} />
@@ -272,5 +273,97 @@ function DialogSelectJobForAddCandidate({ jobDetails, recruitmentDriveCode }: Di
         </DialogHeader>
       </DialogContent>
     </Dialog>
+  )
+}
+
+function LoadingPage() {
+  return (
+    <section>
+      <div className='mb-3 space-y-2'>
+        <div className='flex items-center gap-x-3'>
+          <Skeleton className='h-9 w-96 bg-card'></Skeleton>
+          <Skeleton className='h-9 w-24 rounded-full bg-card'></Skeleton>
+        </div>
+        <Skeleton className='h-7 w-[490px] bg-card'></Skeleton>
+      </div>
+
+      <div className='mb-2 flex items-center justify-between'>
+        <div className='text-xl font-semibold'>Jobs</div>
+        <Skeleton className='h-9 w-24 bg-card' />
+      </div>
+
+      <div className='grid w-full'>
+        <div className='overflow-x-auto'>
+          <div className='flex gap-x-6 pb-2'>
+            <JobDetailCardSkeleton />
+            <JobDetailCardSkeleton />
+            <JobDetailCardSkeleton />
+            <JobDetailCardSkeleton />
+          </div>
+        </div>
+      </div>
+
+      <div className='mb-2 mt-8 flex items-center justify-between gap-x-4'>
+        <div className='text-xl font-semibold'>Candidates</div>
+        <Skeleton className='h-10 w-96 bg-card' />
+        <Skeleton className='h-9 w-36 bg-card' />
+      </div>
+
+      <div className='my-5 rounded-2xl bg-card p-4'>
+        <div className='mb-4 flex flex-wrap gap-x-8 gap-y-3 border-b'>
+          {applicationTabs.map((tab) => {
+            console.log(status)
+
+            const active = status === tab.status
+
+            return (
+              <Link
+                search={(prev) => ({ ...prev, status: tab.status, pageNumber: 1, sort: '-createdAt' })}
+                key={tab.status}
+                className={cn(
+                  'relative w-24 pb-4 text-center text-muted-foreground',
+                  active && 'text-card-foreground font-bold'
+                )}
+              >
+                {tab.label}
+                {active && <div className='bg-gradient absolute bottom-0 left-0 h-[3px] w-full'></div>}
+              </Link>
+            )
+          })}
+        </div>
+
+        <div className='grid w-full'>
+          <div className='overflow-x-auto'>
+            <Table className='overflow-hidden'>
+              <TableHeader className='rounded-lg bg-border'>
+                <TableRow className='rounded-lg'>
+                  <TableHead className='h-10 cursor-pointer rounded-l-lg'>
+                    <div className='flex items-center'>
+                      <p className='select-none'>Candidate Name</p>
+                    </div>
+                  </TableHead>
+                  <TableHead className='h-10 cursor-pointer'>
+                    <div className='flex items-center'>
+                      <p className='select-none'>Applied Job</p>
+                    </div>
+                  </TableHead>
+                  <TableHead className='h-10 cursor-pointer'>
+                    <div className='flex items-center'>
+                      <p className='select-none'>Applied Date</p>
+                    </div>
+                  </TableHead>
+
+                  <TableHead className='h-10 select-none text-center'>Status</TableHead>
+                  <TableHead className='h-10 select-none text-nowrap rounded-r-lg text-end'>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRowsSkeleton colSpan={10} pageSize={5} />
+              </TableBody>
+            </Table>
+          </div>
+        </div>
+      </div>
+    </section>
   )
 }
