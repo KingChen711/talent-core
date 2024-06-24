@@ -3,11 +3,13 @@ import { TAnswersSchema, answersSchema } from '@/lib/validation/test-exam.valida
 import { useLocalStorage } from '@reactuses/core'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { StatusCodes } from 'http-status-codes'
+import { Loader2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 import useSubmitTest from '@/hooks/test/use-submit-test'
 import useTakeTheTest from '@/hooks/test/use-take-the-test'
 
+import NoResult from '@/components/shared/no-result'
 import ParseQuestion from '@/components/shared/parse-question'
 import DialogSubmitTest from '@/components/test/dialog-submit-test'
 import { Label } from '@/components/ui/label'
@@ -127,8 +129,15 @@ function TakeTheTestPage() {
     setAnswers(clone)
   }
 
-  if (isLoading) return <div>Skeleton</div>
-  if (!data) return <div>Not found</div>
+  if (isLoading) return <Loader2 className='mx-auto mt-12 size-12 animate-spin' />
+  if (!data)
+    return (
+      <NoResult
+        title='Not found test exam'
+        linkTitle='Back To My Application'
+        link={`/my-applications/${applicationId}`}
+      />
+    )
 
   return (
     <div>

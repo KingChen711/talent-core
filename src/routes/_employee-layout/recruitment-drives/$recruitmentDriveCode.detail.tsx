@@ -63,14 +63,7 @@ function RecruitmentDriveDetailPage() {
   if (isLoadingRecruitmentDrive) return <LoadingPage />
 
   if (!recruitmentDrive) {
-    return (
-      <NoResult
-        title='No recruitment drive found.'
-        description=''
-        link='/recruitment-drives'
-        linkTitle='Back to list'
-      />
-    )
+    return <NoResult title='No recruitment drive found.' link='/recruitment-drives' linkTitle='Back to list' />
   }
 
   return (

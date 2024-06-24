@@ -18,13 +18,12 @@ function ApplicationDetailPage() {
   const { applicationId } = Route.useParams()
   const { data, isLoading } = useApplication(applicationId)
 
-  // TODO: Skeleton
   if (isLoading) {
     return <LoadingPage />
   }
 
   if (!data) {
-    return <NoResult title='Not found application' description='' />
+    return <NoResult title='Not found application' />
   }
 
   return (

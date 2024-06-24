@@ -23,7 +23,7 @@ function MyApplicationDetail() {
   }
 
   if (!data) {
-    return <NoResult title='Not found application' description='' />
+    return <NoResult title='Not found application' />
   }
 
   return (
