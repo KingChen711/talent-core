@@ -1,4 +1,4 @@
-import { toDate } from '@/lib/utils'
+import { cn, toDate } from '@/lib/utils'
 import { Link } from '@tanstack/react-router'
 import { Paperclip } from 'lucide-react'
 
@@ -64,15 +64,20 @@ function CandidateInfor({ application, isCandidateView = false }: Props) {
 
 export default CandidateInfor
 
-export function CandidateInforSkeleton() {
+export function CandidateInforSkeleton({ isCandidateView }: { isCandidateView?: boolean }) {
   return (
     <>
-      <div className='col-span-3 flex h-[306px] flex-col items-center justify-center rounded-lg bg-card p-6'>
+      <div
+        className={cn(
+          'col-span-3 flex flex-col items-center justify-center rounded-lg bg-card p-6',
+          isCandidateView ? 'h-[244px]' : 'h-[306px]'
+        )}
+      >
         <Skeleton className='mb-6 size-24 rounded-full' />
         <Skeleton className='h-7 w-36'></Skeleton>
         <Skeleton className='mt-2 h-5 w-36'></Skeleton>
         <Skeleton className='mt-2 h-5 w-36'></Skeleton>
-        <Skeleton className='mt-5 h-10 w-full'></Skeleton>
+        {!isCandidateView && <Skeleton className='mt-5 h-10 w-full'></Skeleton>}
       </div>
       <div className='col-span-9 grid grid-cols-12 gap-2 rounded-lg bg-card p-6'>
         <div className='col-span-4 flex flex-col gap-y-1'>
@@ -102,7 +107,6 @@ export function CandidateInforSkeleton() {
         <div className='col-span-12 flex flex-col gap-y-1'>
           <Skeleton className='mb-1 h-6 w-36'></Skeleton>
           <Skeleton className='mb-1 h-6 w-full'></Skeleton>
-          <Skeleton className='h-6 w-full'></Skeleton>
         </div>
       </div>
     </>

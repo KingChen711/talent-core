@@ -49,14 +49,14 @@ export default MyApplicationDetail
 
 export function LoadingPage() {
   return (
-    <div className='flex flex-col'>
+    <div className='mt-6 flex flex-col'>
       <div className='mb-4 flex items-center justify-between'>
         <div className='text-2xl font-semibold'>Application Detail</div>
         <Skeleton className='h-10 w-20' />
       </div>
 
       <div className='grid grid-cols-12 gap-4'>
-        <CandidateInforSkeleton />
+        <CandidateInforSkeleton isCandidateView />
 
         <StagesAndRequestsSkeleton isCandidateView />
       </div>
