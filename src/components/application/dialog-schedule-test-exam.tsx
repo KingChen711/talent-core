@@ -228,7 +228,7 @@ function TestExamCard({ code, conditionPoint, description, duration, name, count
     <div className='size-full cursor-pointer rounded-lg bg-card p-4'>
       <div className='flex flex-col gap-y-1'>
         <h4 className='line-clamp-1 text-lg font-bold'>{name}</h4>
-        <p className='line-clamp-1 text-xs text-muted'>
+        <p className='line-clamp-1 text-xs text-muted-foreground'>
           {code} (required: {conditionPoint} points)
         </p>
       </div>

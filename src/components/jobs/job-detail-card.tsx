@@ -51,7 +51,7 @@ function JobDetailCard({
         <img className='size-12 object-cover' src={icon} />
         <div className='flex flex-col gap-y-1'>
           <h4 className='line-clamp-1 text-lg font-bold'>{name}</h4>
-          <p className='text-xs text-muted'>{toDaysAgo(createdAt)}</p>
+          <p className='text-xs text-muted-foreground'>{toDaysAgo(createdAt)}</p>
         </div>
       </div>
 
@@ -67,7 +67,7 @@ function JobDetailCard({
       <div className='z-10 flex items-end justify-between'>
         <div className='ml-1 flex items-end gap-x-2'>
           <p className='text-[40px] font-bold leading-none'>{countApplications}</p>
-          <p className='mb-[6px] text-sm text-muted'>applications</p>
+          <p className='mb-[6px] text-sm text-muted-foreground'>applications</p>
         </div>
 
         <div className='mb-[6px] text-sm text-success'>{countApplicationsLastWeek} in last week</div>

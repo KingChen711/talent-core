@@ -305,7 +305,7 @@ function TestExamForm({ type, testExamId }: Props) {
                                     init={{
                                       ...editorPlugin,
                                       skin: actualTheme === 'dark' ? 'oxide-dark' : undefined,
-                                      content_css: 'dark'
+                                      content_css: actualTheme === 'dark' ? 'dark' : undefined
                                     }}
                                     onEditorChange={(value) =>
                                       handleQuestionContentChange(value, question.id!, field.onChange)

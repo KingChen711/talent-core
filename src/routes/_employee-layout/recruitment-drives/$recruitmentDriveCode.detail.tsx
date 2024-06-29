@@ -73,7 +73,7 @@ function RecruitmentDriveDetailPage() {
           <h2 className='text-2xl font-semibold'>{recruitmentDrive.name}</h2>
           <RecruitmentDriveBadge status={recruitmentDrive.status} />
         </div>
-        <p className='text-xl text-muted'>
+        <p className='text-xl text-muted-foreground'>
           {recruitmentDrive.code}, {toDate(recruitmentDrive.startDate)} - {toDate(recruitmentDrive.endDate)}
         </p>
       </div>
