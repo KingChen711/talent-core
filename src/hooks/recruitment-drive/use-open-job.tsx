@@ -12,8 +12,6 @@ function useOpenJob() {
     mutationFn: async (body: TOpenJobSchema) => {
       const token = await getToken()
 
-      console.log({ token })
-
       return talentCoreApi
         .post<JobDetail>('/api/recruitment-drives/open-job', body, {
           headers: {

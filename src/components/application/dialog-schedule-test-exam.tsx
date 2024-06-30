@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useQueryClient } from '@tanstack/react-query'
 import { StatusCodes } from 'http-status-codes'
 import { Loader2 } from 'lucide-react'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import useEditTestSession from '@/hooks/application/use-edit-test-session'
@@ -54,10 +54,6 @@ function DialogScheduleTestExam({ applicationId, jobCode, editMode = false, test
       testExamCode
     }
   })
-
-  useEffect(() => {
-    console.log(form.getValues('testDate'))
-  }, [form])
 
   const onSubmit = async (values: TScheduleTestExamSchema) => {
     const mutateOptions = {

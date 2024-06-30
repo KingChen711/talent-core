@@ -14,12 +14,14 @@ function useCreateApplication() {
 
   return useMutation({
     mutationFn: async ({ jobCode, recruitmentDriveCode, formData }: MutateType) =>
-      talentCoreApi.post(`/api/recruitment-drives/${recruitmentDriveCode}/jobs/${jobCode}/applications`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${await getToken()}`
-        }
-      })
+      talentCoreApi
+        .post<string>(`/api/recruitment-drives/${recruitmentDriveCode}/jobs/${jobCode}/applications`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${await getToken()}`
+          }
+        })
+        .then((res) => res.data)
   })
 }
 

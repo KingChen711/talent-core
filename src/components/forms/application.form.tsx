@@ -26,12 +26,13 @@ export type InitialApplicationFormStates = {
 }
 
 type Props = {
+  candidateView?: boolean
   jobCode: string
   recruitmentDriveCode: string
   initialStates: InitialApplicationFormStates
 }
 
-function ApplicationForm({ jobCode, recruitmentDriveCode, initialStates }: Props) {
+function ApplicationForm({ jobCode, recruitmentDriveCode, initialStates, candidateView = false }: Props) {
   const navigate = useNavigate()
 
   const [file, setFile] = useState<File | null>(null)
@@ -52,8 +53,6 @@ function ApplicationForm({ jobCode, recruitmentDriveCode, initialStates }: Props
 
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0]
-
-      console.log(file.type)
 
       if (
         ![
@@ -102,11 +101,19 @@ function ApplicationForm({ jobCode, recruitmentDriveCode, initialStates }: Props
     mutate(
       { jobCode, recruitmentDriveCode, formData },
       {
-        onSuccess: () => {
+        onSuccess: (data) => {
           toast({
-            title: 'Candidate has been added successfully',
+            title: candidateView
+              ? 'You have been apply this job successfully'
+              : 'Candidate has been added successfully',
             variant: 'success'
           })
+
+          if (candidateView) {
+            return navigate({
+              to: `/my-applications/${data}`
+            })
+          }
 
           return navigate({
             to: `/recruitment-drives/${recruitmentDriveCode}/detail`
@@ -115,7 +122,7 @@ function ApplicationForm({ jobCode, recruitmentDriveCode, initialStates }: Props
         onError: (error) => {
           if (!isBaseError(error) || error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR) {
             toast({
-              title: 'Candidate has been added failure',
+              title: candidateView ? 'You have been apply this job failure' : 'Candidate has been added failure',
               description: 'Some thing went wrong.',
               variant: 'danger'
             })
@@ -124,7 +131,7 @@ function ApplicationForm({ jobCode, recruitmentDriveCode, initialStates }: Props
           }
 
           toast({
-            title: 'Candidate has been added failure',
+            title: candidateView ? 'You have been apply this job failure' : 'Candidate has been added failure',
             description: error.response?.data.message,
             variant: 'danger'
           })
@@ -136,6 +143,24 @@ function ApplicationForm({ jobCode, recruitmentDriveCode, initialStates }: Props
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='mt-8 space-y-8'>
+        {candidateView && (
+          <FormField
+            control={form.control}
+            name='email'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className='flex items-center'>
+                  Email<span className='text-gradient text-2xl font-bold leading-none'>*</span>
+                </FormLabel>
+                <FormControl>
+                  <Input disabled {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
+
         <FormField
           control={form.control}
           name='fullName'

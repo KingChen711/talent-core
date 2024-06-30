@@ -38,7 +38,6 @@ type Props = {
 
 function RecruitmentDriveForm({ type, recruitmentDriveId }: Props) {
   const navigate = useNavigate()
-  console.log(type)
 
   const form = useForm<TMutationRecruitmentDriveSchema>({
     resolver: zodResolver(mutationRecruitmentDriveSchema),
@@ -65,8 +64,6 @@ function RecruitmentDriveForm({ type, recruitmentDriveId }: Props) {
   const disabling = useMemo(() => isPending || isLoading, [isPending, isLoading])
 
   const onSubmit = async (values: TMutationRecruitmentDriveSchema) => {
-    console.log(values)
-
     if (type === 'update') {
       values.id = recruitmentDriveId
     }

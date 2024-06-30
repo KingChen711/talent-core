@@ -3,7 +3,6 @@ import { cn, toDate } from '@/lib/utils'
 import { jobSearchSchema } from '@/lib/validation/job.validation'
 import { Link, createFileRoute } from '@tanstack/react-router'
 import { Plus } from 'lucide-react'
-import { useEffect } from 'react'
 
 import useJobs from '@/hooks/job/use-jobs'
 import useSort from '@/hooks/query/use-sort'
@@ -24,10 +23,6 @@ export const Route = createFileRoute('/_employee-layout/jobs/')({
 
 function JobsPage() {
   const { pageNumber, pageSize, search, status, sort } = Route.useSearch()
-
-  useEffect(() => {
-    console.log({ pageNumber })
-  }, [pageNumber])
 
   const { Icon: CodeSortIcon, sorter: handleSortByCode } = useSort({ key: 'code', sortParams: sort })
   const { Icon: NameSortIcon, sorter: handleSortByName } = useSort({ key: 'name', sortParams: sort })

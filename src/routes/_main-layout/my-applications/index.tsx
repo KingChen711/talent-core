@@ -40,8 +40,6 @@ function MyApplications() {
       <div className='my-5 rounded-2xl bg-card p-4'>
         <div className='mb-4 flex flex-wrap gap-x-8 gap-y-3 border-b'>
           {applicationTabs.map((tab) => {
-            console.log(status)
-
             const active = status === tab.status
 
             return (

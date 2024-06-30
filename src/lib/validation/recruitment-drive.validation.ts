@@ -44,8 +44,6 @@ export const mutationRecruitmentDriveSchema = z
   })
   .refine(
     (data) => {
-      console.log({ start: data.startDate.getTime(), end: data.endDate.getTime() })
-
       return data.endDate.getTime() > data.startDate.getTime()
     },
     {

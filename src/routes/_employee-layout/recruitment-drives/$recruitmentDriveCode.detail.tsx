@@ -8,7 +8,6 @@ import useSort from '@/hooks/query/use-sort'
 import useRecruitmentDriveApplications from '@/hooks/recruitment-drive/use-recruitment-drive-applications'
 import useRecruitmentDriveDetail, { JobDetails } from '@/hooks/recruitment-drive/use-recruitment-drive-detail'
 
-import DropdownSettingApplication from '@/components/application/dropdown-setting-application'
 import JobDetailCard, { JobDetailCardSkeleton } from '@/components/jobs/job-detail-card'
 import RecruitmentDriveBadge from '@/components/recruitment-drive/recruitment-drive-badge'
 import ApplicationBadge from '@/components/shared/application-badge'
@@ -126,8 +125,6 @@ function RecruitmentDriveDetailPage() {
       <div className='my-5 rounded-2xl bg-card p-4'>
         <div className='mb-4 flex flex-wrap gap-x-8 gap-y-3 border-b'>
           {applicationTabs.map((tab) => {
-            console.log(status)
-
             const active = status === tab.status
 
             return (
@@ -199,7 +196,11 @@ function RecruitmentDriveDetailPage() {
                         </div>
                       </TableCell>
                       <TableCell className='text-end'>
-                        <DropdownSettingApplication applicationId={application.id} status={application.status} />
+                        <Button variant='ghost' asChild size='icon'>
+                          <Link to={`/applications/${application.id}`}>
+                            <img alt='view-detail' src='/icons/actions/view-blue.svg' className='size-6' />
+                          </Link>
+                        </Button>
                       </TableCell>
                     </TableRow>
                   )
@@ -305,8 +306,6 @@ function LoadingPage() {
       <div className='my-5 rounded-2xl bg-card p-4'>
         <div className='mb-4 flex flex-wrap gap-x-8 gap-y-3 border-b'>
           {applicationTabs.map((tab) => {
-            console.log(status)
-
             const active = status === tab.status
 
             return (
