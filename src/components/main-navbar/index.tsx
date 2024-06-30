@@ -7,6 +7,8 @@ type Props = {
 }
 
 function MainNavBar({ isHome = false }: Props) {
+  console.log({ isHome })
+
   return (
     <nav className={cn('fixed left-0 top-0 z-[49] w-full px-6 sm:px-14', !isHome && 'bg-background border-b')}>
       <div className='mx-auto flex h-20 w-full max-w-6xl items-center justify-between'>

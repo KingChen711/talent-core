@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { Link, createFileRoute } from '@tanstack/react-router'
 
 import { Button } from '@/components/ui/button'
 
@@ -19,8 +19,8 @@ function HomePage() {
           take the next step in your professional journey. No fees, just limitless potential.
         </p>
 
-        <Button size='lg' className='text-base'>
-          View our opening jobs
+        <Button size='lg' className='text-base' asChild>
+          <Link to='/opening-jobs'>View our opening jobs</Link>
         </Button>
       </div>
     </main>

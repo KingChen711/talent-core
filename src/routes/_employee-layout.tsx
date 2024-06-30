@@ -29,9 +29,7 @@ function EmployeeLayout() {
         }
       })
     } else {
-      // Singed with Candidate Role
-      // TODO: need to redirect to opening jobs detail page
-      return navigate({ to: '/' })
+      return navigate({ to: '/opening-jobs' })
     }
   }
 
