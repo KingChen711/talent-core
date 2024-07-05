@@ -21,7 +21,7 @@ const StagesDetail = React.forwardRef<HTMLDivElement, Props>(({ application, isC
 
   return (
     <div ref={ref} className='relative flex flex-col gap-y-6'>
-      <div className='absolute left-5 z-0 h-full min-h-[300px] w-0 -translate-x-1/2 border-2 border-dashed border-muted-foreground' />
+      <div className='absolute left-5 z-0 h-full w-0 -translate-x-1/2 border-2 border-dashed border-muted-foreground' />
 
       <ScreeningStage
         isCandidateView={isCandidateView}

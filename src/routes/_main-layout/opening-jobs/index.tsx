@@ -3,7 +3,6 @@ import { createFileRoute } from '@tanstack/react-router'
 import useOpeningJobs from '@/hooks/job/use-opening-jobs'
 
 import OpeningJobCard, { OpeningJobCardSkeleton } from '@/components/jobs/opening-job-card'
-import NoResult from '@/components/shared/no-result'
 
 export const Route = createFileRoute('/_main-layout/opening-jobs/')({
   component: OpeningJobs
@@ -28,11 +27,15 @@ function OpeningJobs() {
       </div>
     )
 
-  if (!data) {
+  if (!data || data.length === 0) {
     return (
-      <div>
-        <NoResult title='No opening jobs found' />
-        <p className='mt-2 text-center text-lg'>Coming soon.... Let&apos;s wait for the next our recruitment drive.</p>
+      <div className='absolute inset-0 flex w-full flex-col items-center justify-center'>
+        <img src='/images/no-jobs.png' alt='no result' className='size-[270px] object-contain' />
+        <h2 className='mt-8 text-[24px] font-bold leading-[31.2px]'>No Opening Jobs Found</h2>
+        <p className='my-3.5 max-w-md text-center'>
+          Sorry. Unless you&apos;ve got a magic wand, there are no current openings. Let&apos;s stay connected and
+          we&apos;ll notify you as soon as opportunities arise.
+        </p>
       </div>
     )
   }

@@ -123,6 +123,7 @@ function RecruitmentDrivesPage() {
                         recruitmentDriveId={recruitmentDrive.id}
                         recruitmentDriveCode={recruitmentDrive.code}
                         showAddJobs={recruitmentDrive.status !== 'Closed'}
+                        showUpdate={recruitmentDrive.status !== 'Closed'}
                       />
                       <DialogDeleteRecruitmentDrive recruitmentDriveId={recruitmentDrive.id} />
                     </TableCell>

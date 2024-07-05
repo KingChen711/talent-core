@@ -7,9 +7,10 @@ type Props = {
   recruitmentDriveId: string
   recruitmentDriveCode: string
   showAddJobs: boolean
+  showUpdate: boolean
 }
 
-function DropdownSettingRecruitmentDrive({ recruitmentDriveId, recruitmentDriveCode, showAddJobs }: Props) {
+function DropdownSettingRecruitmentDrive({ recruitmentDriveId, recruitmentDriveCode, showAddJobs, showUpdate }: Props) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -24,12 +25,14 @@ function DropdownSettingRecruitmentDrive({ recruitmentDriveId, recruitmentDriveC
             View detail
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem className='cursor-pointer' asChild>
-          <Link to={`/recruitment-drives/${recruitmentDriveId}/edit`} className='flex items-center gap-x-2'>
-            <img alt='edit' src='/icons/actions/edit.svg' className='size-4 invert dark:invert-0' />
-            Update
-          </Link>
-        </DropdownMenuItem>
+        {showUpdate && (
+          <DropdownMenuItem className='cursor-pointer' asChild>
+            <Link to={`/recruitment-drives/${recruitmentDriveId}/edit`} className='flex items-center gap-x-2'>
+              <img alt='edit' src='/icons/actions/edit.svg' className='size-4 invert dark:invert-0' />
+              Update
+            </Link>
+          </DropdownMenuItem>
+        )}
         {showAddJobs && (
           <DropdownMenuItem className='cursor-pointer' asChild>
             <Link to={`/recruitment-drives/${recruitmentDriveCode}/add-jobs`} className='flex items-center gap-x-2'>

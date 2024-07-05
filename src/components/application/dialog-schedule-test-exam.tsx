@@ -238,9 +238,7 @@ function TestExamCard({ code, conditionPoint, description, duration, name, count
         </Badge>
       </div>
 
-      <p className='mt-2 line-clamp-2 max-w-[90%] px-1 text-sm'>
-        {description} {description} {description} {description}
-      </p>
+      <p className='mt-2 line-clamp-2 max-w-[90%] px-1 text-sm'>{description}</p>
     </div>
   )
 }

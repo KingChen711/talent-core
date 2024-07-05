@@ -8,7 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigate } from '@tanstack/react-router'
 import { format } from 'date-fns'
 import { StatusCodes } from 'http-status-codes'
-import { CalendarIcon, Loader2 } from 'lucide-react'
+import { AlertTriangle, CalendarIcon, Loader2 } from 'lucide-react'
 import { useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -22,6 +22,9 @@ import { Input } from '@/components/ui/input'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from '@/components/ui/use-toast'
+
+import { Alert, AlertDescription, AlertTitle } from '../ui/alert'
+import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
 
 type Props = {
   type: 'create' | 'update'
@@ -59,6 +62,7 @@ function RecruitmentDriveForm({ type, recruitmentDriveId }: Props) {
     form.setValue('description', recruitmentDrive.description || '')
     form.setValue('startDate', new Date(recruitmentDrive.startDate))
     form.setValue('endDate', new Date(recruitmentDrive.endDate))
+    form.setValue('status', recruitmentDrive.status)
   })
 
   const disabling = useMemo(() => isPending || isLoading, [isPending, isLoading])
@@ -224,6 +228,58 @@ function RecruitmentDriveForm({ type, recruitmentDriveId }: Props) {
             )}
           />
         </div>
+
+        {type === 'update' && (
+          <FormField
+            control={form.control}
+            name='status'
+            render={({ field }) => (
+              <div className='flex items-end gap-x-8'>
+                <FormItem className='space-y-3'>
+                  <FormLabel>Status</FormLabel>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      defaultValue='Upcoming'
+                      className='flex flex-col space-y-1'
+                    >
+                      <FormItem className='flex items-center space-x-3 space-y-0'>
+                        <FormControl>
+                          <RadioGroupItem checked={field.value === 'Upcoming'} value='Upcoming' />
+                        </FormControl>
+                        <FormLabel className='cursor-pointer font-normal'>Upcoming</FormLabel>
+                      </FormItem>
+                      <FormItem className='flex items-center space-x-3 space-y-0'>
+                        <FormControl>
+                          <RadioGroupItem checked={field.value === 'Open'} value='Open' />
+                        </FormControl>
+                        <FormLabel className='cursor-pointer font-normal'>Open</FormLabel>
+                      </FormItem>
+                      <FormItem className='flex items-center space-x-3 space-y-0'>
+                        <FormControl>
+                          <RadioGroupItem checked={field.value === 'Closed'} value='Closed' />
+                        </FormControl>
+                        <FormLabel className='cursor-pointer font-normal'>Closed</FormLabel>
+                      </FormItem>
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+                {field.value === 'Closed' && (
+                  <Alert className='h-fit w-[450px] border-warning'>
+                    <AlertTriangle className='size-4 stroke-warning' />
+                    <AlertTitle className='font-semibold text-warning'>Warning</AlertTitle>
+                    <AlertDescription className='text-warning'>
+                      If you update the status of a recruitment drive to{' '}
+                      <span className='text-base font-bold text-danger '>Closed</span>, you will no longer be able to
+                      update the status.
+                    </AlertDescription>
+                  </Alert>
+                )}
+              </div>
+            )}
+          />
+        )}
 
         <FormField
           control={form.control}

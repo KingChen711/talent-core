@@ -79,12 +79,14 @@ function RecruitmentDriveDetailPage() {
 
       <div className='mb-2 flex items-center justify-between'>
         <div className='text-xl font-semibold'>Jobs</div>
-        <Button size='sm' asChild>
-          <Link to={`/recruitment-drives/${recruitmentDrive.code}/add-jobs`}>
-            <Plus className='mr-1 size-5' />
-            Add Job
-          </Link>
-        </Button>
+        {recruitmentDrive.status !== 'Closed' && (
+          <Button size='sm' asChild>
+            <Link to={`/recruitment-drives/${recruitmentDrive.code}/add-jobs`}>
+              <Plus className='mr-1 size-5' />
+              Add Job
+            </Link>
+          </Button>
+        )}
       </div>
 
       {recruitmentDrive.jobDetails.length === 0 && (
@@ -116,10 +118,12 @@ function RecruitmentDriveDetailPage() {
       <div className='mb-2 mt-8 flex items-center justify-between gap-x-4'>
         <div className='text-xl font-semibold'>Candidates</div>
         <SearchForm search={search} placeholder='Search candidate...' />
-        <DialogSelectJobForAddCandidate
-          recruitmentDriveCode={recruitmentDrive.code}
-          jobDetails={recruitmentDrive.jobDetails}
-        />
+        {recruitmentDrive.status === 'Open' && (
+          <DialogSelectJobForAddCandidate
+            recruitmentDriveCode={recruitmentDrive.code}
+            jobDetails={recruitmentDrive.jobDetails}
+          />
+        )}
       </div>
 
       <div className='my-5 rounded-2xl bg-card p-4'>
