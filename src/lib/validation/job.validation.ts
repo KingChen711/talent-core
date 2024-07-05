@@ -1,9 +1,8 @@
-import { jobsPageSize } from '@/constants'
 import { z } from 'zod'
 
 export const jobSearchSchema = z.object({
   pageNumber: z.number().catch(1),
-  pageSize: z.number().catch(jobsPageSize),
+  pageSize: z.number().catch(5),
   search: z.string().catch(''),
   status: z.enum(['All', 'Open', 'Closed', 'Upcoming']).catch('All'),
   sort: z.enum(['code', 'name', '-code', '-name', 'createdAt', '-createdAt']).catch('-createdAt')

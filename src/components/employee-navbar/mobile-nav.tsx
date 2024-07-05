@@ -36,6 +36,13 @@ const NavContent = () => {
         return (
           <SheetClose asChild key={item.route}>
             <Link
+              search={() => ({
+                pageNumber: 1,
+                pageSize: 5,
+                search: '',
+                sort: '-createdAt',
+                status: 'All'
+              })}
               to={item.route}
               className={cn(
                 'flex items-center justify-start gap-4 bg-transparent p-4 px-8',

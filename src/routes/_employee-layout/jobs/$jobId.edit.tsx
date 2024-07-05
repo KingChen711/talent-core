@@ -1,4 +1,3 @@
-import { jobsPageSize } from '@/constants'
 import { Link, createFileRoute } from '@tanstack/react-router'
 
 import JobForm from '@/components/forms/job.form'
@@ -20,7 +19,7 @@ function EditJobPage() {
             to='/jobs'
             search={() => ({
               pageNumber: 1,
-              pageSize: jobsPageSize,
+              pageSize: 5,
               search: '',
               status: 'All',
               sort: '-createdAt'

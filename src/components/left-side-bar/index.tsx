@@ -13,6 +13,13 @@ function LeftSideBar() {
 
           return (
             <Link
+              search={() => ({
+                pageNumber: 1,
+                pageSize: 5,
+                search: '',
+                sort: '-createdAt',
+                status: 'All'
+              })}
               key={item.route}
               to={item.route}
               className={cn(

@@ -89,9 +89,6 @@ export const defaultJobIcon = '/icons/jobs/suitcase.png'
 
 export const defaultAvatar = '/images/default-avatar.png'
 
-export const jobsPageSize = 5
-export const testExamsPageSize = 6
-
 export const editorPlugin = {
   plugins:
     'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount linkchecker markdown',

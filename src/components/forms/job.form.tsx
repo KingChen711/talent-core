@@ -1,4 +1,4 @@
-import { defaultJobIcon, jobsPageSize } from '@/constants'
+import { defaultJobIcon } from '@/constants'
 import { cn, getContrastYIQ, getRandomHexColor, isBaseError, isFormError } from '@/lib/utils'
 import { TMutateJobErrors, TMutationJobSchema, mutationJobSchema } from '@/lib/validation/job.validation'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -84,7 +84,7 @@ function JobForm({ type, jobId }: Props) {
           to: '/jobs',
           search: {
             pageNumber: 1,
-            pageSize: jobsPageSize,
+            pageSize: 5,
             search: '',
             status: 'All',
             sort: '-createdAt'

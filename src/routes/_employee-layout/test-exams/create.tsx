@@ -1,4 +1,3 @@
-import { testExamsPageSize } from '@/constants'
 import { Link, createFileRoute } from '@tanstack/react-router'
 
 import TestExamForm from '@/components/forms/test-exam.form'
@@ -18,7 +17,7 @@ function CreateTestExamPage() {
             to='/test-exams'
             search={() => ({
               pageNumber: 1,
-              pageSize: testExamsPageSize,
+              pageSize: 5,
               search: '',
               status: 'all',
               sort: '-createdAt'

@@ -1,4 +1,4 @@
-import { editorPlugin, testExamsPageSize } from '@/constants'
+import { editorPlugin } from '@/constants'
 import { useTheme } from '@/contexts/theme-provider'
 import { getExampleQuestions, getOneExampleQuestion, isBaseError, isFormError } from '@/lib/utils'
 import {
@@ -91,7 +91,7 @@ function TestExamForm({ type, testExamId }: Props) {
           to: '/test-exams',
           search: {
             pageNumber: 1,
-            pageSize: testExamsPageSize,
+            pageSize: 5,
             search: '',
             sort: '-createdAt'
           }

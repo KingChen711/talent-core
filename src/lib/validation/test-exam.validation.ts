@@ -1,9 +1,8 @@
-import { testExamsPageSize } from '@/constants'
 import { z } from 'zod'
 
 export const testExamSearchSchema = z.object({
   pageNumber: z.number().catch(1),
-  pageSize: z.number().catch(testExamsPageSize),
+  pageSize: z.number().catch(5),
   search: z.string().catch(''),
   sort: z
     .enum([
