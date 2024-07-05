@@ -24,7 +24,20 @@ function Actions() {
           {isLoadingAuth && <Loader2 className='mr-2 size-6 animate-spin' />}
           {role === 'Employee' && (
             <Button variant='ghost' className='text-gradient px-2 text-base font-bold' asChild>
-              <Link to='/dashboard'>Dashboard</Link>
+              <Link
+                to='/jobs'
+                search={() => {
+                  return {
+                    pageNumber: 1,
+                    pageSize: 5,
+                    search: '',
+                    sort: '-createdAt',
+                    status: 'All'
+                  }
+                }}
+              >
+                Management Site
+              </Link>
             </Button>
           )}
           {role === 'Candidate' && (
