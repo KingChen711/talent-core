@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react'
 import useSubmitTest from '@/hooks/test/use-submit-test'
 import useTakeTheTest from '@/hooks/test/use-take-the-test'
 
+import LogoLoading from '@/components/logo-loading'
 import NoResult from '@/components/shared/no-result'
 import ParseQuestion from '@/components/shared/parse-question'
 import DialogSubmitTest from '@/components/test/dialog-submit-test'
@@ -31,13 +32,15 @@ function TakeTheTestPage() {
         description: 'Some thing went wrong.',
         variant: 'danger'
       })
-      return
+    } else {
+      toast({
+        title: `Take the test failure`,
+        description: error.response?.data.message,
+        variant: 'danger'
+      })
     }
-    toast({
-      title: `Take the test failure`,
-      description: error.response?.data.message,
-      variant: 'danger'
-    })
+
+    // return navigate({ to: `/my-applications/${applicationId}` })
   })
 
   const { mutate, isPending } = useSubmitTest()
@@ -66,7 +69,7 @@ function TakeTheTestPage() {
 
   useEffect(() => {
     const updateRemainTime = () => {
-      if (!data) return
+      if (!data || isPending) return
 
       const now = Date.now()
       const expiredTime = new Date(data.testDate).getTime() + data.testExam.duration * 1000 * 60
@@ -141,6 +144,12 @@ function TakeTheTestPage() {
 
   return (
     <div>
+      {isPending && (
+        <div className='fixed inset-0 z-[9999] flex flex-col items-center justify-center gap-y-1 bg-background/80 text-xl font-bold'>
+          <LogoLoading showText={false} />
+          Submitting your test, do not reload page.
+        </div>
+      )}
       <div className='my-8 text-2xl font-semibold'>
         Test Exam: {data.testExamCode}: {data.testExam.questions.length} questions ({data.testExam.duration} minutes){' '}
       </div>
