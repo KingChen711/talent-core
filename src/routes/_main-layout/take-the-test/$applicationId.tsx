@@ -79,37 +79,6 @@ function TakeTheTestPage() {
       if (expiredTime <= now) {
         setRemainTimeText('00:00:00')
         clearInterval(timer)
-
-        // auto submit when time end
-        mutate(
-          { applicationId, data: { answers: answers || {} } },
-          {
-            onSuccess: () => {
-              toast({
-                title: `Submit test success`,
-                variant: 'success'
-              })
-              return navigate({
-                to: `/my-applications/${applicationId}`
-              })
-            },
-            onError: (error) => {
-              if (!isBaseError(error) || error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR) {
-                toast({
-                  title: `Submit test failure`,
-                  description: 'Some thing went wrong.',
-                  variant: 'danger'
-                })
-                return
-              }
-              toast({
-                title: `Submit test failure`,
-                description: error.response?.data.message,
-                variant: 'danger'
-              })
-            }
-          }
-        )
       }
 
       setRemainTimeText(convertRemainTime(expiredTime))
@@ -119,6 +88,40 @@ function TakeTheTestPage() {
       clearInterval(timer)
     }
   }, [data])
+
+  useEffect(() => {
+    if (remainTimeText === '00:00:00') {
+      mutate(
+        { applicationId, data: { answers: answers || {} } },
+        {
+          onSuccess: () => {
+            toast({
+              title: `Submit test success`,
+              variant: 'success'
+            })
+            return navigate({
+              to: `/my-applications/${applicationId}`
+            })
+          },
+          onError: (error) => {
+            if (!isBaseError(error) || error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR) {
+              toast({
+                title: `Submit test failure`,
+                description: 'Some thing went wrong.',
+                variant: 'danger'
+              })
+              return
+            }
+            toast({
+              title: `Submit test failure`,
+              description: error.response?.data.message,
+              variant: 'danger'
+            })
+          }
+        }
+      )
+    }
+  }, [remainTimeText])
 
   const handleSelectAnswer = (questionNumber: number, answer: string) => {
     setAnswers({
