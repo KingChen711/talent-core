@@ -78,13 +78,13 @@ function TakeTheTestPage() {
 
       if (expiredTime <= now) {
         setRemainTimeText('00:00:00')
+        clearInterval(timer)
 
         // auto submit when time end
         mutate(
           { applicationId, data: { answers: answers || {} } },
           {
             onSuccess: () => {
-              clearInterval(timer)
               toast({
                 title: `Submit test success`,
                 variant: 'success'
