@@ -40,7 +40,7 @@ function TakeTheTestPage() {
       })
     }
 
-    // return navigate({ to: `/my-applications/${applicationId}` })
+    return navigate({ to: `/my-applications/${applicationId}` })
   })
 
   const { mutate, isPending } = useSubmitTest()
@@ -68,7 +68,9 @@ function TakeTheTestPage() {
   }, [data])
 
   useEffect(() => {
-    const updateRemainTime = () => {
+    const timer = setInterval(() => updateRemainTime(), 1000)
+
+    function updateRemainTime() {
       if (!data || isPending) return
 
       const now = Date.now()
@@ -82,6 +84,7 @@ function TakeTheTestPage() {
           { applicationId, data: { answers: answers || {} } },
           {
             onSuccess: () => {
+              clearInterval(timer)
               toast({
                 title: `Submit test success`,
                 variant: 'success'
@@ -111,8 +114,6 @@ function TakeTheTestPage() {
 
       setRemainTimeText(convertRemainTime(expiredTime))
     }
-
-    const timer = setInterval(() => updateRemainTime(), 1000)
 
     return () => {
       clearInterval(timer)
