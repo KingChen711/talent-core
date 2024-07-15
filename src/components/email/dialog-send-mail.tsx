@@ -57,9 +57,7 @@ function DialogSendMail({ candidateEmail }: Props) {
           variant: 'success'
         })
 
-        // return navigate({
-        //   to: `/recruitment-drives/${recruitmentDriveCode}/detail`
-        // })
+        setOpen(false)
       },
       onError: (error) => {
         if (!isBaseError(error) || error.response?.status === StatusCodes.INTERNAL_SERVER_ERROR) {
