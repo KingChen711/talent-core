@@ -13,6 +13,11 @@ export const employeeRoutes = [
     route: '/recruitment-drives',
     label: 'Recruitment Drives',
     icon: (active: boolean) => (active ? '/icons/side-bar/recruitment-active.svg' : '/icons/side-bar/recruitment.svg')
+  },
+  {
+    route: '/users',
+    label: 'Accounts',
+    icon: (active: boolean) => (active ? '/icons/side-bar/user-active.svg' : '/icons/side-bar/user.svg')
   }
 ] as const
 
@@ -51,6 +56,21 @@ export const recruitmentDriveTabs = [
   {
     label: 'Upcoming',
     status: 'Upcoming'
+  }
+] as const
+
+export const userTabs = [
+  {
+    label: 'All',
+    role: 'All'
+  },
+  {
+    label: 'Candidate',
+    role: 'Candidate'
+  },
+  {
+    label: 'Employee',
+    role: 'Employee'
   }
 ] as const
 

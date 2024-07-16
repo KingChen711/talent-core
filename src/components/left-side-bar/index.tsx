@@ -23,7 +23,7 @@ function LeftSideBar() {
               key={item.route}
               to={item.route}
               className={cn(
-                'flex items-center justify-start gap-4 p-4 lg:pl-9',
+                'flex items-center justify-start gap-4 p-4 lg:pl-9 text-muted',
                 isActive && 'bg-gradient rounded-r-full max-lg:rounded-lg text-gradient-foreground'
               )}
             >

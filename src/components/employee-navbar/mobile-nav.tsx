@@ -45,7 +45,7 @@ const NavContent = () => {
               })}
               to={item.route}
               className={cn(
-                'flex items-center justify-start gap-4 bg-transparent p-4 px-8',
+                'flex items-center justify-start gap-4 bg-transparent p-4 px-8 text-muted',
                 isActive && 'bg-gradient rounded-r-full'
               )}
             >

@@ -5,6 +5,10 @@ import { useCallback } from 'react'
 type Props = {
   key:
     | 'code'
+    | 'email'
+    | 'fullName'
+    | 'bornYear'
+    | 'phone'
     | 'name'
     | 'createdAt'
     | 'startDate'
