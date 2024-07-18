@@ -92,7 +92,7 @@ function UsersPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {isPending && <TableRowsSkeleton colSpan={5} pageSize={pageSize} />}
+                {isPending && <TableRowsSkeleton colSpan={7} pageSize={pageSize} />}
 
                 {data?.items.map((user) => (
                   <TableRow key={user.id}>
