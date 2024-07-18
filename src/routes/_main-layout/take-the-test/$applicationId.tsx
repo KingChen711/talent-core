@@ -79,6 +79,7 @@ function TakeTheTestPage() {
       if (expiredTime <= now) {
         setRemainTimeText('00:00:00')
         clearInterval(timer)
+        return
       }
 
       setRemainTimeText(convertRemainTime(expiredTime))
